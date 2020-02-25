@@ -25,6 +25,8 @@
     "tailwindcss": "^1.2.0"
   },
   "devDependencies": {
+    "babel-jest": "^25.1.0",
+    "babel-preset-gatsby": "^0.2.29",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-import-helpers": "^1.0.2",
@@ -32,7 +34,10 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^2.4.0",
-    "prettier": "^1.19.1"
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "react-test-renderer": "^16.12.0"
   },
   "keywords": [
     "gatsby"
@@ -45,7 +50,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

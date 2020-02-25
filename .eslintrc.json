@@ -1,0 +1,59 @@
+{
+    "parser": "babel-eslint",
+      "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true
+      },
+      "plugins": ["react", "react-hooks", "jsx-a11y", "import", "import-helpers", "prettier"],
+      "extends": ["plugin:react/recommended", "prettier"],
+      "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+        "__DEV__": true
+      },
+      "parserOptions": {
+        "ecmaFeatures": { "jsx": true },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+      },
+      "rules": {
+        "prettier/prettier": "error",
+        "no-underscore-dangle": ["error", { "allow": ["__typename"] }],
+        "import-helpers/order-imports": [
+          "warn",
+          {
+            "newlinesBetween": "always",
+            "groups": [
+              "module",
+              ["parent", "/^~/"],
+              ["sibling", "index"]
+            ],
+            "alphabetize": { "order": "asc", "ignoreCase": true }
+          }
+        ],
+        "react/jsx-props-no-spreading": "off",
+        "react/jsx-filename-extension": [
+          "error",
+          { "extensions": [".js", ".jsx"] }
+        ],
+        "no-console": "off",
+        "no-alert": "off",
+        "no-use-before-define": ["error", { "functions": false }],
+        "global-require": "off",
+        "react/jsx-wrap-multilines": "off",
+        "import/prefer-default-export": "off",
+        "import/no-extraneous-dependencies": [
+          "error",
+          { "devDependencies": true }
+      ]
+      },
+      "settings": {
+        "import/resolver": {
+          "node": {
+            "extensions": [".js", ".jsx", ".json", ".native.js"]
+          }
+        }
+      }
+    }
+  

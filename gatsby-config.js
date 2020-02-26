@@ -7,11 +7,26 @@ module.exports = {
   plugins: [
     `gatsby-plugin-react-helmet`,
     'gatsby-plugin-postcss',
+    `gatsby-transformer-json`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `sellers`,
+        path: `${__dirname}/src/content/sellers`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `products`,
+        path: `${__dirname}/src/content/products`,
       },
     },
     `gatsby-transformer-sharp`,
@@ -39,4 +54,7 @@ module.exports = {
     'gatsby-plugin-netlify-cms',
     'gatsby-plugin-netlify',
   ],
+  mapping: {
+    'ProductsJson.seller': 'SellersJson',
+  },
 };

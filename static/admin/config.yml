@@ -28,7 +28,7 @@ collections:
   - name: "products"
     label: "Products"
     label_singular: "Product"
-    folder: "src/content/items"
+    folder: "src/content/products"
     extension: "json"
     create: true
     slug: "{{slug}}"

@@ -10,3 +10,36 @@ backend:
 
 media_folder: static/img
 public_folder: /img
+
+collections:
+  - name: "sellers"
+    label: "Sellers"
+    label_singular: "Seller"
+    folder: "src/content/sellers"
+    extension: "json"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "name"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "seller"}
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "ID", name: "id", widget: "string"}
+      - {label: "Image", name: "image", widget: image}
+  - name: "products"
+    label: "Products"
+    label_singular: "Product"
+    folder: "src/content/items"
+    extension: "json"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "name"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "product"}
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "Price", name: "price", widget: "number", valueType: "float"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured Product", name: "featured", widget: "boolean", default: false}
+      - {label: "New Product", name: "new", widget: "boolean", default: false}
+      - {label: "On Sale", name: "onSale", widget: "boolean", default: false}
+      - {label: "Image", name: "image", widget: image}
+      - {label: 'Seller', name: "seller", widget: "relation", collection: "sellers", searchFields: ["name", "id"], valueField: "id", displayFields: ["name", "id"]}

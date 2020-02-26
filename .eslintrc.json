@@ -5,9 +5,13 @@
         "es6": true,
         "jest": true
       },
-      "plugins": ["react", "react-hooks", "jsx-a11y", "import", "import-helpers", "prettier"],
-      "extends": ["plugin:react/recommended", "prettier"],
+      "plugins": ["react-hooks", "jsx-a11y", "import", "import-helpers", "prettier"],
+      "extends": [
+        "react-app",
+        "prettier"
+      ],
       "globals": {
+        "__PATH_PREFIX__": true,
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
         "__DEV__": true
@@ -48,7 +52,11 @@
           { "devDependencies": true }
       ]
       },
+      "ignorePatterns": ["public/", "node_modules/"],
       "settings": {
+        "react": {
+          "version": "detect"
+        },
         "import/resolver": {
           "node": {
             "extensions": [".js", ".jsx", ".json", ".native.js"]
@@ -56,4 +64,3 @@
         }
       }
     }
-  

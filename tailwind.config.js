@@ -9,6 +9,9 @@ module.exports = {
         '80': '20rem',
         '4/3': '133.33334%',
       },
+      fontSize: {
+        '2xs': '.50rem',
+      },
     },
   },
   variants: {},

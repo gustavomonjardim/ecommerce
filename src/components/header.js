@@ -8,7 +8,7 @@ import MenuIcon from '../assets/svg/MenuIcon';
 const HeaderLink = ({ children, path }) => {
   return (
     <Link
-      href={path}
+      to={path}
       className="cursor-pointer block p-4 font-semibold text-black sm:p-0 sm:m-0 sm:border-none sm:mx-4"
     >
       {children}
@@ -23,6 +23,7 @@ Link.propTypes = {
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+
   return (
     <header className="flex flex-row items-baseline justify-between px-6 py-6 bg-white">
       <div className="w-full flex flex-col items-start sm:items-baseline sm:justify-between sm:flex-row">
@@ -34,7 +35,9 @@ const Header = () => {
           >
             <MenuIcon open={open} />
           </button>
-          <h1 className="text-xl font-semibold text-black">Plants.</h1>
+          <Link to="/">
+            <h1 className="text-2xl font-thin text-black">Plants.</h1>
+          </Link>
         </div>
 
         <div
@@ -42,12 +45,12 @@ const Header = () => {
             open ? 'flex' : 'hidden'
           } w-full flex-col mt-4 sm:my-0 sm:w-auto sm:flex sm:flex-row sm:items-center`}
         >
-          <HeaderLink path="/">All</HeaderLink>
+          <HeaderLink path="/shop/">All</HeaderLink>
           <HeaderLink path="/">New</HeaderLink>
           <HeaderLink path="/">On Sale</HeaderLink>
           <button
             type="button"
-            className="cursor-pointer hidden text-black h-6 w-6 mr-4 focus:outline-none sm:block sm:ml-8"
+            className="cursor-pointer hidden text-black h-6 w-6 focus:outline-none sm:block sm:ml-8"
           >
             <BagIcon />
           </button>
@@ -56,7 +59,7 @@ const Header = () => {
 
       <button
         type="button"
-        className="cursor-pointer text-black h-6 w-6 mr-4 focus:outline-none sm:hidden  sm:ml-8"
+        className="cursor-pointer text-black h-6 w-6 focus:outline-none sm:hidden  sm:ml-8"
       >
         <BagIcon />
       </button>

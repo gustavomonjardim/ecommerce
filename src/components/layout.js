@@ -6,9 +6,9 @@ import Header from './Header';
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-w-screen min-h-screen flex flex-col">
+    <div className="min-w-screen min-h-screen flex flex-col container mx-auto">
       <Header />
-      <main className="container mx-auto flex flex-grow">{children}</main>
+      <main className="flex flex-grow mb-12 px-6">{children}</main>
       <Footer />
     </div>
   );

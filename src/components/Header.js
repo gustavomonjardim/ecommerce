@@ -9,7 +9,7 @@ const HeaderLink = ({ children, path }) => {
   return (
     <Link
       to={path}
-      className="cursor-pointer block p-4 font-semibold text-black sm:p-0 sm:m-0 sm:border-none sm:mx-4"
+      className="cursor-pointer block p-4 font-semibold text-base leading-thight tracking-wide text-black sm:p-0 sm:m-0 sm:border-none sm:mx-4"
     >
       {children}
     </Link>
@@ -50,7 +50,7 @@ const Header = () => {
           <HeaderLink path="/">On Sale</HeaderLink>
           <button
             type="button"
-            className="cursor-pointer hidden text-black h-6 w-6 focus:outline-none sm:block sm:ml-8"
+            className="cursor-pointer hidden text-black h-6 w-6 mb-1 focus:outline-none sm:block sm:ml-8"
           >
             <BagIcon />
           </button>

@@ -4,28 +4,34 @@ import React, { useState } from 'react';
 
 import BagIcon from '../assets/svg/BagIcon';
 import MenuIcon from '../assets/svg/MenuIcon';
+import { useBag } from '../context/BagContext';
 
 const HeaderLink = ({ children, path }) => {
   return (
     <Link
       to={path}
-      className="cursor-pointer block p-4 font-semibold text-base leading-thight tracking-wide text-black sm:p-0 sm:m-0 sm:border-none sm:mx-4"
+      className="cursor-pointer block p-4 font-semibold text-base leading-thight tracking-wide text-black hover:opacity-50 sm:p-0 sm:m-0 sm:border-none sm:mx-4"
     >
       {children}
     </Link>
   );
 };
 
-Link.propTypes = {
+HeaderLink.propTypes = {
   children: propTypes.string.isRequired,
   path: propTypes.string.isRequired,
 };
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const { bagSize, bag } = useBag();
+
+  const displayBag = () => {
+    console.log(bag);
+  };
 
   return (
-    <header className="flex flex-row items-baseline justify-between px-6 py-6 bg-white">
+    <header className="flex flex-row items-baseline justify-between px-6 py-6 bg-white border-solid border-b border-gray-300">
       <div className="w-full flex flex-col items-start sm:items-baseline sm:justify-between sm:flex-row">
         <div className="flex items-center">
           <button
@@ -36,7 +42,7 @@ const Header = () => {
             <MenuIcon open={open} />
           </button>
           <Link to="/">
-            <h1 className="text-2xl font-thin text-black">Plants.</h1>
+            <h1 className="text-3xl font-thin text-black">Plants.</h1>
           </Link>
         </div>
 
@@ -49,19 +55,27 @@ const Header = () => {
           <HeaderLink path="/">New</HeaderLink>
           <HeaderLink path="/">On Sale</HeaderLink>
           <button
+            onClick={displayBag}
             type="button"
-            className="cursor-pointer hidden text-black h-6 w-6 mb-1 focus:outline-none sm:block sm:ml-8"
+            className="relative cursor-pointer hidden text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:block sm:ml-8"
           >
             <BagIcon />
+            <div className="absolute right-0 top-0 -mr-3 -mt-2 bg-black rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="text-white font-semibold text-2xs">{bagSize}</span>
+            </div>
           </button>
         </div>
       </div>
 
       <button
+        onClick={displayBag}
         type="button"
-        className="cursor-pointer text-black h-6 w-6 focus:outline-none sm:hidden  sm:ml-8"
+        className="relative cursor-pointer text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:hidden sm:ml-8"
       >
         <BagIcon />
+        <div className="absolute right-0 top-0 -mr-3 -mt-2 bg-black rounded-full h-5 w-5 flex items-center justify-center">
+          <span className="text-white font-semibold text-2xs">{bagSize}</span>
+        </div>
       </button>
     </header>
   );

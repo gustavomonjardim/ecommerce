@@ -1,10 +1,18 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import Header from '../header';
+import { BagProvider } from '../../context/BagContext';
+import Header from '../Header';
+
 describe('Header', () => {
   it('renders correctly', () => {
-    const tree = renderer.create(<Header siteTitle="Default Starter" />).toJSON();
+    const tree = renderer
+      .create(
+        <BagProvider>
+          <Header />
+        </BagProvider>
+      )
+      .toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

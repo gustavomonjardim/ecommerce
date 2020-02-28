@@ -1,7 +1,10 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
+import './src/styles/tailwind.css';
+import React from 'react';
 
-// You can delete this file if you're not using it
+import { BagProvider } from './src/context/BagContext';
+
+const wrapRootElement = ({ element }) => {
+  return <BagProvider>{element}</BagProvider>;
+};
+
+export { wrapRootElement };

@@ -68,6 +68,6 @@
     }
   },
   "lint-staged": {
-    "*.js": ["cross-env NODE_ENV=test jest --bail --findRelatedTests"]
+    "*.js": ["jest --bail --findRelatedTests"]
   }
 }

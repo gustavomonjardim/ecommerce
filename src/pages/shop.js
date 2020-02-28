@@ -11,11 +11,12 @@ const Shop = ({ data }) => {
         <h1 className="text-black font-thin text-5xl md:text-6xl my-12">
           Plants.<span className="text-green-600">All</span>
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {data.allProductsJson.nodes.map(product => (
             <ProductCard
               key={product.id}
               link="/"
+              id={product.id}
               name={product.name}
               price={product.price}
               image={product.image}

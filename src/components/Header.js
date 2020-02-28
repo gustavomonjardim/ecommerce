@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import BagIcon from '../assets/svg/BagIcon';
 import MenuIcon from '../assets/svg/MenuIcon';
+import { useBag } from '../context/BagContext';
 
 const HeaderLink = ({ children, path }) => {
   return (
@@ -23,6 +24,11 @@ HeaderLink.propTypes = {
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const { bagSize, bag } = useBag();
+
+  const displayBag = () => {
+    console.log(bag);
+  };
 
   return (
     <header className="flex flex-row items-baseline justify-between px-6 py-6 bg-white border-solid border-b border-gray-300">
@@ -49,24 +55,26 @@ const Header = () => {
           <HeaderLink path="/">New</HeaderLink>
           <HeaderLink path="/">On Sale</HeaderLink>
           <button
+            onClick={displayBag}
             type="button"
             className="relative cursor-pointer hidden text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:block sm:ml-8"
           >
             <BagIcon />
-            <div className="absolute right-0 top-0 -mr-4 -mt-2 bg-black rounded-full h-5 w-5 flex items-center justify-center">
-              <span className="text-white text-2xs">1</span>
+            <div className="absolute right-0 top-0 -mr-3 -mt-2 bg-black rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="text-white font-semibold text-2xs">{bagSize}</span>
             </div>
           </button>
         </div>
       </div>
 
       <button
+        onClick={displayBag}
         type="button"
-        className="relative cursor-pointer text-black h-6 w-6 mr-4 focus:outline-none sm:hidden  sm:ml-8"
+        className="relative cursor-pointer text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:hidden sm:ml-8"
       >
         <BagIcon />
-        <div className="absolute right-0 top-0 -mr-4 -mt-2 bg-black rounded-full h-5 w-5 flex items-center justify-center">
-          <span className="text-white text-2xs">1</span>
+        <div className="absolute right-0 top-0 -mr-3 -mt-2 bg-black rounded-full h-5 w-5 flex items-center justify-center">
+          <span className="text-white font-semibold text-2xs">{bagSize}</span>
         </div>
       </button>
     </header>

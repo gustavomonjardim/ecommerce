@@ -8,15 +8,15 @@ import { currencyMask } from '../services/maskService';
 
 const ProductCard = product => {
   const { id, link, name, price, image } = product;
-  const { addProduct, removeProduct } = useBag();
-  const [isAdded, setAdded] = useState(false);
+  const { addProduct, removeProduct, checkProduct } = useBag();
+  const [isAdded, setAdded] = useState(checkProduct(id));
 
   const toggleBag = () => {
     if (isAdded) {
       removeProduct(id);
       setAdded(false);
     } else {
-      addProduct(product);
+      addProduct({ ...product, quantity: 1 });
       setAdded(true);
     }
   };

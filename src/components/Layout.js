@@ -6,10 +6,12 @@ import Header from './Header';
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-w-screen min-h-screen flex flex-col container mx-auto antialiased">
-      <Header />
-      <main className="flex flex-grow mb-12 px-6">{children}</main>
-      <Footer />
+    <div className="min-w-screen min-h-screen bg-white">
+      <div className="min-w-screen min-h-screen flex flex-col container mx-auto antialiased">
+        <Header />
+        <main className="w-full flex flex-grow flex-col items-center mb-12 px-6">{children}</main>
+        <Footer />
+      </div>
     </div>
   );
 };

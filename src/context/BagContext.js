@@ -7,9 +7,29 @@ const BagContext = React.createContext();
 function BagProvider({ children }) {
   const [bag, setBag] = useState([]);
 
-  const addProduct = useCallback(product => {
-    setBag(bag => [...bag, product]);
-  }, []);
+  const checkProduct = useCallback(
+    id => {
+      return bag.some(product => product.id === id);
+    },
+    [bag]
+  );
+
+  const addProduct = useCallback(
+    newProduct => {
+      if (checkProduct(newProduct.id)) {
+        setBag(
+          bag.map(product =>
+            product.id === newProduct.id
+              ? { ...product, quantity: product.quantity + newProduct.quantity }
+              : product
+          )
+        );
+        return;
+      }
+      setBag(bag => [...bag, newProduct]);
+    },
+    [bag, checkProduct]
+  );
 
   const removeProduct = useCallback(id => {
     setBag(bag => bag.filter(product => product.id !== id));
@@ -25,8 +45,9 @@ function BagProvider({ children }) {
       bagSize,
       addProduct,
       removeProduct,
+      checkProduct,
     }),
-    [bag, bagSize, addProduct, removeProduct]
+    [bag, bagSize, addProduct, removeProduct, checkProduct]
   );
   return <BagContext.Provider value={defaultValue}>{children}</BagContext.Provider>;
 }

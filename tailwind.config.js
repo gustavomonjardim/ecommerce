@@ -4,6 +4,11 @@ module.exports = {
       sans: ['Montserrat', 'sans-serif'],
     },
     extend: {
+      width: {
+        '80': '20rem',
+        '100': '25rem',
+        '120': '30rem',
+      },
       spacing: {
         '72': '18rem',
         '80': '20rem',

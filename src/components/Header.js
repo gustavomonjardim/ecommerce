@@ -31,7 +31,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex flex-row items-baseline justify-between px-6 py-6 bg-white border-solid border-b border-gray-300">
+    <header className="flex flex-row items-baseline justify-between px-6 py-6 mb-12 border-solid border-b border-gray-300">
       <div className="w-full flex flex-col items-start sm:items-baseline sm:justify-between sm:flex-row">
         <div className="flex items-center">
           <button

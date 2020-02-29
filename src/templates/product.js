@@ -33,14 +33,7 @@ const Product = ({ data: { productsJson: product } }) => {
               {currencyMask(product.price)}
             </span>
           </div>
-
-          <p>
-            This Ecma Standard defines the ECMAScript 2020 Language. It is the eleventh edition of
-            the ECMAScript Language Specification. Since publication of the first edition in 1997,
-            ECMAScript has grown to be one of the world's most widely used general-purpose
-            programming languages. It is best known as the language embedded in web browsers but has
-            also been widely adopted for server and embedded applications.
-          </p>
+          <p>{product.description}</p>
           <div className="flex flex-row text-gray-700 mt-8">
             <span>Produto vendido por </span>
             <span className="text-black ml-1 font-semibold">{product.seller.name}</span>

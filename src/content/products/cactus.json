@@ -1,0 +1,11 @@
+{
+  "new": true,
+  "templateKey": "product",
+  "onSale": false,
+  "price": 24,
+  "name": "Cactus ",
+  "featured": false,
+  "image": "/img/img_20200227_212332_556.jpg",
+  "description": "Bem Bonito",
+  "seller": "111111"
+}

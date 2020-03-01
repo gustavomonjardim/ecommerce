@@ -26,17 +26,19 @@ const Product = ({ data: { productsJson: product } }) => {
     <Layout>
       <div className="w-full flex flex-col items-center md:flex-row md:items-start md:justify-center">
         <img src={product.image} alt="" className="w-full md:w-80 lg:w-100" />
-        <div className="flex flex-grow flex-col items-center mt-4 w-full lg:max-w-lg md:mt-0 md:ml-12 md:items-start">
+        <div className="flex flex-grow flex-col items-center w-full lg:max-w-lg md:mt-0 md:ml-12 md:items-start">
           <div className="w-full flex flex-row items-baseline justify-between my-6 lg:mt-0 lg:mb-10 ">
             <h1 className="text-black text-3xl sm:text-4xl lg:text-5xl">{product.name}</h1>
             <span className="text-black text-xl sm:text-2xl lg:text-3xl font-thin">
               {currencyMask(product.price)}
             </span>
           </div>
-          <p>{product.description}</p>
-          <div className="flex flex-row text-gray-700 mt-8">
-            <span>Produto vendido por </span>
-            <span className="text-black ml-1 font-semibold">{product.seller.name}</span>
+          <div className="w-full flex flex-col items-start">
+            <p>{product.description}</p>
+            <div className="flex flex-row text-gray-700 mt-8">
+              <span>Produto vendido por </span>
+              <span className="text-black ml-1 font-semibold">{product.seller.name}</span>
+            </div>
           </div>
           <div className="w-full flex flex-row my-8">
             <NumberSelect

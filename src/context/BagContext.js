@@ -17,7 +17,7 @@ function BagProvider({ children }) {
   const addProduct = useCallback(
     newProduct => {
       if (checkProduct(newProduct.id)) {
-        setBag(
+        setBag(bag =>
           bag.map(product =>
             product.id === newProduct.id
               ? { ...product, quantity: product.quantity + newProduct.quantity }
@@ -28,15 +28,41 @@ function BagProvider({ children }) {
       }
       setBag(bag => [...bag, newProduct]);
     },
-    [bag, checkProduct]
+    [checkProduct]
   );
 
   const removeProduct = useCallback(id => {
     setBag(bag => bag.filter(product => product.id !== id));
   }, []);
 
+  const increaseProductQuantity = useCallback(id => {
+    setBag(bag =>
+      bag.map(product =>
+        product.id === id ? { ...product, quantity: product.quantity + 1 } : product
+      )
+    );
+  }, []);
+
+  const decreaseProductQuantity = useCallback(id => {
+    setBag(bag =>
+      bag.map(product => {
+        if (product.id === id) {
+          return {
+            ...product,
+            quantity: product.quantity > 1 ? product.quantity - 1 : product.quantity,
+          };
+        }
+        return product;
+      })
+    );
+  }, []);
+
   const bagSize = useMemo(() => {
     return bag.length;
+  }, [bag]);
+
+  const totalValue = useMemo(() => {
+    return bag.reduce((total, product) => total + product.price * product.quantity, 0);
   }, [bag]);
 
   const defaultValue = useMemo(
@@ -46,8 +72,20 @@ function BagProvider({ children }) {
       addProduct,
       removeProduct,
       checkProduct,
+      increaseProductQuantity,
+      decreaseProductQuantity,
+      totalValue,
     }),
-    [bag, bagSize, addProduct, removeProduct, checkProduct]
+    [
+      bag,
+      bagSize,
+      addProduct,
+      removeProduct,
+      checkProduct,
+      totalValue,
+      increaseProductQuantity,
+      decreaseProductQuantity,
+    ]
   );
   return <BagContext.Provider value={defaultValue}>{children}</BagContext.Provider>;
 }

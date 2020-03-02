@@ -41,11 +41,13 @@ const Product = ({ data: { productsJson: product } }) => {
             </div>
           </div>
           <div className="w-full flex flex-row my-8">
-            <NumberSelect
-              quantity={quantity}
-              increaseQuantity={increaseQuantity}
-              decreaseQuantity={decreaseQuantity}
-            />
+            <div className="mr-4">
+              <NumberSelect
+                quantity={quantity}
+                increaseQuantity={increaseQuantity}
+                decreaseQuantity={decreaseQuantity}
+              />
+            </div>
             <Button text="Add to bag" onClick={checkout} />
           </div>
         </div>

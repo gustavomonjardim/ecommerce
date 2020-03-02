@@ -62,7 +62,6 @@ exports[`Header renders correctly 1`] = `
       </a>
       <button
         className="relative cursor-pointer hidden text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:block sm:ml-8"
-        onClick={[Function]}
         type="button"
       >
         <svg
@@ -92,7 +91,6 @@ exports[`Header renders correctly 1`] = `
   </div>
   <button
     className="relative cursor-pointer text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:hidden sm:ml-8"
-    onClick={[Function]}
     type="button"
   >
     <svg

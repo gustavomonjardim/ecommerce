@@ -22,13 +22,9 @@ HeaderLink.propTypes = {
   path: propTypes.string.isRequired,
 };
 
-const Header = () => {
+const Header = ({ showBag }) => {
   const [open, setOpen] = useState(false);
-  const { bagSize, bag } = useBag();
-
-  const displayBag = () => {
-    console.log(bag);
-  };
+  const { bagSize } = useBag();
 
   return (
     <header className="flex flex-row items-baseline justify-between px-6 py-6 mb-12 border-solid border-b border-gray-300">
@@ -55,7 +51,7 @@ const Header = () => {
           <HeaderLink path="/">New</HeaderLink>
           <HeaderLink path="/">On Sale</HeaderLink>
           <button
-            onClick={displayBag}
+            onClick={showBag}
             type="button"
             className="relative cursor-pointer hidden text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:block sm:ml-8"
           >
@@ -68,7 +64,7 @@ const Header = () => {
       </div>
 
       <button
-        onClick={displayBag}
+        onClick={showBag}
         type="button"
         className="relative cursor-pointer text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:hidden sm:ml-8"
       >
@@ -79,6 +75,10 @@ const Header = () => {
       </button>
     </header>
   );
+};
+
+Header.propTypes = {
+  showBag: propTypes.func.isRequired,
 };
 
 export default Header;

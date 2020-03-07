@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Button from '../components/Button';
-import Layout from '../components/Layout';
+import Layout from '../components/CheckoutLayout';
 import Step from '../components/Step';
 import TextInput from '../components/TextInput';
 import { useForm, FormContextProvider } from '../context/FormContext';
@@ -15,7 +15,7 @@ import {
 const CreditCardForm = () => {
   const { handleChange, handleBlur, values, errors, touched, submitForm } = useForm();
   return (
-    <div className="w-full max-w-lg flex flex-col items-center">
+    <>
       <TextInput
         id="fullName"
         placeholder="Full Name"
@@ -36,7 +36,7 @@ const CreditCardForm = () => {
         onBlur={handleBlur('cardNumber')}
         error={touched['cardNumber'] ? errors['cardNumber'] : null}
       />
-      <div className="w-full  max-w-lg flex flex-wrap">
+      <div className="w-full flex flex-wrap">
         <div className="w-full sm:w-2/3 sm:pr-4">
           <TextInput
             id="expirationDate"
@@ -66,14 +66,14 @@ const CreditCardForm = () => {
       <div className="w-full mt-12">
         <Button text="Next" onClick={submitForm} />
       </div>
-    </div>
+    </>
   );
 };
 
 const PersonalDataForm = () => {
   const { handleChange, handleBlur, values, errors, touched, submitForm } = useForm();
   return (
-    <div className="w-full max-w-lg flex flex-col items-center">
+    <>
       <TextInput
         id="fullName"
         placeholder="Full Name"
@@ -128,14 +128,14 @@ const PersonalDataForm = () => {
       <div className="w-full mt-12">
         <Button text="Next" onClick={submitForm} />
       </div>
-    </div>
+    </>
   );
 };
 
 const AddressForm = () => {
   const { handleChange, handleBlur, values, errors, touched, submitForm } = useForm();
   return (
-    <div className="w-full max-w-lg flex flex-col items-center">
+    <>
       <TextInput
         id="zipCode"
         placeholder="00000-000"
@@ -147,7 +147,7 @@ const AddressForm = () => {
         onBlur={handleBlur('zipCode')}
         error={touched['zipCode'] ? errors['zipCode'] : null}
       />
-      <div className="w-full  max-w-lg flex flex-wrap">
+      <div className="w-full flex flex-wrap">
         <div className="w-full sm:w-2/3 sm:pr-4">
           <TextInput
             id="street"
@@ -181,7 +181,7 @@ const AddressForm = () => {
         error={touched['neighborhood'] ? errors['neighborhood'] : null}
       />
 
-      <div className="w-full  max-w-lg flex flex-wrap">
+      <div className="w-full flex flex-wrap">
         <div className="w-full sm:w-2/3 sm:pr-4">
           <TextInput
             id="city"
@@ -208,7 +208,7 @@ const AddressForm = () => {
       <div className="w-full mt-12">
         <Button text="Next" onClick={submitForm} />
       </div>
-    </div>
+    </>
   );
 };
 
@@ -257,12 +257,16 @@ const Checkout = () => {
     setStep(step => step - 1);
   };
 
+  const confirmOrder = () => {
+    console.log(personalData, addressData, creditCardData);
+  };
+
   return (
     <Layout>
-      <div className="w-full max-w-xl bg-gray-100 px-4 py-16">
+      <div className="w-full max-w-xl flex flex-col justify-center items-center bg-gray-100 px-4 py-16">
         <div className="w-full flex flex-row mb-12">
           <Step
-            title="Your Information"
+            title="Information"
             number="1"
             active={step === 0}
             checked={step >= 1}
@@ -283,35 +287,38 @@ const Checkout = () => {
             onClick={() => setStep(2)}
           />
         </div>
-        {step === 0 && (
-          <FormContextProvider
-            initialValues={personalData}
-            onSubmit={submitPersonalData}
-            validationSchema={personalDataValidation}
-          >
-            <PersonalDataForm />
-          </FormContextProvider>
-        )}
+        <div className="w-full max-w-lg flex flex-col items-center justify-center">
+          {step === 0 && (
+            <FormContextProvider
+              initialValues={personalData}
+              onSubmit={submitPersonalData}
+              validationSchema={personalDataValidation}
+            >
+              <PersonalDataForm />
+            </FormContextProvider>
+          )}
 
-        {step === 1 && (
-          <FormContextProvider
-            initialValues={creditCardData}
-            onSubmit={submitCreditCardData}
-            validationSchema={cardValidation}
-          >
-            <CreditCardForm goBack={goBack} />
-          </FormContextProvider>
-        )}
+          {step === 1 && (
+            <FormContextProvider
+              initialValues={creditCardData}
+              onSubmit={submitCreditCardData}
+              validationSchema={cardValidation}
+            >
+              <CreditCardForm goBack={goBack} />
+            </FormContextProvider>
+          )}
 
-        {step === 2 && (
-          <FormContextProvider
-            initialValues={addressData}
-            onSubmit={submitAddressData}
-            validationSchema={addressValidation}
-          >
-            <AddressForm />
-          </FormContextProvider>
-        )}
+          {step === 2 && (
+            <FormContextProvider
+              initialValues={addressData}
+              onSubmit={submitAddressData}
+              validationSchema={addressValidation}
+            >
+              <AddressForm />
+            </FormContextProvider>
+          )}
+          {step === 3 && <Button text="Confirm order" onClick={confirmOrder} />}
+        </div>
       </div>
     </Layout>
   );

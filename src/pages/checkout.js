@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Button from '../components/Button';
 import Layout from '../components/Layout';
+import Step from '../components/Step';
 import TextInput from '../components/TextInput';
 import { useForm, FormContextProvider } from '../context/FormContext';
 import { masks } from '../services/maskService';
@@ -62,7 +63,9 @@ const CreditCardForm = () => {
           />
         </div>
       </div>
-      <Button text="Next" onClick={submitForm} />
+      <div className="w-full mt-12">
+        <Button text="Next" onClick={submitForm} />
+      </div>
     </div>
   );
 };
@@ -122,7 +125,9 @@ const PersonalDataForm = () => {
         onBlur={handleBlur('birthdate')}
         error={touched['birthdate'] ? errors['birthdate'] : null}
       />
-      <Button text="Next" onClick={submitForm} />
+      <div className="w-full mt-12">
+        <Button text="Next" onClick={submitForm} />
+      </div>
     </div>
   );
 };
@@ -200,21 +205,23 @@ const AddressForm = () => {
           />
         </div>
       </div>
-      <Button text="Next" onClick={submitForm} />
+      <div className="w-full mt-12">
+        <Button text="Next" onClick={submitForm} />
+      </div>
     </div>
   );
 };
 
 const Checkout = () => {
   const [step, setStep] = useState(0);
-  const [creditCardData] = useState({
+  const [creditCardData, setCreditCardData] = useState({
     fullName: '',
     cardNumber: '',
     expirationDate: '',
     cvv: '',
   });
 
-  const [personalData] = useState({
+  const [personalData, setPersonalData] = useState({
     fullName: '',
     cpf: '',
     email: '',
@@ -222,7 +229,7 @@ const Checkout = () => {
     birthdate: '',
   });
 
-  const [addressData] = useState({
+  const [addressData, setAddressData] = useState({
     zipCode: '',
     street: '',
     neighborhood: '',
@@ -231,42 +238,81 @@ const Checkout = () => {
     city: '',
   });
 
-  const handleSubmit = data => {
-    console.log(data);
+  const submitPersonalData = data => {
+    setPersonalData(data);
     setStep(step => step + 1);
+  };
+
+  const submitCreditCardData = data => {
+    setCreditCardData(data);
+    setStep(step => step + 1);
+  };
+
+  const submitAddressData = data => {
+    setAddressData(data);
+    setStep(step => step + 1);
+  };
+
+  const goBack = () => {
+    setStep(step => step - 1);
   };
 
   return (
     <Layout>
-      {step === 0 && (
-        <FormContextProvider
-          initialValues={personalData}
-          onSubmit={handleSubmit}
-          validationSchema={personalDataValidation}
-        >
-          <PersonalDataForm />
-        </FormContextProvider>
-      )}
+      <div className="w-full max-w-xl bg-gray-100 px-4 py-16">
+        <div className="w-full flex flex-row mb-12">
+          <Step
+            title="Your Information"
+            number="1"
+            active={step === 0}
+            checked={step >= 1}
+            onClick={() => setStep(0)}
+          />
+          <Step
+            title="Payment"
+            number="2"
+            active={step === 1}
+            checked={step >= 2}
+            onClick={() => setStep(1)}
+          />
+          <Step
+            title="Shipping"
+            number="3"
+            active={step === 2}
+            checked={step >= 3}
+            onClick={() => setStep(2)}
+          />
+        </div>
+        {step === 0 && (
+          <FormContextProvider
+            initialValues={personalData}
+            onSubmit={submitPersonalData}
+            validationSchema={personalDataValidation}
+          >
+            <PersonalDataForm />
+          </FormContextProvider>
+        )}
 
-      {step === 1 && (
-        <FormContextProvider
-          initialValues={creditCardData}
-          onSubmit={handleSubmit}
-          validationSchema={cardValidation}
-        >
-          <CreditCardForm />
-        </FormContextProvider>
-      )}
+        {step === 1 && (
+          <FormContextProvider
+            initialValues={creditCardData}
+            onSubmit={submitCreditCardData}
+            validationSchema={cardValidation}
+          >
+            <CreditCardForm goBack={goBack} />
+          </FormContextProvider>
+        )}
 
-      {step === 2 && (
-        <FormContextProvider
-          initialValues={addressData}
-          onSubmit={handleSubmit}
-          validationSchema={addressValidation}
-        >
-          <AddressForm />
-        </FormContextProvider>
-      )}
+        {step === 2 && (
+          <FormContextProvider
+            initialValues={addressData}
+            onSubmit={submitAddressData}
+            validationSchema={addressValidation}
+          >
+            <AddressForm />
+          </FormContextProvider>
+        )}
+      </div>
     </Layout>
   );
 };

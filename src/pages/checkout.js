@@ -6,7 +6,8 @@ import Step from '../components/Step';
 import TextInput from '../components/TextInput';
 import { useBag } from '../context/BagContext';
 import { useForm, FormContextProvider } from '../context/FormContext';
-import { masks } from '../services/maskService';
+import { parseAndFormatDateService } from '../services/dateService';
+import { masks, removeMaskService } from '../services/maskService';
 import {
   paymentValidation,
   personalDataValidation,
@@ -260,9 +261,8 @@ const Checkout = () => {
   };
 
   const confirmOrder = () => {
-    console.log(personalData, addressData, paymentData, bag, totalValue);
-
     const customer = {
+      external_id: removeMaskService(personalData.cpf),
       name: personalData.fullName,
       type: 'individual',
       country: 'br',
@@ -270,11 +270,11 @@ const Checkout = () => {
       documents: [
         {
           type: 'cpf',
-          number: personalData.cpf,
+          number: removeMaskService(personalData.cpf),
         },
       ],
-      phone_numbers: [personalData.phone],
-      birthday: personalData.birthdate,
+      phone_numbers: [`+55${removeMaskService(personalData.phone)}`],
+      birthday: parseAndFormatDateService(personalData.birthdate, 'DD/MM/YYYY', 'YYYY-MM-DD'),
     };
 
     const billing = {
@@ -286,7 +286,7 @@ const Checkout = () => {
         neighborhood: addressData.neighborhood,
         street: addressData.street,
         street_number: addressData.number,
-        zipcode: addressData.zipCode,
+        zipcode: removeMaskService(addressData.zipCode),
       },
     };
 
@@ -310,21 +310,24 @@ const Checkout = () => {
         neighborhood: addressData.neighborhood,
         street: addressData.street,
         street_number: addressData.number,
-        zipcode: addressData.zipCode,
+        zipcode: removeMaskService(addressData.zipCode),
       },
     };
 
-    console.log({
+    fetch('/.netlify/lambda/createTransaction', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: {
-        api_key: 'ak_test_vXN1D2WNFhKtHuOqAghYFisAF3DBfk',
+      body: JSON.stringify({
         amount: totalValue,
         card_number: paymentData.cardNumber,
         card_cvv: paymentData.cvv,
-        card_expiration_date: paymentData.expirationDate,
+        card_expiration_date: parseAndFormatDateService(
+          paymentData.expirationDate,
+          'DD/MM/YYYY',
+          'MMYY'
+        ),
         card_holder_name: paymentData.fullName,
         customer,
         billing,
@@ -346,8 +349,13 @@ const Checkout = () => {
             charge_remainder: false,
           },
         ],
-      },
-    });
+      }),
+    })
+      .then(response => response.json())
+      .then(console.log)
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (

@@ -58,4 +58,6 @@ const currencyMask = str => {
     .replace('.', ',')}`;
 };
 
-export { currencyMask, masks };
+const removeMaskService = data => data?.replace(/\D/g, '');
+
+export { currencyMask, masks, removeMaskService };

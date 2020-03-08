@@ -20,4 +20,4 @@ const validateBirthdate = param => {
   return false;
 };
 
-export { validateBirthdate };
+export { validateBirthdate, parseAndFormatDateService };

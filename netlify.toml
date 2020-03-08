@@ -1,0 +1,9 @@
+# example netlify.toml
+[build]
+  command = "yarn build"
+  functions = "lambda"
+  publish = "public"
+
+[dev]
+  port = 8000
+  functionsPort = 9000

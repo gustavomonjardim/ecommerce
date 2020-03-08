@@ -4,15 +4,16 @@ import Button from '../components/Button';
 import Layout from '../components/CheckoutLayout';
 import Step from '../components/Step';
 import TextInput from '../components/TextInput';
+import { useBag } from '../context/BagContext';
 import { useForm, FormContextProvider } from '../context/FormContext';
 import { masks } from '../services/maskService';
 import {
-  cardValidation,
+  paymentValidation,
   personalDataValidation,
   addressValidation,
 } from '../services/validationService';
 
-const CreditCardForm = () => {
+const PaymentForm = () => {
   const { handleChange, handleBlur, values, errors, touched, submitForm } = useForm();
   return (
     <>
@@ -213,8 +214,9 @@ const AddressForm = () => {
 };
 
 const Checkout = () => {
+  const { bag, totalValue } = useBag();
   const [step, setStep] = useState(0);
-  const [creditCardData, setCreditCardData] = useState({
+  const [paymentData, setPaymentData] = useState({
     fullName: '',
     cardNumber: '',
     expirationDate: '',
@@ -243,8 +245,8 @@ const Checkout = () => {
     setStep(step => step + 1);
   };
 
-  const submitCreditCardData = data => {
-    setCreditCardData(data);
+  const submitPaymentData = data => {
+    setPaymentData(data);
     setStep(step => step + 1);
   };
 
@@ -258,7 +260,94 @@ const Checkout = () => {
   };
 
   const confirmOrder = () => {
-    console.log(personalData, addressData, creditCardData);
+    console.log(personalData, addressData, paymentData, bag, totalValue);
+
+    const customer = {
+      name: personalData.fullName,
+      type: 'individual',
+      country: 'br',
+      email: personalData.email,
+      documents: [
+        {
+          type: 'cpf',
+          number: personalData.cpf,
+        },
+      ],
+      phone_numbers: [personalData.phone],
+      birthday: personalData.birthdate,
+    };
+
+    const billing = {
+      name: 'Trinity Moss',
+      address: {
+        country: 'br',
+        state: addressData.state,
+        city: addressData.city,
+        neighborhood: addressData.neighborhood,
+        street: addressData.street,
+        street_number: addressData.number,
+        zipcode: addressData.zipCode,
+      },
+    };
+
+    const items = bag.map(item => ({
+      id: item.id,
+      title: item.name,
+      unit_price: item.price,
+      quantity: item.quantity,
+      tangible: true,
+    }));
+
+    const shipping = {
+      name: 'Neo Reeves',
+      fee: 0,
+      delivery_date: '2000-12-21',
+      expedited: true,
+      address: {
+        country: 'br',
+        state: addressData.state,
+        city: addressData.city,
+        neighborhood: addressData.neighborhood,
+        street: addressData.street,
+        street_number: addressData.number,
+        zipcode: addressData.zipCode,
+      },
+    };
+
+    console.log({
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: {
+        api_key: 'ak_test_vXN1D2WNFhKtHuOqAghYFisAF3DBfk',
+        amount: totalValue,
+        card_number: paymentData.cardNumber,
+        card_cvv: paymentData.cvv,
+        card_expiration_date: paymentData.expirationDate,
+        card_holder_name: paymentData.fullName,
+        customer,
+        billing,
+        shipping,
+        items,
+        split_rules: [
+          {
+            recipient_id: 're_ck6zb8w010hrgnd6d1dkeblug',
+            percentage: 85,
+            liable: true,
+            charge_processing_fee: true,
+            charge_remainder: true,
+          },
+          {
+            recipient_id: 're_ck6zasyef0i8skz6fvwnow1zo',
+            percentage: 15,
+            liable: true,
+            charge_processing_fee: false,
+            charge_remainder: false,
+          },
+        ],
+      },
+    });
   };
 
   return (
@@ -300,11 +389,11 @@ const Checkout = () => {
 
           {step === 1 && (
             <FormContextProvider
-              initialValues={creditCardData}
-              onSubmit={submitCreditCardData}
-              validationSchema={cardValidation}
+              initialValues={paymentData}
+              onSubmit={submitPaymentData}
+              validationSchema={paymentValidation}
             >
-              <CreditCardForm goBack={goBack} />
+              <PaymentForm goBack={goBack} />
             </FormContextProvider>
           )}
 

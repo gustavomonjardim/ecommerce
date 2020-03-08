@@ -31,7 +31,7 @@ const personalDataValidation = Yup.object({
     .email('Por favor, digite um endereço de email válido.'),
 });
 
-const cardValidation = Yup.object({
+const paymentValidation = Yup.object({
   fullName: Yup.string()
     .ensure()
     .required('Por favor, informe o seu nome completo.')
@@ -78,4 +78,4 @@ const addressValidation = Yup.object({
     .required('Por favor, informe o estado.'),
 });
 
-export { personalDataValidation, cardValidation, addressValidation };
+export { personalDataValidation, paymentValidation, addressValidation };

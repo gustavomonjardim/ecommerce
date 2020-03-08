@@ -46,7 +46,7 @@ const paymentValidation = Yup.object({
   expirationDate: Yup.string()
     .ensure()
     .required('Por favor, informe a data de validade do cartão.')
-    .length(10, 'Por favor, informe a data de validade do cartão.'),
+    .length(5, 'Por favor, informe a data de validade do cartão.'),
   cvv: Yup.string()
     .ensure()
     .required('Por favor, informe o código de segurança do cartão')

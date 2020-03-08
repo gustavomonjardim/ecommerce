@@ -43,6 +43,10 @@ const masks = {
     return format(value, prevValue, '90/90/9900');
   },
 
+  creditCardDate: (value, prevValue) => {
+    return format(value, prevValue, '00/00');
+  },
+
   contaBancaria: (value, prevValue) => {
     return format(value, prevValue, '9999999999999990-0');
   },

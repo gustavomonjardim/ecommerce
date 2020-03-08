@@ -42,10 +42,10 @@ const PaymentForm = () => {
         <div className="w-full sm:w-2/3 sm:pr-4">
           <TextInput
             id="expirationDate"
-            placeholder="00/00/0000"
+            placeholder="00/00"
             label="Expiration Date"
-            maxLength={10}
-            formatText={current => masks.data(current, values.expirationDate)}
+            maxLength={5}
+            formatText={current => masks.creditCardDate(current, values.expirationDate)}
             value={values.expirationDate}
             onChange={handleChange('expirationDate')}
             onBlur={handleBlur('expirationDate')}
@@ -323,11 +323,7 @@ const Checkout = () => {
         amount: totalValue,
         card_number: paymentData.cardNumber,
         card_cvv: paymentData.cvv,
-        card_expiration_date: parseAndFormatDateService(
-          paymentData.expirationDate,
-          'DD/MM/YYYY',
-          'MMYY'
-        ),
+        card_expiration_date: removeMaskService(paymentData.expirationDate),
         card_holder_name: paymentData.fullName,
         customer,
         billing,

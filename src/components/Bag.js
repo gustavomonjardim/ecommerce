@@ -1,3 +1,4 @@
+import { navigate } from 'gatsby';
 import propTypes from 'prop-types';
 import React from 'react';
 
@@ -18,6 +19,10 @@ Overlay.propTypes = {
 
 const Bag = ({ open, closeBag }) => {
   const { bag, bagSize, totalValue } = useBag();
+
+  const goToCheckout = () => {
+    navigate('/checkout');
+  };
 
   return (
     <div className={`${open ? 'block' : 'hidden'}`}>
@@ -48,7 +53,7 @@ const Bag = ({ open, closeBag }) => {
             <span>{currencyMask(totalValue)}</span>
           </div>
         </div>
-        <Button onClick={() => {}} text="Checkout" />
+        <Button onClick={goToCheckout} text="Checkout" />
       </div>
       <Overlay onClick={() => closeBag(false)} />
     </div>

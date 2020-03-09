@@ -1,8 +1,21 @@
+const proxy = require('http-proxy-middleware');
+
 module.exports = {
   siteMetadata: {
     title: `Plants`,
     description: `ECommerce application built with Gatsby, React, Tailwind, Netlify and Netlify CMS`,
     author: `Gustavo Monjardim`,
+  },
+  developMiddleware: app => {
+    app.use(
+      '/.netlify/lambda/',
+      proxy.createProxyMiddleware({
+        target: 'http://localhost:9000',
+        pathRewrite: {
+          '/.netlify/lambda/': '',
+        },
+      })
+    );
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

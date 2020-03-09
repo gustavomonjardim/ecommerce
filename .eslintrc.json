@@ -5,8 +5,12 @@
         "es6": true,
         "jest": true
       },
-      "plugins": ["react-hooks", "jsx-a11y", "import", "import-helpers", "prettier"],
+      "plugins": ["react-hooks", "import-helpers", "prettier"],
       "extends": [
+        "eslint:recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
         "react-app",
         "prettier"
       ],
@@ -23,7 +27,7 @@
       },
       "rules": {
         "prettier/prettier": "error",
-        "no-underscore-dangle": ["error", { "allow": ["__typename"] }],
+        "no-underscore-dangle": ["error", { "allow": ["__loader"] }],
         "import-helpers/order-imports": [
           "warn",
           {
@@ -50,7 +54,7 @@
         "import/no-extraneous-dependencies": [
           "error",
           { "devDependencies": true }
-      ]
+        ]
       },
       "ignorePatterns": ["public/", "node_modules/"],
       "settings": {

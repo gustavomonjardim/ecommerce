@@ -5,19 +5,28 @@ const parseAndFormatDateService = (date, originalFormat, format) =>
 
 const timeFromDate = date => moment().diff(moment(date), 'year');
 
-const validateBirthdate = param => {
-  const date = parseAndFormatDateService(param, 'DD/MM/YYYY', 'YYYY-MM-DD');
+const validateBirthdate = date => {
+  const parsedDate = parseAndFormatDateService(date, 'DD/MM/YYYY', 'YYYY-MM-DD');
+  const years = timeFromDate(parsedDate);
 
-  if (date.length === 10) {
-    const years = timeFromDate(date);
-
-    if (years < 18) {
-      return false;
-    }
-    return true;
+  if (years < 18) {
+    return false;
   }
-
-  return false;
+  return true;
 };
 
-export { validateBirthdate, parseAndFormatDateService };
+const validateExpirationDate = date => {
+  const parsedDate = moment(date, 'MM/YY');
+  if (moment() > parsedDate) {
+    return false;
+  }
+  return true;
+};
+
+const getFutureDate = (daysToAdd, format) =>
+  moment()
+    .add(daysToAdd, 'days')
+    .locale('pt-br')
+    .format(format);
+
+export { validateExpirationDate, validateBirthdate, parseAndFormatDateService, getFutureDate };

@@ -1,14 +1,14 @@
 import * as Yup from 'yup';
 
 import { validateCPF } from './cpfValidation';
-import { validateBirthdate } from './dateService';
+import { validateBirthdate, validateExpirationDate } from './dateService';
 
 const personalDataValidation = Yup.object({
   cpf: Yup.string()
     .ensure()
-    .required('Por favor, informe o CPF')
-    .length(14, 'O CPF deve possuir 11 caracteres')
-    .test('isValid', 'CPF Inválido', validateCPF),
+    .required('Por favor, informe o CPF.')
+    .length(14, 'O CPF deve possuir 11 caracteres.')
+    .test('isValid', 'CPF Inválido.', validateCPF),
   fullName: Yup.string()
     .ensure()
     .required('Por favor, informe o seu nome completo.')
@@ -42,22 +42,23 @@ const paymentValidation = Yup.object({
   cardNumber: Yup.string()
     .ensure()
     .required('Por favor, informe o número do cartão.')
-    .length(19, 'Por favor, informe o número do cartão'),
+    .length(19, 'Por favor, informe o número do cartão.'),
   expirationDate: Yup.string()
     .ensure()
     .required('Por favor, informe a data de validade do cartão.')
-    .length(5, 'Por favor, informe a data de validade do cartão.'),
+    .length(5, 'Por favor, informe a data de validade do cartão.')
+    .test('isValid', 'Data de validade expirada.', validateExpirationDate),
   cvv: Yup.string()
     .ensure()
-    .required('Por favor, informe o código de segurança do cartão')
-    .length(3, 'Por favor, informe o código de segurança do cartão '),
+    .required('Por favor, informe o código de segurança do cartão.')
+    .length(3, 'Por favor, informe o código de segurança do cartão.'),
 });
 
 const addressValidation = Yup.object({
   zipCode: Yup.string()
     .ensure()
-    .required('Por favor, informe o seu CEP')
-    .length(9, 'O CEP deve possuir 8 caracteres'),
+    .required('Por favor, informe o seu CEP.')
+    .length(9, 'O CEP deve possuir 8 caracteres.'),
   street: Yup.string()
     .ensure()
     .required('Por favor, informe o nome da sua rua.'),

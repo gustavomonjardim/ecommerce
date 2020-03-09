@@ -7,6 +7,10 @@ const BagContext = React.createContext();
 function BagProvider({ children }) {
   const [bag, setBag] = useState([]);
 
+  const cleanBag = useCallback(() => {
+    setBag([]);
+  }, []);
+
   const checkProduct = useCallback(
     id => {
       return bag.some(product => product.id === id);
@@ -69,6 +73,7 @@ function BagProvider({ children }) {
     () => ({
       bag,
       bagSize,
+      cleanBag,
       addProduct,
       removeProduct,
       checkProduct,
@@ -79,6 +84,7 @@ function BagProvider({ children }) {
     [
       bag,
       bagSize,
+      cleanBag,
       addProduct,
       removeProduct,
       checkProduct,

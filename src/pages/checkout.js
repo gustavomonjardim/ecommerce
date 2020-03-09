@@ -1,3 +1,4 @@
+import { Link } from 'gatsby';
 import React, { useState } from 'react';
 
 import Button from '../components/Button';
@@ -6,7 +7,7 @@ import Step from '../components/Step';
 import TextInput from '../components/TextInput';
 import { useBag } from '../context/BagContext';
 import { useForm, FormContextProvider } from '../context/FormContext';
-import { parseAndFormatDateService } from '../services/dateService';
+import { parseAndFormatDateService, getFutureDate } from '../services/dateService';
 import { masks, removeMaskService } from '../services/maskService';
 import {
   paymentValidation,
@@ -215,8 +216,9 @@ const AddressForm = () => {
 };
 
 const Checkout = () => {
-  const { bag, totalValue } = useBag();
+  const { bag, totalValue, cleanBag } = useBag();
   const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [paymentData, setPaymentData] = useState({
     fullName: '',
     cardNumber: '',
@@ -261,6 +263,7 @@ const Checkout = () => {
   };
 
   const confirmOrder = () => {
+    setLoading(true);
     const customer = {
       external_id: removeMaskService(personalData.cpf),
       name: personalData.fullName,
@@ -278,7 +281,7 @@ const Checkout = () => {
     };
 
     const billing = {
-      name: 'Trinity Moss',
+      name: personalData.fullName,
       address: {
         country: 'br',
         state: addressData.state,
@@ -293,15 +296,15 @@ const Checkout = () => {
     const items = bag.map(item => ({
       id: item.id,
       title: item.name,
-      unit_price: item.price,
+      unit_price: item.price * 100,
       quantity: item.quantity,
       tangible: true,
     }));
 
     const shipping = {
-      name: 'Neo Reeves',
+      name: personalData.fullName,
       fee: 0,
-      delivery_date: '2000-12-21',
+      delivery_date: getFutureDate(3, 'YYYY-MM-DD'),
       expedited: true,
       address: {
         country: 'br',
@@ -320,7 +323,7 @@ const Checkout = () => {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        amount: totalValue,
+        amount: totalValue * 100,
         card_number: paymentData.cardNumber,
         card_cvv: paymentData.cvv,
         card_expiration_date: removeMaskService(paymentData.expirationDate),
@@ -348,8 +351,14 @@ const Checkout = () => {
       }),
     })
       .then(response => response.json())
-      .then(console.log)
+      .then(res => {
+        setLoading(false);
+        cleanBag();
+        setStep(4);
+        console.log(res);
+      })
       .catch(err => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -357,29 +366,31 @@ const Checkout = () => {
   return (
     <Layout>
       <div className="w-full max-w-xl flex flex-col justify-center items-center bg-gray-100 px-4 py-16">
-        <div className="w-full flex flex-row mb-12">
-          <Step
-            title="Information"
-            number="1"
-            active={step === 0}
-            checked={step >= 1}
-            onClick={() => setStep(0)}
-          />
-          <Step
-            title="Payment"
-            number="2"
-            active={step === 1}
-            checked={step >= 2}
-            onClick={() => setStep(1)}
-          />
-          <Step
-            title="Shipping"
-            number="3"
-            active={step === 2}
-            checked={step >= 3}
-            onClick={() => setStep(2)}
-          />
-        </div>
+        {step !== 4 && (
+          <div className="w-full flex flex-row mb-12">
+            <Step
+              title="Information"
+              number="1"
+              active={step === 0}
+              checked={step >= 1}
+              onClick={() => setStep(0)}
+            />
+            <Step
+              title="Payment"
+              number="2"
+              active={step === 1}
+              checked={step >= 2}
+              onClick={() => setStep(1)}
+            />
+            <Step
+              title="Shipping"
+              number="3"
+              active={step === 2}
+              checked={step >= 3}
+              onClick={() => setStep(2)}
+            />
+          </div>
+        )}
         <div className="w-full max-w-lg flex flex-col items-center justify-center">
           {step === 0 && (
             <FormContextProvider
@@ -410,7 +421,18 @@ const Checkout = () => {
               <AddressForm />
             </FormContextProvider>
           )}
-          {step === 3 && <Button text="Confirm order" onClick={confirmOrder} />}
+          {step === 3 && <Button text="Confirm order" onClick={confirmOrder} loading={loading} />}
+          {step === 4 && (
+            <div className="flex flex-col items-center">
+              <h2 className="text-xl font-semibold">Compra concluída com sucesso!</h2>
+              <Link
+                to="/"
+                className="uppercase mt-6 font-semibold text-gray-700 hover:text-gray-600"
+              >
+                Shop More
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </Layout>

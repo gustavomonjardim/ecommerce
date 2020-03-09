@@ -317,7 +317,7 @@ const Checkout = () => {
       },
     };
 
-    fetch('/.netlify/lambda/createTransaction', {
+    fetch('/.netlify/functions/createTransaction', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

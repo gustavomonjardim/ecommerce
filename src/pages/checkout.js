@@ -267,9 +267,9 @@ const Checkout = () => {
   const confirmOrder = async () => {
     setStatus('LOADING');
 
-    const response = await createTransactions({ personalData, addressData, paymentData });
+    const [err, res] = await createTransactions({ personalData, addressData, paymentData });
 
-    if (response.some(([err]) => Boolean(err))) {
+    if (err) {
       setStatus('ERROR');
       return;
     }
@@ -277,6 +277,7 @@ const Checkout = () => {
     setStatus(null);
     cleanBag();
     setStep(step => step + 1);
+    console.log(res);
   };
 
   return (

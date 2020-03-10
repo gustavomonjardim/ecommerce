@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 
 import Button from '../components/Button';
 import Layout from '../components/CheckoutLayout';
+import Error from '../components/Error';
 import Step from '../components/Step';
 import TextInput from '../components/TextInput';
 import { useBag } from '../context/BagContext';
 import { useForm, FormContextProvider } from '../context/FormContext';
-import { parseAndFormatDateService, getFutureDate } from '../services/dateService';
-import { masks, removeMaskService } from '../services/maskService';
+import { useCreateTransactions } from '../hooks/useCreateTransactions';
+import { masks } from '../services/maskService';
 import {
   paymentValidation,
   personalDataValidation,
@@ -216,9 +217,10 @@ const AddressForm = () => {
 };
 
 const Checkout = () => {
-  const { bag, totalValue, cleanBag } = useBag();
+  const { cleanBag } = useBag();
+  const { createTransactions } = useCreateTransactions();
   const [step, setStep] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState(null);
   const [paymentData, setPaymentData] = useState({
     fullName: '',
     cardNumber: '',
@@ -262,109 +264,28 @@ const Checkout = () => {
     setStep(step => step - 1);
   };
 
-  const confirmOrder = () => {
-    setLoading(true);
-    const customer = {
-      external_id: removeMaskService(personalData.cpf),
-      name: personalData.fullName,
-      type: 'individual',
-      country: 'br',
-      email: personalData.email,
-      documents: [
-        {
-          type: 'cpf',
-          number: removeMaskService(personalData.cpf),
-        },
-      ],
-      phone_numbers: [`+55${removeMaskService(personalData.phone)}`],
-      birthday: parseAndFormatDateService(personalData.birthdate, 'DD/MM/YYYY', 'YYYY-MM-DD'),
-    };
+  const confirmOrder = async () => {
+    setStatus('LOADING');
 
-    const billing = {
-      name: personalData.fullName,
-      address: {
-        country: 'br',
-        state: addressData.state,
-        city: addressData.city,
-        neighborhood: addressData.neighborhood,
-        street: addressData.street,
-        street_number: addressData.number,
-        zipcode: removeMaskService(addressData.zipCode),
-      },
-    };
+    const response = await createTransactions({ personalData, addressData, paymentData });
 
-    const items = bag.map(item => ({
-      id: item.id,
-      title: item.name,
-      unit_price: item.price * 100,
-      quantity: item.quantity,
-      tangible: true,
-    }));
+    if (response.some(([err]) => Boolean(err))) {
+      setStatus('ERROR');
+      return;
+    }
 
-    const shipping = {
-      name: personalData.fullName,
-      fee: 0,
-      delivery_date: getFutureDate(3, 'YYYY-MM-DD'),
-      expedited: true,
-      address: {
-        country: 'br',
-        state: addressData.state,
-        city: addressData.city,
-        neighborhood: addressData.neighborhood,
-        street: addressData.street,
-        street_number: addressData.number,
-        zipcode: removeMaskService(addressData.zipCode),
-      },
-    };
+    setStatus(null);
+    cleanBag();
+    setStep(step => step + 1);
 
-    fetch('/.netlify/functions/createTransaction', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: totalValue * 100,
-        card_number: paymentData.cardNumber,
-        card_cvv: paymentData.cvv,
-        card_expiration_date: removeMaskService(paymentData.expirationDate),
-        card_holder_name: paymentData.fullName,
-        customer,
-        billing,
-        shipping,
-        items,
-        split_rules: [
-          {
-            recipient_id: 're_ck6zb8w010hrgnd6d1dkeblug',
-            percentage: 85,
-            liable: true,
-            charge_processing_fee: true,
-            charge_remainder: true,
-          },
-          {
-            recipient_id: 're_ck6zasyef0i8skz6fvwnow1zo',
-            percentage: 15,
-            liable: true,
-            charge_processing_fee: false,
-            charge_remainder: false,
-          },
-        ],
-      }),
-    })
-      .then(response => response.json())
-      .then(res => {
-        setLoading(false);
-        cleanBag();
-        setStep(4);
-        console.log(res);
-      })
-      .catch(err => {
-        setLoading(false);
-        console.log(err);
-      });
+    response.forEach(([err, res]) => {});
   };
 
   return (
     <Layout>
+      {status === 'ERROR' && (
+        <Error text="Não foi possível realizar a sua compra. Tente novamente." />
+      )}
       <div className="w-full max-w-xl flex flex-col justify-center items-center bg-gray-100 px-4 py-16">
         {step !== 4 && (
           <div className="w-full flex flex-row mb-12">
@@ -421,7 +342,9 @@ const Checkout = () => {
               <AddressForm />
             </FormContextProvider>
           )}
-          {step === 3 && <Button text="Confirm order" onClick={confirmOrder} loading={loading} />}
+          {step === 3 && (
+            <Button text="Confirm order" onClick={confirmOrder} loading={status === 'LOADING'} />
+          )}
           {step === 4 && (
             <div className="flex flex-col items-center">
               <h2 className="text-xl font-semibold">Compra concluída com sucesso!</h2>

@@ -277,8 +277,6 @@ const Checkout = () => {
     setStatus(null);
     cleanBag();
     setStep(step => step + 1);
-
-    response.forEach(([err, res]) => {});
   };
 
   return (

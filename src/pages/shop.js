@@ -13,14 +13,7 @@ const Shop = ({ data }) => {
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {data.allProductsJson.nodes.map(product => (
-            <ProductCard
-              key={product.id}
-              link={`/product/${product.id}`}
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              image={product.image}
-            />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
@@ -36,6 +29,10 @@ export const query = graphql`
         name
         price
         image
+        seller {
+          id
+          name
+        }
       }
     }
   }

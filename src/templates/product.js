@@ -65,6 +65,7 @@ export const query = graphql`
       name
       price
       seller {
+        id
         name
       }
     }

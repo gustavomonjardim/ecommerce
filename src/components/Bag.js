@@ -11,7 +11,21 @@ import Button from './Button';
 import Separator from './Separator';
 
 const Overlay = ({ onClick }) => {
-  return <div className="absolute inset-0 bg-black opacity-25 z-10" onClick={onClick}></div>;
+  const handleKeyPress = event => {
+    if (event.keyCode === 27) {
+      onClick();
+    }
+  };
+
+  return (
+    <div
+      onKeyDown={handleKeyPress}
+      tabIndex={-1}
+      role="button"
+      className="absolute inset-0 bg-black opacity-25 z-10"
+      onClick={onClick}
+    ></div>
+  );
 };
 
 Overlay.propTypes = {

@@ -1,5 +1,5 @@
-import { Link } from 'gatsby';
-import React, { useState } from 'react';
+import { navigate } from 'gatsby';
+import React, { useState, useEffect } from 'react';
 
 import Button from '../components/Button';
 import Layout from '../components/CheckoutLayout';
@@ -9,7 +9,7 @@ import TextInput from '../components/TextInput';
 import { useBag } from '../context/BagContext';
 import { useForm, FormContextProvider } from '../context/FormContext';
 import { useCreateTransactions } from '../hooks/useCreateTransactions';
-import { masks } from '../services/maskService';
+import { masks, currencyMask } from '../services/maskService';
 import {
   paymentValidation,
   personalDataValidation,
@@ -217,10 +217,16 @@ const AddressForm = () => {
 };
 
 const Checkout = () => {
-  const { cleanBag } = useBag();
+  const { cleanBag, bag, totalValue } = useBag();
   const { createTransactions } = useCreateTransactions();
   const [step, setStep] = useState(0);
   const [status, setStatus] = useState(null);
+  const [receipt, setReceipt] = useState({
+    bag: [],
+    transactions: [],
+    totalValue: 0,
+  });
+
   const [paymentData, setPaymentData] = useState({
     fullName: '',
     cardNumber: '',
@@ -244,6 +250,34 @@ const Checkout = () => {
     state: '',
     city: '',
   });
+
+  useEffect(() => {
+    if (receipt.transactions?.length > 0) {
+      getPayables(JSON.stringify(receipt.transactions));
+    }
+  }, [receipt.transactions]);
+
+  async function getPayables(body) {
+    try {
+      const response = await fetch('/.netlify/functions/getPayables', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body,
+      });
+      const res = await response.json();
+
+      setReceipt(receipt => ({
+        ...receipt,
+        payables: res,
+      }));
+
+      return [null, res];
+    } catch (err) {
+      return [err];
+    }
+  }
 
   const submitPersonalData = data => {
     setPersonalData(data);
@@ -274,10 +308,21 @@ const Checkout = () => {
       return;
     }
 
+    setReceipt({
+      bag,
+      totalValue,
+      transactions: res.map(transaction => transaction.id),
+      sellers: res.reduce((sellersObj, transaction) => {
+        const { sellerId, sellerName } = transaction.metadata;
+        sellersObj[sellerId] = sellerName;
+        return sellersObj;
+      }, {}),
+      payables: [],
+    });
+
     setStatus(null);
     cleanBag();
     setStep(step => step + 1);
-    console.log(res);
   };
 
   return (
@@ -285,7 +330,7 @@ const Checkout = () => {
       {status === 'ERROR' && (
         <Error text="Não foi possível realizar a sua compra. Tente novamente." />
       )}
-      <div className="w-full max-w-xl flex flex-col justify-center items-center bg-gray-100 px-4 py-16">
+      <div className="w-full max-w-xl flex flex-col justify-center items-center bg-white px-4 py-16 md:shadow-xl md:rounded-lg">
         {step !== 4 && (
           <div className="w-full flex flex-row mb-12">
             <Step
@@ -345,14 +390,71 @@ const Checkout = () => {
             <Button text="Confirm order" onClick={confirmOrder} loading={status === 'LOADING'} />
           )}
           {step === 4 && (
-            <div className="flex flex-col items-center">
-              <h2 className="text-xl font-semibold">Compra concluída com sucesso!</h2>
-              <Link
-                to="/"
-                className="uppercase mt-6 font-semibold text-gray-700 hover:text-gray-600"
-              >
-                Shop More
-              </Link>
+            <div className="w-full flex flex-col">
+              <h2 className="text-2xl font-semibold tracking-wide leading-tight mb-4 border-gray-500 pb-12 border-b">
+                Compra concluída com sucesso!
+              </h2>
+              <h4 className="font-semibold text-lg text-center mb-2">Produtos</h4>
+              <div className="w-full border-gray-500 border-b mb-4 h-80 overflow-y-scroll">
+                {receipt.bag.map(product => (
+                  <div key={product.id} className="w-full flex flex-row py-2 mb-4">
+                    <div className="relative w-32">
+                      <img
+                        className="absolute h-full w-full object-cover"
+                        src={product.image}
+                        alt={product.name}
+                      />
+                    </div>
+                    <div className="w-full flex flex-col ml-4">
+                      <span className="font-semibold text-lg text-gray-700">{product.name}</span>
+                      <span className="text-sm text-gray-700">{`${product.quantity} ${
+                        product.quantity === 1 ? 'unidade' : 'unidades'
+                      }`}</span>
+                      <span className="my-2 font-semibold text-md text-gray-800">
+                        {currencyMask(product.price)}
+                      </span>
+                      <span className="text-gray-600 text-sm">
+                        Vendido por <span className="font-semibold">{product.seller.name}</span>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="w-full pb-4 mb-4 border-gray-500 border-b">
+                <h4 className="font-semibold text-lg text-center mb-2">Divisão do pagamento</h4>
+                {Object.keys(receipt.payables)
+                  .filter(key => key !== 'fees' && key !== 'platform')
+                  .map(recipient => (
+                    <div key={recipient} className="w-full flex flex-row justify-between">
+                      <span className="text-gray-600 text-sm">{receipt.sellers[recipient]}</span>
+                      <span className="text-gray-700 text-sm font-semibold">
+                        {currencyMask(receipt.payables[recipient] / 100)}
+                      </span>
+                    </div>
+                  ))}
+                <div className="w-full flex flex-row justify-between">
+                  <span className="text-gray-600 text-sm">Plants</span>
+                  <span className="text-gray-700 text-sm font-semibold">
+                    {currencyMask(receipt.payables.platform / 100)}
+                  </span>
+                </div>
+                <div className="w-full flex flex-row justify-between">
+                  <span className="text-gray-600 text-sm">Taxas</span>
+                  <span className="text-gray-700 text-sm font-semibold">
+                    {currencyMask(receipt.payables.fees / 100)}
+                  </span>
+                </div>
+              </div>
+              <div className="w-full flex flex-row justify-between">
+                <span className="font-semibold text-lg">Total</span>
+                <span className="font-semibold text-lg text-green-600">
+                  {currencyMask(receipt.totalValue)}
+                </span>
+              </div>
+
+              <div className="w-full mt-8">
+                <Button text="Shop more" onClick={() => navigate('/')} />
+              </div>
             </div>
           )}
         </div>

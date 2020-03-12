@@ -18,79 +18,14 @@ export async function handler(event, context) {
     .catch(error => ({ statusCode: 400, body: JSON.stringify(error) }));
 }
 
-const getProductsBySeller = bag => {
-  return bag.reduce((list, product) => {
-    const seller = product.seller.id;
-    if (list[seller]) {
-      list[seller] = [...list[seller], product];
-    } else {
-      list[seller] = [product];
-    }
-
-    return list;
-  }, {});
-};
-
-const customerPayload = personalData => {
-  return {
-    external_id: removeMaskService(personalData.cpf),
-    name: personalData.fullName,
-    type: 'individual',
-    country: 'br',
-    email: personalData.email,
-    documents: [
-      {
-        type: 'cpf',
-        number: removeMaskService(personalData.cpf),
-      },
-    ],
-    phone_numbers: [`+55${removeMaskService(personalData.phone)}`],
-    birthday: parseAndFormatDateService(personalData.birthdate, 'DD/MM/YYYY', 'YYYY-MM-DD'),
-  };
-};
-
-const billingPayload = (personalData, addressData) => {
-  return {
-    name: personalData.fullName,
-    address: {
-      country: 'br',
-      state: addressData.state,
-      city: addressData.city,
-      neighborhood: addressData.neighborhood,
-      street: addressData.street,
-      street_number: addressData.number,
-      zipcode: removeMaskService(addressData.zipCode),
-    },
-  };
-};
-
-const shippingPayload = (personalData, addressData) => {
-  return {
-    name: personalData.fullName,
-    fee: 0,
-    delivery_date: getFutureDate(3, 'YYYY-MM-DD'),
-    expedited: true,
-    address: {
-      country: 'br',
-      state: addressData.state,
-      city: addressData.city,
-      neighborhood: addressData.neighborhood,
-      street: addressData.street,
-      street_number: addressData.number,
-      zipcode: removeMaskService(addressData.zipCode),
-    },
-  };
-};
-
 async function createTransactions({ personalData, addressData, paymentData, bag }) {
   const customer = customerPayload(personalData);
   const billing = billingPayload(personalData, addressData);
   const shipping = shippingPayload(personalData, addressData);
-
   const productsBySeller = getProductsBySeller(bag);
 
   const requests = Object.keys(productsBySeller).map(async seller => {
-    const products = productsBySeller[seller];
+    const { products, sellerName } = productsBySeller[seller];
 
     const items = products.map(item => ({
       id: item.id,
@@ -112,6 +47,10 @@ async function createTransactions({ personalData, addressData, paymentData, bag 
       billing,
       shipping,
       items,
+      metadata: {
+        sellerName,
+        sellerId: seller,
+      },
       split_rules: [
         {
           recipient_id: seller,
@@ -133,11 +72,77 @@ async function createTransactions({ personalData, addressData, paymentData, bag 
     return pagarme.client
       .connect({ api_key: process.env.PAGARME_API_KEY })
       .then(client => client.transactions.create(body))
-      .then(transaction => {
-        return transaction;
-      })
+      .then(transaction => transaction)
       .catch(error => error);
   });
 
   return Promise.all(requests);
+}
+
+function getProductsBySeller(bag) {
+  return bag.reduce((sellersObj, product) => {
+    const { id, name } = product.seller;
+
+    if (sellersObj[id]) {
+      sellersObj[id].products = [...sellersObj[id].products, product];
+      return sellersObj;
+    }
+
+    sellersObj[id] = {
+      products: [product],
+      sellerName: name,
+    };
+    return sellersObj;
+  }, {});
+}
+
+function customerPayload(personalData) {
+  return {
+    external_id: removeMaskService(personalData.cpf),
+    name: personalData.fullName,
+    type: 'individual',
+    country: 'br',
+    email: personalData.email,
+    documents: [
+      {
+        type: 'cpf',
+        number: removeMaskService(personalData.cpf),
+      },
+    ],
+    phone_numbers: [`+55${removeMaskService(personalData.phone)}`],
+    birthday: parseAndFormatDateService(personalData.birthdate, 'DD/MM/YYYY', 'YYYY-MM-DD'),
+  };
+}
+
+function billingPayload(personalData, addressData) {
+  return {
+    name: personalData.fullName,
+    address: {
+      country: 'br',
+      state: addressData.state,
+      city: addressData.city,
+      neighborhood: addressData.neighborhood,
+      street: addressData.street,
+      street_number: addressData.number,
+      zipcode: removeMaskService(addressData.zipCode),
+    },
+  };
+}
+
+function shippingPayload(personalData, addressData) {
+  return {
+    name: personalData.fullName,
+    fee: 0,
+    delivery_date: getFutureDate(3, 'YYYY-MM-DD'),
+    expedited: true,
+    address: {
+      country: 'br',
+      state: addressData.state,
+      city: addressData.city,
+      neighborhood: addressData.neighborhood,
+      street: addressData.street,
+      street_number: addressData.number,
+      zipcode: removeMaskService(addressData.zipCode),
+    },
+  };
 }

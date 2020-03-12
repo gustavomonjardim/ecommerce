@@ -4,7 +4,7 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
-export async function handler(event, context) {
+export async function handler(event) {
   return getPayables(JSON.parse(event.body))
     .then(payables => {
       return {

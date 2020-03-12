@@ -1,4 +1,5 @@
 import { Link } from 'gatsby';
+import propTypes from 'prop-types';
 import React from 'react';
 
 import CloseIcon from '../assets/svg/CloseIcon';
@@ -44,6 +45,17 @@ const BagItem = ({ product }) => {
       </div>
     </div>
   );
+};
+
+BagItem.propTypes = {
+  product: propTypes.shape({
+    id: propTypes.string.isRequired,
+    name: propTypes.string.isRequired,
+    price: propTypes.number.isRequired,
+    image: propTypes.string.isRequired,
+    seller: propTypes.shape.isRequired,
+    quantity: propTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default BagItem;

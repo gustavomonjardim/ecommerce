@@ -7,7 +7,7 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
-export async function handler(event, context) {
+export async function handler(event) {
   return createTransactions(JSON.parse(event.body))
     .then(transactions => {
       return {
@@ -35,7 +35,10 @@ async function createTransactions({ personalData, addressData, paymentData, bag 
       tangible: true,
     }));
 
-    const amount = products.reduce((total, product) => total + product.price * 100, 0);
+    const amount = products.reduce(
+      (total, product) => total + product.price * 100 * product.quantity,
+      0
+    );
 
     const body = {
       amount,

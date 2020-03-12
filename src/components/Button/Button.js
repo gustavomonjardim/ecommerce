@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import React from 'react';
 
-import Loader from '../components/Loader';
+import Loader from '../Loader';
 
 const Button = ({ text, onClick, loading }) => {
   return (

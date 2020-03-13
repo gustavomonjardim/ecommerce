@@ -14,3 +14,11 @@ test('should call onClick function when pressed', async () => {
 
   expect(onClick).toHaveBeenCalledTimes(1);
 });
+
+test('should display loader when component is loading', async () => {
+  const { getByRole } = render(<Button text={buttonText} onClick={onClick} loading />);
+
+  const loader = getByRole('alert');
+
+  expect(loader).toBeTruthy();
+});

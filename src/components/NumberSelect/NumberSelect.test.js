@@ -3,7 +3,7 @@ import React from 'react';
 
 import NumberSelect from '.';
 
-let quantity = 1;
+let quantity = 10;
 const increaseQuantity = jest.fn();
 const decreaseQuantity = jest.fn();
 
@@ -17,6 +17,18 @@ const tree = (
 
 test('should display quantity correctly', async () => {
   const { getByText } = render(tree);
+
+  expect(getByText('10')).toBeTruthy();
+});
+
+test('should display quantity with a zero when quantity is less then 10', async () => {
+  const { getByText } = render(
+    <NumberSelect
+      quantity={1}
+      increaseQuantity={increaseQuantity}
+      decreaseQuantity={decreaseQuantity}
+    />
+  );
 
   expect(getByText('01')).toBeTruthy();
 });

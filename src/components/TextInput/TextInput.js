@@ -31,9 +31,7 @@ const TextInput = ({
       value = formatText(value);
     }
 
-    if (typeof onChange === 'function') {
-      onChange(value);
-    }
+    onChange(value);
   };
 
   return (

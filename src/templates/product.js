@@ -2,9 +2,9 @@ import { graphql } from 'gatsby';
 import React, { useState } from 'react';
 
 import Button from '../components/Button';
-import Layout from '../components/Layout';
 import NumberSelect from '../components/NumberSelect';
 import { useBag } from '../context/BagContext';
+import Layout from '../layouts/Layout';
 import { currencyMask } from '../services/maskService';
 
 const Product = ({ data: { productsJson: product } }) => {

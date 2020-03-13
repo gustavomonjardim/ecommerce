@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import Button from '../components/Button';
-import Layout from '../components/CheckoutLayout';
 import Error from '../components/Error';
 import Step from '../components/Step';
 import { useBag } from '../context/BagContext';
@@ -11,6 +10,7 @@ import PaymentForm from '../forms/PaymentForm';
 import PersonalDataForm from '../forms/PersonalDataForm';
 import Receipt from '../forms/Receipt';
 import { useCreateTransactions } from '../hooks/useCreateTransactions';
+import Layout from '../layouts/CheckoutLayout';
 import {
   paymentValidation,
   personalDataValidation,

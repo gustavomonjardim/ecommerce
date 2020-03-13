@@ -1,8 +1,8 @@
 import { graphql } from 'gatsby';
 import React from 'react';
 
-import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
+import Layout from '../layouts/Layout';
 
 const Shop = ({ data }) => {
   return (

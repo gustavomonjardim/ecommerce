@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import propTypes from 'prop-types';
 import React from 'react';
 
-import Check from '../assets/svg/Check';
+import Check from '../../assets/svg/Check';
 
 const Step = ({ title, number, active, checked, onClick }) => {
   const stepClass = classNames(

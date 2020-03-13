@@ -60,7 +60,7 @@ TextInput.propTypes = {
   label: propTypes.string.isRequired,
   value: propTypes.string.isRequired,
   onChange: propTypes.func.isRequired,
-  onBlur: propTypes.func,
+  onBlur: propTypes.func.isRequired,
   error: propTypes.string,
   maxLength: propTypes.number,
   formatText: propTypes.func,
@@ -68,7 +68,6 @@ TextInput.propTypes = {
 
 TextInput.defaultProps = {
   error: null,
-  onBlur: () => {},
   maxLength: 200,
   formatText: null,
 };

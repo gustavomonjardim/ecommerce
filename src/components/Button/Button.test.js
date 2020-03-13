@@ -7,7 +7,7 @@ const buttonText = 'Teste';
 const onClick = jest.fn();
 const tree = <Button text={buttonText} onClick={onClick} />;
 
-test('should call onClick function', async () => {
+test('should call onClick function when pressed', async () => {
   const { getByText } = render(tree);
 
   fireEvent.click(getByText(buttonText));

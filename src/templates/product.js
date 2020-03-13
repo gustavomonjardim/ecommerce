@@ -1,4 +1,5 @@
 import { graphql } from 'gatsby';
+import propTypes from 'prop-types';
 import React, { useState } from 'react';
 
 import Button from '../components/Button';
@@ -71,5 +72,11 @@ export const query = graphql`
     }
   }
 `;
+
+Product.propTypes = {
+  data: propTypes.shape({
+    productsJson: propTypes.shape.isRequired,
+  }).isRequired,
+};
 
 export default Product;

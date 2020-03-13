@@ -1,4 +1,5 @@
 import { graphql } from 'gatsby';
+import propTypes from 'prop-types';
 import React from 'react';
 
 import ProductCard from '../components/ProductCard';
@@ -37,5 +38,13 @@ export const query = graphql`
     }
   }
 `;
+
+Shop.propTypes = {
+  data: propTypes.shape({
+    allProductsJson: propTypes.shape({
+      nodes: propTypes.array,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default Shop;

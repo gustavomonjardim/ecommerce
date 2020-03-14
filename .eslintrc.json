@@ -50,7 +50,7 @@
           "alphabetize": { "order": "asc", "ignoreCase": true }
         }
       ],
-      "no-underscore-dangle": ["error", { "allow": ["__loader"] }],
+      "no-underscore-dangle": ["error", { "allow": ["___loader"] }],
       "no-console": "off",
       "no-alert": "off",
       "no-use-before-define": ["error", { "functions": false }],

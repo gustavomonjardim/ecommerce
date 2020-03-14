@@ -6,7 +6,7 @@ import ArrowLeft from '../assets/svg/ArrowLeft';
 import { useBag } from '../context/BagContext';
 import { currencyMask } from '../services/maskService';
 
-import BagItem from './BagItem';
+import BagItem from './BagItem/BagItem';
 import Button from './Button';
 import Separator from './Separator';
 

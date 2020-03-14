@@ -57,7 +57,7 @@ test('should display error message when there is an error', async () => {
 
   const errorMessage = getByText(error);
 
-  expect(errorMessage).toBeTruthy();
+  expect(errorMessage).toBeInTheDocument();
 });
 
 test('should format input correctly', async () => {

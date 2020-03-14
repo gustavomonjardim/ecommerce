@@ -16,8 +16,8 @@ const tree = <Step onClick={onClick} title={title} number={number} checked={fals
 test('should display title and step number correctly', async () => {
   const { getByText } = render(tree);
 
-  expect(getByText(number)).toBeTruthy();
-  expect(getByText(title)).toBeTruthy();
+  expect(getByText(number)).toBeInTheDocument();
+  expect(getByText(title)).toBeInTheDocument();
 });
 
 test('should not display number if step is already checked', async () => {
@@ -25,9 +25,9 @@ test('should not display number if step is already checked', async () => {
     <Step onClick={onClick} title={title} number={number} checked={true} active={true} />
   );
 
-  expect(getByText(title)).toBeTruthy();
+  expect(getByText(title)).toBeInTheDocument();
   const stepNumber = queryByText(number);
-  expect(stepNumber).toBeFalsy();
+  expect(stepNumber).not.toBeInTheDocument();
 
   expect.assertions(2);
 });

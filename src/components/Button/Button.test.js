@@ -20,5 +20,5 @@ test('should display loader when component is loading', async () => {
 
   const loader = getByRole('alert');
 
-  expect(loader).toBeTruthy();
+  expect(loader).toBeInTheDocument();
 });

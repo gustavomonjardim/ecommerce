@@ -2,11 +2,10 @@ import { Link } from 'gatsby';
 import propTypes from 'prop-types';
 import React from 'react';
 
-import CloseIcon from '../assets/svg/CloseIcon';
-import { useBag } from '../context/BagContext';
-import { currencyMask } from '../services/maskService';
-
-import NumberSelect from './NumberSelect';
+import CloseIcon from '../../assets/svg/CloseIcon';
+import { useBag } from '../../context/BagContext';
+import { currencyMask } from '../../services/maskService';
+import NumberSelect from '../NumberSelect';
 
 const BagItem = ({ product }) => {
   const { removeProduct, increaseProductQuantity, decreaseProductQuantity } = useBag();

@@ -18,7 +18,7 @@ const tree = (
 test('should display quantity correctly', async () => {
   const { getByText } = render(tree);
 
-  expect(getByText('10')).toBeTruthy();
+  expect(getByText('10')).toBeInTheDocument();
 });
 
 test('should display quantity with a zero when quantity is less then 10', async () => {
@@ -30,7 +30,7 @@ test('should display quantity with a zero when quantity is less then 10', async 
     />
   );
 
-  expect(getByText('01')).toBeTruthy();
+  expect(getByText('01')).toBeInTheDocument();
 });
 
 test('should call increaseQuantity function when plus button is pressed', async () => {

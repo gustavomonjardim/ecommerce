@@ -20,6 +20,7 @@ const ProductCard = ({ product }) => {
       setAdded(true);
     }
   };
+
   return (
     <div>
       <Link to={`/product/${id}`} className="cursor-pointer">

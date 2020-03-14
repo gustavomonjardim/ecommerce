@@ -1,3 +1,4 @@
+import { navigate } from 'gatsby';
 import React, { useState } from 'react';
 
 import Button from '../components/Button';
@@ -29,6 +30,7 @@ const Checkout = () => {
   });
 
   const [paymentData, setPaymentData] = useState({
+    paymentMethod: 'credit_card',
     fullName: '',
     cardNumber: '',
     expirationDate: '',
@@ -100,73 +102,90 @@ const Checkout = () => {
 
   return (
     <Layout>
-      {status === 'ERROR' && (
-        <Error text="Não foi possível realizar a sua compra. Tente novamente." />
-      )}
-      <div className="w-full max-w-xl flex flex-col justify-center items-center bg-white px-4 py-16 md:shadow-xl md:rounded-lg">
-        {step !== 4 && (
-          <div className="w-full flex flex-row mb-12">
-            <Step
-              title="Information"
-              number="1"
-              active={step === 0}
-              checked={step >= 1}
-              onClick={() => setStep(0)}
-            />
-            <Step
-              title="Payment"
-              number="2"
-              active={step === 1}
-              checked={step >= 2}
-              onClick={() => setStep(1)}
-            />
-            <Step
-              title="Shipping"
-              number="3"
-              active={step === 2}
-              checked={step >= 3}
-              onClick={() => setStep(2)}
-            />
-          </div>
-        )}
-        <div className="w-full max-w-lg flex flex-col items-center justify-center">
-          {step === 0 && (
-            <FormContextProvider
-              initialValues={personalData}
-              onSubmit={submitPersonalData}
-              validationSchema={personalDataValidation}
-            >
-              <PersonalDataForm />
-            </FormContextProvider>
-          )}
-
-          {step === 1 && (
-            <FormContextProvider
-              initialValues={paymentData}
-              onSubmit={submitPaymentData}
-              validationSchema={paymentValidation}
-            >
-              <PaymentForm goBack={goBack} />
-            </FormContextProvider>
-          )}
-
-          {step === 2 && (
-            <FormContextProvider
-              initialValues={addressData}
-              onSubmit={submitAddressData}
-              validationSchema={addressValidation}
-            >
-              <AddressForm />
-            </FormContextProvider>
-          )}
-
-          {step === 3 && (
-            <Button text="Confirm order" onClick={confirmOrder} loading={status === 'LOADING'} />
-          )}
-
-          {step === 4 && <Receipt receipt={receipt} />}
+      {bag?.length === 0 && (
+        <div className="w-full max-w-lg flex flex-col flex-grow items-center justify-start">
+          <span className="text-gray-700 text-lg mb-8">
+            Looks like there&apos;s nothing in your bag.
+          </span>
+          <Button text="Start shopping" onClick={() => navigate('/')}></Button>
         </div>
-      </div>
+      )}
+
+      {bag?.length > 0 && (
+        <>
+          {status === 'ERROR' && (
+            <Error text="Não foi possível realizar a sua compra. Tente novamente." />
+          )}
+          <div className="w-full max-w-xl flex flex-col justify-center items-center bg-white px-4 py-16 md:shadow-xl md:rounded-lg">
+            {step !== 4 && (
+              <div className="w-full flex flex-row mb-12">
+                <Step
+                  title="Information"
+                  number="1"
+                  active={step === 0}
+                  checked={step >= 1}
+                  onClick={() => setStep(0)}
+                />
+                <Step
+                  title="Payment"
+                  number="2"
+                  active={step === 1}
+                  checked={step >= 2}
+                  onClick={() => setStep(1)}
+                />
+                <Step
+                  title="Shipping"
+                  number="3"
+                  active={step === 2}
+                  checked={step >= 3}
+                  onClick={() => setStep(2)}
+                />
+              </div>
+            )}
+            <div className="w-full max-w-lg flex flex-col items-center justify-center">
+              {step === 0 && (
+                <FormContextProvider
+                  initialValues={personalData}
+                  onSubmit={submitPersonalData}
+                  validationSchema={personalDataValidation}
+                >
+                  <PersonalDataForm />
+                </FormContextProvider>
+              )}
+
+              {step === 1 && (
+                <FormContextProvider
+                  initialValues={paymentData}
+                  onSubmit={submitPaymentData}
+                  validationSchema={paymentValidation}
+                >
+                  <PaymentForm goBack={goBack} />
+                </FormContextProvider>
+              )}
+
+              {step === 2 && (
+                <FormContextProvider
+                  initialValues={addressData}
+                  onSubmit={submitAddressData}
+                  validationSchema={addressValidation}
+                >
+                  <AddressForm />
+                </FormContextProvider>
+              )}
+
+              {step === 3 && (
+                <Button
+                  text="Confirm order"
+                  onClick={confirmOrder}
+                  loading={status === 'LOADING'}
+                />
+              )}
+
+              {step === 4 && <Receipt receipt={receipt} />}
+            </div>
+          </div>
+        </>
+      )}
     </Layout>
   );
 };

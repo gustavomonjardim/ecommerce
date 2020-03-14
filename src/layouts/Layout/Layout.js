@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-import Bag from './Bag';
-import Footer from './Footer';
-import Header from './Header';
+import Bag from '../../components/Bag';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
 
 const Layout = ({ children }) => {
   const [isBagOpen, setBagOpen] = useState(false);

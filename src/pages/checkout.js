@@ -1,224 +1,33 @@
-import { Link } from 'gatsby';
 import React, { useState } from 'react';
 
 import Button from '../components/Button';
-import Layout from '../components/CheckoutLayout';
+import Error from '../components/Error';
 import Step from '../components/Step';
-import TextInput from '../components/TextInput';
 import { useBag } from '../context/BagContext';
-import { useForm, FormContextProvider } from '../context/FormContext';
-import { parseAndFormatDateService, getFutureDate } from '../services/dateService';
-import { masks, removeMaskService } from '../services/maskService';
+import { FormContextProvider } from '../context/FormContext';
+import AddressForm from '../forms/AddressForm';
+import PaymentForm from '../forms/PaymentForm';
+import PersonalDataForm from '../forms/PersonalDataForm';
+import Receipt from '../forms/Receipt';
+import { usePagarMe } from '../hooks/usePagarMe';
+import Layout from '../layouts/CheckoutLayout';
 import {
   paymentValidation,
   personalDataValidation,
   addressValidation,
 } from '../services/validationService';
 
-const PaymentForm = () => {
-  const { handleChange, handleBlur, values, errors, touched, submitForm } = useForm();
-  return (
-    <>
-      <TextInput
-        id="fullName"
-        placeholder="Full Name"
-        label="Full Name"
-        value={values.fullName}
-        onChange={handleChange('fullName')}
-        onBlur={handleBlur('fullName')}
-        error={touched['fullName'] ? errors['fullName'] : null}
-      />
-      <TextInput
-        id="cardNumber"
-        placeholder="0000 0000 0000 0000"
-        label="Card Number"
-        maxLength={19}
-        formatText={current => masks.cardNumber(current, values.cardNumber)}
-        value={values.cardNumber}
-        onChange={handleChange('cardNumber')}
-        onBlur={handleBlur('cardNumber')}
-        error={touched['cardNumber'] ? errors['cardNumber'] : null}
-      />
-      <div className="w-full flex flex-wrap">
-        <div className="w-full sm:w-2/3 sm:pr-4">
-          <TextInput
-            id="expirationDate"
-            placeholder="00/00"
-            label="Expiration Date"
-            maxLength={5}
-            formatText={current => masks.creditCardDate(current, values.expirationDate)}
-            value={values.expirationDate}
-            onChange={handleChange('expirationDate')}
-            onBlur={handleBlur('expirationDate')}
-            error={touched['expirationDate'] ? errors['expirationDate'] : null}
-          />
-        </div>
-        <div className="w-full sm:w-1/3">
-          <TextInput
-            id="cvv"
-            placeholder="000"
-            label="CVV"
-            maxLength={3}
-            value={values.cvv}
-            onChange={handleChange('cvv')}
-            onBlur={handleBlur('cvv')}
-            error={touched['cvv'] ? errors['cvv'] : null}
-          />
-        </div>
-      </div>
-      <div className="w-full mt-12">
-        <Button text="Next" onClick={submitForm} />
-      </div>
-    </>
-  );
-};
-
-const PersonalDataForm = () => {
-  const { handleChange, handleBlur, values, errors, touched, submitForm } = useForm();
-  return (
-    <>
-      <TextInput
-        id="fullName"
-        placeholder="Full Name"
-        label="Full Name"
-        value={values.fullName}
-        onChange={handleChange('fullName')}
-        onBlur={handleBlur('fullName')}
-        error={touched['fullName'] ? errors['fullName'] : null}
-      />
-      <TextInput
-        id="cpf"
-        placeholder="000.000.000-00"
-        label="CPF"
-        maxLength={14}
-        formatText={current => masks.cpf(current, values.cpf)}
-        value={values.cpf}
-        onChange={handleChange('cpf')}
-        onBlur={handleBlur('cpf')}
-        error={touched['cpf'] ? errors['cpf'] : null}
-      />
-      <TextInput
-        id="email"
-        placeholder="name@provider.com"
-        label="E-mail"
-        value={values.email}
-        onChange={handleChange('email')}
-        onBlur={handleBlur('email')}
-        error={touched['email'] ? errors['email'] : null}
-      />
-      <TextInput
-        id="phone"
-        placeholder="(00) 0 0000-0000"
-        label="Phone Number"
-        formatText={current => masks.celular(current, values.phone)}
-        maxLength={17}
-        value={values.phone}
-        onChange={handleChange('phone')}
-        onBlur={handleBlur('phone')}
-        error={touched['phone'] ? errors['phone'] : null}
-      />
-      <TextInput
-        id="birthdate"
-        placeholder="00/00/0000"
-        label="Birthdate"
-        maxLength={10}
-        formatText={current => masks.data(current, values.birthdate)}
-        value={values.birthdate}
-        onChange={handleChange('birthdate')}
-        onBlur={handleBlur('birthdate')}
-        error={touched['birthdate'] ? errors['birthdate'] : null}
-      />
-      <div className="w-full mt-12">
-        <Button text="Next" onClick={submitForm} />
-      </div>
-    </>
-  );
-};
-
-const AddressForm = () => {
-  const { handleChange, handleBlur, values, errors, touched, submitForm } = useForm();
-  return (
-    <>
-      <TextInput
-        id="zipCode"
-        placeholder="00000-000"
-        label="CEP"
-        maxLength={9}
-        value={values.zipCode}
-        formatText={current => masks.cep(current, values.zipCode)}
-        onChange={handleChange('zipCode')}
-        onBlur={handleBlur('zipCode')}
-        error={touched['zipCode'] ? errors['zipCode'] : null}
-      />
-      <div className="w-full flex flex-wrap">
-        <div className="w-full sm:w-2/3 sm:pr-4">
-          <TextInput
-            id="street"
-            placeholder="Street"
-            label="Street"
-            value={values.street}
-            onChange={handleChange('street')}
-            onBlur={handleBlur('street')}
-            error={touched['street'] ? errors['street'] : null}
-          />
-        </div>
-        <div className="w-full sm:w-1/3">
-          <TextInput
-            id="number"
-            placeholder="0000"
-            label="Number"
-            value={values.number}
-            onChange={handleChange('number')}
-            onBlur={handleBlur('number')}
-            error={touched['number'] ? errors['number'] : null}
-          />
-        </div>
-      </div>
-      <TextInput
-        id="neighborhood"
-        placeholder="Neighborhood"
-        label="Neighborhood"
-        value={values.neighborhood}
-        onChange={handleChange('neighborhood')}
-        onBlur={handleBlur('neighborhood')}
-        error={touched['neighborhood'] ? errors['neighborhood'] : null}
-      />
-
-      <div className="w-full flex flex-wrap">
-        <div className="w-full sm:w-2/3 sm:pr-4">
-          <TextInput
-            id="city"
-            placeholder="City"
-            label="City"
-            value={values.city}
-            onChange={handleChange('city')}
-            onBlur={handleBlur('city')}
-            error={touched['city'] ? errors['city'] : null}
-          />
-        </div>
-        <div className="w-full sm:w-1/3">
-          <TextInput
-            id="state"
-            placeholder="State"
-            label="State"
-            value={values.state}
-            onChange={handleChange('state')}
-            onBlur={handleBlur('state')}
-            error={touched['state'] ? errors['state'] : null}
-          />
-        </div>
-      </div>
-      <div className="w-full mt-12">
-        <Button text="Next" onClick={submitForm} />
-      </div>
-    </>
-  );
-};
-
 const Checkout = () => {
-  const { bag, totalValue, cleanBag } = useBag();
+  const { cleanBag, bag, totalValue } = useBag();
+  const { createTransactions } = usePagarMe();
   const [step, setStep] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [receipt, setReceipt] = useState({
+    bag: [],
+    transactions: [],
+    totalValue: 0,
+  });
+
   const [paymentData, setPaymentData] = useState({
     fullName: '',
     cardNumber: '',
@@ -262,110 +71,39 @@ const Checkout = () => {
     setStep(step => step - 1);
   };
 
-  const confirmOrder = () => {
-    setLoading(true);
-    const customer = {
-      external_id: removeMaskService(personalData.cpf),
-      name: personalData.fullName,
-      type: 'individual',
-      country: 'br',
-      email: personalData.email,
-      documents: [
-        {
-          type: 'cpf',
-          number: removeMaskService(personalData.cpf),
-        },
-      ],
-      phone_numbers: [`+55${removeMaskService(personalData.phone)}`],
-      birthday: parseAndFormatDateService(personalData.birthdate, 'DD/MM/YYYY', 'YYYY-MM-DD'),
-    };
+  const confirmOrder = async () => {
+    setStatus('LOADING');
 
-    const billing = {
-      name: personalData.fullName,
-      address: {
-        country: 'br',
-        state: addressData.state,
-        city: addressData.city,
-        neighborhood: addressData.neighborhood,
-        street: addressData.street,
-        street_number: addressData.number,
-        zipcode: removeMaskService(addressData.zipCode),
-      },
-    };
+    const [err, res] = await createTransactions({ personalData, addressData, paymentData, bag });
 
-    const items = bag.map(item => ({
-      id: item.id,
-      title: item.name,
-      unit_price: item.price * 100,
-      quantity: item.quantity,
-      tangible: true,
-    }));
+    if (err) {
+      setStatus('ERROR');
+      return;
+    }
 
-    const shipping = {
-      name: personalData.fullName,
-      fee: 0,
-      delivery_date: getFutureDate(3, 'YYYY-MM-DD'),
-      expedited: true,
-      address: {
-        country: 'br',
-        state: addressData.state,
-        city: addressData.city,
-        neighborhood: addressData.neighborhood,
-        street: addressData.street,
-        street_number: addressData.number,
-        zipcode: removeMaskService(addressData.zipCode),
-      },
-    };
+    setReceipt({
+      bag,
+      totalValue,
+      transactions: res.map(transaction => transaction.id),
+      sellers: res.reduce((sellersObj, transaction) => {
+        const { sellerId, sellerName } = transaction.metadata;
+        sellersObj[sellerId] = sellerName;
+        return sellersObj;
+      }, {}),
+      payables: [],
+    });
 
-    fetch('/.netlify/functions/createTransaction', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: totalValue * 100,
-        card_number: paymentData.cardNumber,
-        card_cvv: paymentData.cvv,
-        card_expiration_date: removeMaskService(paymentData.expirationDate),
-        card_holder_name: paymentData.fullName,
-        customer,
-        billing,
-        shipping,
-        items,
-        split_rules: [
-          {
-            recipient_id: 're_ck6zb8w010hrgnd6d1dkeblug',
-            percentage: 85,
-            liable: true,
-            charge_processing_fee: true,
-            charge_remainder: true,
-          },
-          {
-            recipient_id: 're_ck6zasyef0i8skz6fvwnow1zo',
-            percentage: 15,
-            liable: true,
-            charge_processing_fee: false,
-            charge_remainder: false,
-          },
-        ],
-      }),
-    })
-      .then(response => response.json())
-      .then(res => {
-        setLoading(false);
-        cleanBag();
-        setStep(4);
-        console.log(res);
-      })
-      .catch(err => {
-        setLoading(false);
-        console.log(err);
-      });
+    setStatus(null);
+    cleanBag();
+    setStep(step => step + 1);
   };
 
   return (
     <Layout>
-      <div className="w-full max-w-xl flex flex-col justify-center items-center bg-gray-100 px-4 py-16">
+      {status === 'ERROR' && (
+        <Error text="Não foi possível realizar a sua compra. Tente novamente." />
+      )}
+      <div className="w-full max-w-xl flex flex-col justify-center items-center bg-white px-4 py-16 md:shadow-xl md:rounded-lg">
         {step !== 4 && (
           <div className="w-full flex flex-row mb-12">
             <Step
@@ -421,18 +159,12 @@ const Checkout = () => {
               <AddressForm />
             </FormContextProvider>
           )}
-          {step === 3 && <Button text="Confirm order" onClick={confirmOrder} loading={loading} />}
-          {step === 4 && (
-            <div className="flex flex-col items-center">
-              <h2 className="text-xl font-semibold">Compra concluída com sucesso!</h2>
-              <Link
-                to="/"
-                className="uppercase mt-6 font-semibold text-gray-700 hover:text-gray-600"
-              >
-                Shop More
-              </Link>
-            </div>
+
+          {step === 3 && (
+            <Button text="Confirm order" onClick={confirmOrder} loading={status === 'LOADING'} />
           )}
+
+          {step === 4 && <Receipt receipt={receipt} />}
         </div>
       </div>
     </Layout>

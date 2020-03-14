@@ -3,7 +3,7 @@ import React from 'react';
 import './styles.css';
 
 const Loader = () => {
-  return <div class="loader"></div>;
+  return <div role="alert" className="loader"></div>;
 };
 
 export default Loader;

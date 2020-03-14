@@ -3,6 +3,10 @@ const validateCPF = param => {
   let sum = 0;
   let remainder;
 
+  if (!value) {
+    return false;
+  }
+
   if (
     value === '00000000000' ||
     value === '11111111111' ||
@@ -39,10 +43,6 @@ const validateCPF = param => {
   if (remainder === 10 || remainder === 11) remainder = 0;
 
   if (remainder !== Number(value.substring(10, 11))) {
-    return false;
-  }
-
-  if (!value) {
     return false;
   }
 

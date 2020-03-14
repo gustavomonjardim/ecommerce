@@ -6,8 +6,8 @@ import BagIcon, { BagIconFilled } from '../assets/svg/BagIcon';
 import { useBag } from '../context/BagContext';
 import { currencyMask } from '../services/maskService';
 
-const ProductCard = product => {
-  const { id, link, name, price, image } = product;
+const ProductCard = ({ product }) => {
+  const { id, name, price, image } = product;
   const { addProduct, removeProduct, checkProduct } = useBag();
   const [isAdded, setAdded] = useState(checkProduct(id));
 
@@ -22,7 +22,7 @@ const ProductCard = product => {
   };
   return (
     <div>
-      <Link to={link} className="cursor-pointer">
+      <Link to={`/product/${id}`} className="cursor-pointer">
         <div className="relative pb-4/3">
           <img className="absolute w-full h-full object-cover" src={image} alt={name} />
         </div>
@@ -45,10 +45,13 @@ const ProductCard = product => {
 };
 
 ProductCard.propTypes = {
-  link: propTypes.string.isRequired,
-  name: propTypes.string.isRequired,
-  price: propTypes.number.isRequired,
-  image: propTypes.string.isRequired,
+  product: propTypes.shape({
+    id: propTypes.string.isRequired,
+    name: propTypes.string.isRequired,
+    price: propTypes.number.isRequired,
+    image: propTypes.string.isRequired,
+    seller: propTypes.shape.isRequired,
+  }).isRequired,
 };
 
 export default ProductCard;

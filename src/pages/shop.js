@@ -1,8 +1,9 @@
 import { graphql } from 'gatsby';
+import propTypes from 'prop-types';
 import React from 'react';
 
-import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
+import Layout from '../layouts/Layout';
 
 const Shop = ({ data }) => {
   return (
@@ -13,14 +14,7 @@ const Shop = ({ data }) => {
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {data.allProductsJson.nodes.map(product => (
-            <ProductCard
-              key={product.id}
-              link={`/product/${product.id}`}
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              image={product.image}
-            />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
@@ -36,9 +30,21 @@ export const query = graphql`
         name
         price
         image
+        seller {
+          id
+          name
+        }
       }
     }
   }
 `;
+
+Shop.propTypes = {
+  data: propTypes.shape({
+    allProductsJson: propTypes.shape({
+      nodes: propTypes.array,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default Shop;

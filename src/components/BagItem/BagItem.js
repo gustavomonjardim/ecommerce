@@ -1,11 +1,11 @@
 import { Link } from 'gatsby';
+import propTypes from 'prop-types';
 import React from 'react';
 
-import CloseIcon from '../assets/svg/CloseIcon';
-import { useBag } from '../context/BagContext';
-import { currencyMask } from '../services/maskService';
-
-import NumberSelect from './NumberSelect';
+import CloseIcon from '../../assets/svg/CloseIcon';
+import { useBag } from '../../context/BagContext';
+import { currencyMask } from '../../services/maskService';
+import NumberSelect from '../NumberSelect';
 
 const BagItem = ({ product }) => {
   const { removeProduct, increaseProductQuantity, decreaseProductQuantity } = useBag();
@@ -44,6 +44,17 @@ const BagItem = ({ product }) => {
       </div>
     </div>
   );
+};
+
+BagItem.propTypes = {
+  product: propTypes.shape({
+    id: propTypes.string.isRequired,
+    name: propTypes.string.isRequired,
+    price: propTypes.number.isRequired,
+    image: propTypes.string.isRequired,
+    seller: propTypes.shape.isRequired,
+    quantity: propTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default BagItem;

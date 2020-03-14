@@ -1,7 +1,8 @@
 import classNames from 'classnames';
+import propTypes from 'prop-types';
 import React from 'react';
 
-import Check from '../assets/svg/Check';
+import Check from '../../assets/svg/Check';
 
 const Step = ({ title, number, active, checked, onClick }) => {
   const stepClass = classNames(
@@ -27,6 +28,14 @@ const Step = ({ title, number, active, checked, onClick }) => {
       </button>
     </div>
   );
+};
+
+Step.propTypes = {
+  title: propTypes.string.isRequired,
+  number: propTypes.string.isRequired,
+  active: propTypes.bool.isRequired,
+  checked: propTypes.bool.isRequired,
+  onClick: propTypes.func.isRequired,
 };
 
 export default Step;

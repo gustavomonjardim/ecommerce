@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import React from 'react';
 
-import Loader from '../components/Loader';
+import Loader from '../Loader';
 
 const Button = ({ text, onClick, loading }) => {
   return (
@@ -9,7 +9,7 @@ const Button = ({ text, onClick, loading }) => {
       {!loading && (
         <button
           onClick={onClick}
-          className="w-full bg-black text-white px-4 py-2 focus:outline-none font-semibold h-12"
+          className="w-full bg-black text-white px-4 py-2 focus:outline-none font-semibold h-12 hover:bg-gray-900"
         >
           {text}
         </button>

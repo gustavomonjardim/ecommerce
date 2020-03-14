@@ -27,16 +27,8 @@ const masks = {
     return format(value, prevValue, '(00) 00000-0000');
   },
 
-  telefone: (value, prevValue) => {
-    return format(value, prevValue, '(00) 90000-0000');
-  },
-
   cep: (value, prevValue) => {
     return format(value, prevValue, '00000-000');
-  },
-
-  moeda: (value, prevValue) => {
-    return format(value, prevValue, '#.##0,00', { reverse: true });
   },
 
   data: (value, prevValue) => {
@@ -45,10 +37,6 @@ const masks = {
 
   creditCardDate: (value, prevValue) => {
     return format(value, prevValue, '00/00');
-  },
-
-  contaBancaria: (value, prevValue) => {
-    return format(value, prevValue, '9999999999999990-0');
   },
 };
 

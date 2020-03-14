@@ -1,10 +1,11 @@
 import { graphql } from 'gatsby';
+import propTypes from 'prop-types';
 import React, { useState } from 'react';
 
 import Button from '../components/Button';
-import Layout from '../components/Layout';
 import NumberSelect from '../components/NumberSelect';
 import { useBag } from '../context/BagContext';
+import Layout from '../layouts/Layout';
 import { currencyMask } from '../services/maskService';
 
 const Product = ({ data: { productsJson: product } }) => {
@@ -65,10 +66,17 @@ export const query = graphql`
       name
       price
       seller {
+        id
         name
       }
     }
   }
 `;
+
+Product.propTypes = {
+  data: propTypes.shape({
+    productsJson: propTypes.shape.isRequired,
+  }).isRequired,
+};
 
 export default Product;

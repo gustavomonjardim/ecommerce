@@ -1,4 +1,5 @@
 import React from 'react';
+import FadeIn from 'react-fade-in';
 
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
@@ -8,7 +9,7 @@ import { masks } from '../services/maskService';
 const AddressForm = () => {
   const { handleChange, handleBlur, values, errors, touched, submitForm } = useForm();
   return (
-    <>
+    <FadeIn className="w-full">
       <TextInput
         id="zipCode"
         placeholder="00000-000"
@@ -81,7 +82,7 @@ const AddressForm = () => {
       <div className="w-full mt-12">
         <Button text="Next" onClick={submitForm} />
       </div>
-    </>
+    </FadeIn>
   );
 };
 export default AddressForm;

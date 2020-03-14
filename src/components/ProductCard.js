@@ -1,6 +1,6 @@
 import { Link } from 'gatsby';
 import propTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import BagIcon, { BagIconFilled } from '../assets/svg/BagIcon';
 import { useBag } from '../context/BagContext';
@@ -8,7 +8,7 @@ import { currencyMask } from '../services/maskService';
 
 const ProductCard = ({ product }) => {
   const { id, name, price, image } = product;
-  const { addProduct, removeProduct, checkProduct } = useBag();
+  const { addProduct, removeProduct, checkProduct, bag } = useBag();
   const [isAdded, setAdded] = useState(checkProduct(id));
 
   const toggleBag = () => {
@@ -20,6 +20,10 @@ const ProductCard = ({ product }) => {
       setAdded(true);
     }
   };
+
+  useEffect(() => {
+    setAdded(checkProduct(id));
+  }, [bag, id, checkProduct]);
 
   return (
     <div>

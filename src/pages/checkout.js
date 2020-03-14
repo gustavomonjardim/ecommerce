@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Button from '../components/Button';
 import Error from '../components/Error';
@@ -9,7 +9,7 @@ import AddressForm from '../forms/AddressForm';
 import PaymentForm from '../forms/PaymentForm';
 import PersonalDataForm from '../forms/PersonalDataForm';
 import Receipt from '../forms/Receipt';
-import { useCreateTransactions } from '../hooks/useCreateTransactions';
+import { usePagarMe } from '../hooks/usePagarMe';
 import Layout from '../layouts/CheckoutLayout';
 import {
   paymentValidation,
@@ -19,7 +19,7 @@ import {
 
 const Checkout = () => {
   const { cleanBag, bag, totalValue } = useBag();
-  const { createTransactions } = useCreateTransactions();
+  const { createTransactions } = usePagarMe();
   const [step, setStep] = useState(0);
   const [status, setStatus] = useState(null);
   const [receipt, setReceipt] = useState({
@@ -52,34 +52,6 @@ const Checkout = () => {
     city: '',
   });
 
-  useEffect(() => {
-    if (receipt.transactions?.length > 0) {
-      getPayables(JSON.stringify(receipt.transactions));
-    }
-  }, [receipt.transactions]);
-
-  async function getPayables(body) {
-    try {
-      const response = await fetch('/.netlify/functions/getPayables', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body,
-      });
-      const res = await response.json();
-
-      setReceipt(receipt => ({
-        ...receipt,
-        payables: res,
-      }));
-
-      return [null, res];
-    } catch (err) {
-      return [err];
-    }
-  }
-
   const submitPersonalData = data => {
     setPersonalData(data);
     setStep(step => step + 1);
@@ -102,7 +74,7 @@ const Checkout = () => {
   const confirmOrder = async () => {
     setStatus('LOADING');
 
-    const [err, res] = await createTransactions({ personalData, addressData, paymentData });
+    const [err, res] = await createTransactions({ personalData, addressData, paymentData, bag });
 
     if (err) {
       setStatus('ERROR');

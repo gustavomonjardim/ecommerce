@@ -1,12 +1,35 @@
 import { navigate } from 'gatsby';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Button from '../components/Button';
+import Loader from '../components/Loader';
 import Separator from '../components/Separator';
+import { usePagarMe } from '../hooks/usePagarMe';
 import { currencyMask } from '../services/maskService';
 
 function Receipt({ receipt }) {
+  const [payables, setPayables] = useState(null);
+  const [status, setStatus] = useState(null);
+  const { getPayables } = usePagarMe();
+
+  useEffect(() => {
+    async function handlePayables() {
+      setStatus('LOADING');
+      const [err, res] = await getPayables(JSON.stringify(receipt.transactions));
+      if (err) {
+        setStatus('ERROR');
+      }
+
+      setPayables(res);
+      setStatus('SUCCESS');
+    }
+
+    if (receipt.transactions?.length > 0) {
+      handlePayables();
+    }
+  }, [receipt.transactions, getPayables]);
+
   return (
     <div className="w-full flex flex-col">
       <h2 className="text-2xl font-semibold tracking-wide leading-tight pb-8">
@@ -24,17 +47,34 @@ function Receipt({ receipt }) {
 
       <div className="w-full">
         <h4 className="font-semibold text-lg text-center mb-2">Divisão do pagamento</h4>
-        {Object.keys(receipt.payables)
-          .filter(key => key !== 'fees' && key !== 'platform')
-          .map(recipient => (
-            <Recipient
-              key={recipient}
-              recipient={receipt.sellers[recipient]}
-              value={currencyMask(receipt.payables[recipient] / 100)}
-            />
-          ))}
-        <Recipient recipient="Plants" value={currencyMask(receipt.payables.platform / 100)} />
-        <Recipient recipient="Taxas" value={currencyMask(receipt.payables.fees / 100)} />
+
+        {status === 'ERROR' && (
+          <p className="text-center text-sm text-gray-800">
+            Não foi possível retornar os dados da divisão do pagamento.
+          </p>
+        )}
+
+        {status === 'LOADING' && (
+          <div className="w-full flex items-center justify-center py-4">
+            <Loader />
+          </div>
+        )}
+
+        {status === 'SUCCESS' && payables && (
+          <>
+            {Object.keys(payables)
+              .filter(key => key !== 'fees' && key !== 'platform')
+              .map(recipient => (
+                <Recipient
+                  key={recipient}
+                  recipient={receipt.sellers[recipient]}
+                  value={currencyMask(payables[recipient] / 100)}
+                />
+              ))}
+            <Recipient recipient="Plants" value={currencyMask(payables.platform / 100)} />
+            <Recipient recipient="Taxas" value={currencyMask(payables.fees / 100)} />
+          </>
+        )}
       </div>
       <Separator />
 
@@ -91,8 +131,8 @@ function Recipient({ recipient, value }) {
 Receipt.propTypes = {
   receipt: propTypes.shape({
     bag: propTypes.arrayOf(propTypes.shape).isRequired,
+    transactions: propTypes.arrayOf(propTypes.number).isRequired,
     sellers: propTypes.shape.isRequired,
-    payables: propTypes.shape.isRequired,
     totalValue: propTypes.number.isRequired,
   }).isRequired,
 };

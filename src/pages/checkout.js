@@ -104,7 +104,7 @@ const Checkout = () => {
     <Layout>
       {bag?.length === 0 && (
         <div className="w-full max-w-lg flex flex-col flex-grow items-center justify-start">
-          <span className="text-gray-700 text-lg mb-8">
+          <span className="text-gray-800 text-lg mb-8">
             Looks like there&apos;s nothing in your bag.
           </span>
           <Button text="Start shopping" onClick={() => navigate('/')}></Button>

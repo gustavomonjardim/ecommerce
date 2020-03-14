@@ -51,28 +51,43 @@ const Bag = ({ open, closeBag }) => {
         </div>
         <Separator />
 
-        <div className="flex flex-col flex-grow overflow-y-scroll py-6">
-          {bag.map(product => (
-            <BagItem key={product.id} product={product} />
-          ))}
-        </div>
+        {bag?.length === 0 && (
+          <div className="w-full max-w-lg flex flex-col flex-grow items-center justify-start mt-32">
+            <span className="text-gray-800 text-md mb-6">
+              Looks like there&apos;s nothing in your bag.
+            </span>
+            <Button text="Start shopping" onClick={() => navigate('/')}></Button>
+          </div>
+        )}
 
-        <div className="w-full flex flex-col py-8">
-          <div className="w-full flex flex-row justify-between">
-            <span className="text-gray-600 text-sm">Subtotal</span>
-            <span className="text-gray-700 text-sm font-semibold">{currencyMask(totalValue)}</span>
-          </div>
-          <div className="w-full flex flex-row justify-between">
-            <span className="text-gray-600 text-sm">Shipping</span>
-            <span className="text-gray-700 text-sm font-semibold">{currencyMask(0)}</span>
-          </div>
-          <Separator />
-          <div className="w-full flex flex-row justify-between">
-            <span className="font-semibold">Total</span>
-            <span className="font-semibold text-green-600">{currencyMask(totalValue)}</span>
-          </div>
-        </div>
-        <Button onClick={goToCheckout} text="Checkout" />
+        {bag?.length > 0 && (
+          <>
+            <div className="flex flex-col flex-grow overflow-y-scroll py-6">
+              {bag.map(product => (
+                <BagItem key={product.id} product={product} />
+              ))}
+            </div>
+
+            <div className="w-full flex flex-col py-8">
+              <div className="w-full flex flex-row justify-between">
+                <span className="text-gray-600 text-sm">Subtotal</span>
+                <span className="text-gray-700 text-sm font-semibold">
+                  {currencyMask(totalValue)}
+                </span>
+              </div>
+              <div className="w-full flex flex-row justify-between">
+                <span className="text-gray-600 text-sm">Shipping</span>
+                <span className="text-gray-700 text-sm font-semibold">{currencyMask(0)}</span>
+              </div>
+              <Separator />
+              <div className="w-full flex flex-row justify-between">
+                <span className="font-semibold">Total</span>
+                <span className="font-semibold text-green-600">{currencyMask(totalValue)}</span>
+              </div>
+            </div>
+            <Button onClick={goToCheckout} text="Checkout" />
+          </>
+        )}
       </div>
       <Overlay onClick={() => closeBag(false)} />
     </div>

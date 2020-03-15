@@ -1,3 +1,4 @@
+const { fmImagesToRelative } = require('gatsby-remark-relative-images');
 const { createFilePath } = require('gatsby-source-filesystem');
 const path = require('path');
 
@@ -6,7 +7,7 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
-      allProductsJson {
+      allMarkdownRemark {
         nodes {
           id
           fields {
@@ -21,7 +22,7 @@ exports.createPages = ({ actions, graphql }) => {
       return Promise.reject(result.errors);
     }
 
-    const products = result.data.allProductsJson.nodes;
+    const products = result.data.allMarkdownRemark.nodes;
 
     products.forEach(product => {
       const id = product.id;
@@ -38,8 +39,9 @@ exports.createPages = ({ actions, graphql }) => {
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
+  fmImagesToRelative(node);
 
-  if (node.internal.type === `ProductsJson`) {
+  if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode });
     createNodeField({
       name: `slug`,

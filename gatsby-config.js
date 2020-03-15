@@ -49,6 +49,25 @@ module.exports = {
         path: `${__dirname}/src/content/products`,
       },
     },
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [
+          {
+            resolve: 'gatsby-remark-relative-images',
+            options: {
+              name: 'uploads',
+            },
+          },
+          {
+            resolve: 'gatsby-remark-images',
+            options: {
+              maxWidth: 2048,
+            },
+          },
+        ],
+      },
+    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
@@ -83,6 +102,6 @@ module.exports = {
     `gatsby-plugin-offline`,
   ],
   mapping: {
-    'ProductsJson.seller': 'SellersJson',
+    'MarkdownRemark.frontmatter.seller': 'SellersJson',
   },
 };

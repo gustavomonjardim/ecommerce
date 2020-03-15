@@ -29,7 +29,7 @@ collections:
     label: "Products"
     label_singular: "Product"
     folder: "src/content/products"
-    extension: "json"
+    extension: "md"
     create: true
     slug: "{{slug}}"
     identifier_field: "name"

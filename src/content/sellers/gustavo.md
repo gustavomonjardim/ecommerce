@@ -1,0 +1,6 @@
+---
+  templateKey: seller
+  name: Gustavo
+  id: re_ck7l7zucy00p1mp6flzbed9ua
+  image: /img/0.jpeg
+---

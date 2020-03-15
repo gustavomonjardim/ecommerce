@@ -31,6 +31,7 @@ const Header = ({ showBag }) => {
       <div className="w-full flex flex-col items-start sm:items-baseline sm:justify-between sm:flex-row">
         <div className="flex items-center">
           <button
+            aria-label="Menu"
             type="button"
             onClick={() => setOpen(!open)}
             className="cursor-pointer text-black h-6 w-6 mr-4 sm:hidden focus:outline-none"
@@ -48,9 +49,10 @@ const Header = ({ showBag }) => {
           } w-full flex-col mt-4 sm:my-0 sm:w-auto sm:flex sm:flex-row sm:items-center`}
         >
           <HeaderLink path="/shop/">All</HeaderLink>
-          <HeaderLink path="/">New</HeaderLink>
-          <HeaderLink path="/">On Sale</HeaderLink>
+          <HeaderLink path="/new">New</HeaderLink>
+          <HeaderLink path="/on-sale">On Sale</HeaderLink>
           <button
+            aria-label="Show Bag"
             onClick={showBag}
             type="button"
             className="relative cursor-pointer hidden text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:block sm:ml-8"
@@ -64,6 +66,7 @@ const Header = ({ showBag }) => {
       </div>
 
       <button
+        aria-label="Show Bag"
         onClick={showBag}
         type="button"
         className="relative cursor-pointer text-black h-6 w-6 mr-4 mb-1 focus:outline-none sm:hidden sm:ml-8"

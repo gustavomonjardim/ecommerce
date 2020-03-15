@@ -73,12 +73,14 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `Plants.`,
+        short_name: `Plants.`,
+        description:
+          'ECommerce application built with Gatsby, React, Tailwind, Netlify and Netlify CMS',
         start_url: `/`,
         background_color: `#000`,
         theme_color: `#000`,
-        display: `minimal-ui`,
+        display: `fullscreen`,
         icon: `src/assets/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
@@ -97,6 +99,7 @@ module.exports = {
       },
     },
     'gatsby-plugin-netlify',
+    `gatsby-plugin-offline`,
   ],
   mapping: {
     'ProductsJson.seller': 'SellersJson',

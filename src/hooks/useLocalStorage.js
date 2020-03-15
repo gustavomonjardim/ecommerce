@@ -1,9 +1,11 @@
 import { useState } from 'react';
 
+const isBrowser = typeof window !== `undefined`;
+
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      const item = window.localStorage.getItem(key);
+      const item = isBrowser ? window.localStorage.getItem(key) : null;
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.log(error);
@@ -15,7 +17,9 @@ function useLocalStorage(key, initialValue) {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      if (isBrowser) {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
     } catch (error) {
       console.log(error);
     }

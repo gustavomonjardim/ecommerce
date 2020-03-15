@@ -1,4 +1,5 @@
 import { Link } from 'gatsby';
+import Img from 'gatsby-image';
 import propTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
@@ -7,7 +8,7 @@ import { useBag } from '../context/BagContext';
 import { currencyMask } from '../services/maskService';
 
 const ProductCard = ({ product }) => {
-  const { id, name, price, image, fields } = product;
+  const { id, name, price, image, slug } = product;
   const { addProduct, removeProduct, checkProduct, bag } = useBag();
   const [isAdded, setAdded] = useState(checkProduct(id));
 
@@ -27,10 +28,14 @@ const ProductCard = ({ product }) => {
 
   return (
     <div>
-      <Link to={`/products/${fields.slug}`} className="cursor-pointer">
-        <div className="relative pb-4/3">
-          <img className="absolute w-full h-full object-cover" src={image} alt={name} />
-        </div>
+      <Link to={`/products/${slug}`} className="cursor-pointer">
+        {image.childImageSharp ? (
+          <Img fluid={image.childImageSharp.fluid} />
+        ) : (
+          <div className="relative pb-4/3">
+            <img className="absolute w-full h-full object-cover" src={image} alt={name} />
+          </div>
+        )}
       </Link>
       <div className="flex flex-row justify-between items-start my-4">
         <div>
@@ -55,11 +60,9 @@ ProductCard.propTypes = {
     id: propTypes.string.isRequired,
     name: propTypes.string.isRequired,
     price: propTypes.number.isRequired,
-    image: propTypes.string.isRequired,
+    image: propTypes.shape.isRequired,
     seller: propTypes.shape.isRequired,
-    fields: propTypes.shape({
-      slug: propTypes.string,
-    }),
+    slug: propTypes.string.isRequired,
   }).isRequired,
 };
 

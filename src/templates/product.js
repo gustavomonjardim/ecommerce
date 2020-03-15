@@ -1,4 +1,5 @@
 import { graphql } from 'gatsby';
+import Img from 'gatsby-image';
 import propTypes from 'prop-types';
 import React, { useState } from 'react';
 
@@ -22,7 +23,12 @@ export const ProductPageTemplate = ({
   return (
     <Layout title={name} description={description}>
       <div className="w-full flex flex-col items-center md:flex-row md:items-start md:justify-center">
-        <img src={image} alt="" className="w-full md:w-80 lg:w-100" />
+        {image.childImageSharp ? (
+          <Img className="w-full md:w-80 lg:w-100" fluid={image.childImageSharp.fluid} />
+        ) : (
+          <img src={image} alt="" className="w-full md:w-80 lg:w-100" />
+        )}
+
         <div className="flex flex-grow flex-col items-center w-full lg:max-w-lg md:mt-0 md:ml-12 md:items-start">
           <div className="w-full flex flex-row items-baseline justify-between my-6 lg:mt-0 lg:mb-10 ">
             <h1 className="text-black text-3xl sm:text-4xl lg:text-5xl">{name}</h1>
@@ -53,9 +59,19 @@ export const ProductPageTemplate = ({
   );
 };
 
-const ProductPage = ({ data: { productsJson: product } }) => {
+const ProductPage = ({ data: { markdownRemark } }) => {
   const [quantity, setQuantity] = useState(1);
   const { addProduct } = useBag();
+
+  const product = {
+    id: markdownRemark.id,
+    image: markdownRemark.frontmatter.image,
+    price: markdownRemark.frontmatter.price,
+    description: markdownRemark.frontmatter.description,
+    name: markdownRemark.frontmatter.name,
+    seller: markdownRemark.frontmatter.seller,
+    slug: markdownRemark.fields.slug,
+  };
 
   const increaseQuantity = () => {
     setQuantity(quantity => quantity + 1);
@@ -86,18 +102,26 @@ const ProductPage = ({ data: { productsJson: product } }) => {
 
 export const query = graphql`
   query ProductById($id: String!) {
-    productsJson(id: { eq: $id }) {
+    markdownRemark(id: { eq: $id }) {
       id
-      image
-      description
-      name
-      price
       fields {
         slug
       }
-      seller {
-        id
+      frontmatter {
+        image {
+          childImageSharp {
+            fluid(maxWidth: 2048, quality: 100) {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
+        description
         name
+        price
+        seller {
+          id
+          name
+        }
       }
     }
   }
@@ -117,7 +141,7 @@ ProductPageTemplate.propTypes = {
 
 ProductPage.propTypes = {
   data: propTypes.shape({
-    productsJson: propTypes.shape.isRequired,
+    markdownRemark: propTypes.shape.isRequired,
   }).isRequired,
 };
 

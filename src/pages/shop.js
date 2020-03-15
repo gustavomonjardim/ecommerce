@@ -1,11 +1,22 @@
 import { graphql } from 'gatsby';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import ProductCard from '../components/ProductCard';
 import Layout from '../layouts/Layout';
 
 const Shop = ({ data }) => {
+  const products = useMemo(() => {
+    return data.allMarkdownRemark.nodes.map(product => ({
+      id: product.id,
+      image: product.frontmatter.image,
+      price: product.frontmatter.price,
+      description: product.frontmatter.description,
+      name: product.frontmatter.name,
+      seller: product.frontmatter.seller,
+      slug: product.fields.slug,
+    }));
+  }, [data]);
   return (
     <Layout title="Shop">
       <div className="w-full">
@@ -13,7 +24,7 @@ const Shop = ({ data }) => {
           Plants.<span className="text-green-600">All</span>
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          {data.allProductsJson.nodes.map(product => (
+          {products.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -24,18 +35,26 @@ const Shop = ({ data }) => {
 
 export const query = graphql`
   query {
-    allProductsJson {
+    allMarkdownRemark {
       nodes {
         id
-        name
-        price
-        image
         fields {
           slug
         }
-        seller {
-          id
+        frontmatter {
           name
+          price
+          image {
+            childImageSharp {
+              fluid(maxWidth: 272, maxHeight: 363, quality: 100) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
+          seller {
+            id
+            name
+          }
         }
       }
     }
@@ -44,7 +63,7 @@ export const query = graphql`
 
 Shop.propTypes = {
   data: propTypes.shape({
-    allProductsJson: propTypes.shape({
+    allMarkdownRemark: propTypes.shape({
       nodes: propTypes.array,
     }).isRequired,
   }).isRequired,

@@ -102,6 +102,6 @@ module.exports = {
     `gatsby-plugin-offline`,
   ],
   mapping: {
-    'ProductsJson.seller': 'SellersJson',
+    'MarkdownRemark.frontmatter.seller': 'SellersJson',
   },
 };

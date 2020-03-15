@@ -1,4 +1,5 @@
 import { navigate } from 'gatsby';
+import Img from 'gatsby-image';
 import propTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
@@ -96,11 +97,15 @@ function Product({ product }) {
   return (
     <div className="w-full flex flex-row py-2 mb-4">
       <div className="relative w-32">
-        <img
-          className="absolute h-full w-full object-cover"
-          src={product.image}
-          alt={product.name}
-        />
+        {product.image.childImageSharp ? (
+          <Img fluid={product.image.childImageSharp.fluid} />
+        ) : (
+          <img
+            className="absolute h-full w-full object-cover"
+            src={product.image}
+            alt={product.name}
+          />
+        )}
       </div>
 
       <div className="w-full flex flex-col ml-4">

@@ -1,4 +1,5 @@
 import { Link } from 'gatsby';
+import Img from 'gatsby-image';
 import propTypes from 'prop-types';
 import React from 'react';
 
@@ -11,12 +12,16 @@ const BagItem = ({ product }) => {
   const { removeProduct, increaseProductQuantity, decreaseProductQuantity } = useBag();
   return (
     <div className="flex flex-row pb-10">
-      <Link to={`/products/${product.fields.slug}`} className="relative w-32 ">
-        <img
-          className="absolute w-full h-full object-cover"
-          src={product.image}
-          alt={product.name}
-        />
+      <Link to={`/products/${product.slug}`} className="relative w-32 ">
+        {product.image.childImageSharp ? (
+          <Img fluid={product.image.childImageSharp.fluid} />
+        ) : (
+          <img
+            className="absolute w-full h-full object-cover"
+            src={product.image}
+            alt={product.name}
+          />
+        )}
       </Link>
       <div className="w-full flex flex-col justify-between ml-4">
         <div className="flex flex-row justify-between items-start">
@@ -57,9 +62,7 @@ BagItem.propTypes = {
     price: propTypes.number.isRequired,
     image: propTypes.string.isRequired,
     seller: propTypes.shape.isRequired,
-    fields: propTypes.shape({
-      slug: propTypes.string,
-    }),
+    slug: propTypes.string.isRequired,
     quantity: propTypes.number.isRequired,
   }).isRequired,
 };

@@ -72,7 +72,7 @@ function Receipt({ receipt }) {
                 />
               ))}
             <Recipient recipient="Plants" value={currencyMask(payables.platform / 100)} />
-            <Recipient recipient="Taxas" value={currencyMask(payables.fees / 100)} />
+            <Recipient recipient="Fees" value={currencyMask(payables.fees / 100)} />
           </>
         )}
       </div>

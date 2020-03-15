@@ -8,6 +8,7 @@ require('dotenv').config({
 });
 
 export async function handler(event) {
+  console.log(JSON.parse(event.body))
   return createTransactions(JSON.parse(event.body))
     .then(transactions => {
       return {
@@ -71,6 +72,8 @@ async function createTransactions({ personalData, addressData, paymentData, bag 
         },
       ],
     };
+
+    console.log(body)
 
     return pagarme.client
       .connect({ api_key: process.env.PAGARME_API_KEY })

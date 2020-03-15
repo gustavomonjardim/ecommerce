@@ -1,15 +1,16 @@
 // import { useAsyncStorage } from '@react-native-community/async-storage';
 import propTypes from 'prop-types';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 
+import useLocalStorage from '../hooks/useLocalStorage';
 const BagContext = React.createContext();
 
 function BagProvider({ children }) {
-  const [bag, setBag] = useState([]);
+  const [bag, setBag] = useLocalStorage('bag', []);
 
   const cleanBag = useCallback(() => {
     setBag([]);
-  }, []);
+  }, [setBag]);
 
   const checkProduct = useCallback(
     id => {
@@ -32,34 +33,43 @@ function BagProvider({ children }) {
       }
       setBag(bag => [...bag, newProduct]);
     },
-    [checkProduct]
+    [checkProduct, setBag]
   );
 
-  const removeProduct = useCallback(id => {
-    setBag(bag => bag.filter(product => product.id !== id));
-  }, []);
+  const removeProduct = useCallback(
+    id => {
+      setBag(bag => bag.filter(product => product.id !== id));
+    },
+    [setBag]
+  );
 
-  const increaseProductQuantity = useCallback(id => {
-    setBag(bag =>
-      bag.map(product =>
-        product.id === id ? { ...product, quantity: product.quantity + 1 } : product
-      )
-    );
-  }, []);
+  const increaseProductQuantity = useCallback(
+    id => {
+      setBag(bag =>
+        bag.map(product =>
+          product.id === id ? { ...product, quantity: product.quantity + 1 } : product
+        )
+      );
+    },
+    [setBag]
+  );
 
-  const decreaseProductQuantity = useCallback(id => {
-    setBag(bag =>
-      bag.map(product => {
-        if (product.id === id) {
-          return {
-            ...product,
-            quantity: product.quantity > 1 ? product.quantity - 1 : product.quantity,
-          };
-        }
-        return product;
-      })
-    );
-  }, []);
+  const decreaseProductQuantity = useCallback(
+    id => {
+      setBag(bag =>
+        bag.map(product => {
+          if (product.id === id) {
+            return {
+              ...product,
+              quantity: product.quantity > 1 ? product.quantity - 1 : product.quantity,
+            };
+          }
+          return product;
+        })
+      );
+    },
+    [setBag]
+  );
 
   const bagSize = useMemo(() => {
     return bag.length;

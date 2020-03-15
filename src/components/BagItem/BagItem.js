@@ -11,7 +11,7 @@ const BagItem = ({ product }) => {
   const { removeProduct, increaseProductQuantity, decreaseProductQuantity } = useBag();
   return (
     <div className="flex flex-row pb-10">
-      <Link to={`/product/${product.id}`} className="relative w-32 ">
+      <Link to={`/products/${product.fields.slug}`} className="relative w-32 ">
         <img
           className="absolute w-full h-full object-cover"
           src={product.image}
@@ -24,7 +24,11 @@ const BagItem = ({ product }) => {
             <span className="font-thin">{product.name}</span>
             <span className="text-xs text-gray-600 mb-2">{currencyMask(product.price)}</span>
           </div>
-          <button onClick={() => removeProduct(product.id)} className="h-6 w-6 focus:outline-none">
+          <button
+            aria-label="Remove from bag"
+            onClick={() => removeProduct(product.id)}
+            className="h-6 w-6 focus:outline-none"
+          >
             <CloseIcon />
           </button>
         </div>
@@ -53,6 +57,9 @@ BagItem.propTypes = {
     price: propTypes.number.isRequired,
     image: propTypes.string.isRequired,
     seller: propTypes.shape.isRequired,
+    fields: propTypes.shape({
+      slug: propTypes.string,
+    }),
     quantity: propTypes.number.isRequired,
   }).isRequired,
 };

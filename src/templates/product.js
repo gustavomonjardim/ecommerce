@@ -16,11 +16,11 @@ export const ProductPageTemplate = ({
   description,
   increaseQuantity,
   decreaseQuantity,
-  checkout,
+  addToBag,
   seller,
 }) => {
   return (
-    <Layout>
+    <Layout title={name} description={description}>
       <div className="w-full flex flex-col items-center md:flex-row md:items-start md:justify-center">
         <img src={image} alt="" className="w-full md:w-80 lg:w-100" />
         <div className="flex flex-grow flex-col items-center w-full lg:max-w-lg md:mt-0 md:ml-12 md:items-start">
@@ -45,7 +45,7 @@ export const ProductPageTemplate = ({
                 decreaseQuantity={decreaseQuantity}
               />
             </div>
-            <Button text="Add to bag" onClick={checkout} />
+            <Button text="Add to bag" onClick={addToBag} />
           </div>
         </div>
       </div>
@@ -65,9 +65,10 @@ const ProductPage = ({ data: { productsJson: product } }) => {
       setQuantity(quantity => quantity - 1);
     }
   };
-  const checkout = () => {
+  const addToBag = () => {
     addProduct({ ...product, quantity });
   };
+
   return (
     <ProductPageTemplate
       image={product.image}
@@ -78,7 +79,7 @@ const ProductPage = ({ data: { productsJson: product } }) => {
       quantity={quantity}
       increaseQuantity={increaseQuantity}
       decreaseQuantity={decreaseQuantity}
-      checkout={checkout}
+      addToBag={addToBag}
     />
   );
 };
@@ -91,6 +92,9 @@ export const query = graphql`
       description
       name
       price
+      fields {
+        slug
+      }
       seller {
         id
         name
@@ -107,7 +111,7 @@ ProductPageTemplate.propTypes = {
   description: propTypes.string.isRequired,
   increaseQuantity: propTypes.func.isRequired,
   decreaseQuantity: propTypes.func.isRequired,
-  checkout: propTypes.func.isRequired,
+  addToBag: propTypes.func.isRequired,
   seller: propTypes.string.isRequired,
 };
 

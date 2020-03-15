@@ -30,7 +30,7 @@ const ProductCard = ({ product }) => {
     <div>
       <Link to={`/products/${slug}`} className="cursor-pointer">
         {image.childImageSharp ? (
-          <Img fluid={image.childImageSharp.fluid} />
+          <Img fluid={image.childImageSharp.fluid} alt={name} />
         ) : (
           <div className="relative pb-4/3">
             <img className="absolute w-full h-full object-cover" src={image} alt={name} />

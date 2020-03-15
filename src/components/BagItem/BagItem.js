@@ -14,7 +14,7 @@ const BagItem = ({ product }) => {
     <div className="flex flex-row pb-10">
       <Link to={`/products/${product.slug}`} className="relative w-32 ">
         {product.image.childImageSharp ? (
-          <Img fluid={product.image.childImageSharp.fluid} />
+          <Img fluid={product.image.childImageSharp.fluid} alt={product.name} />
         ) : (
           <img
             className="absolute w-full h-full object-cover"

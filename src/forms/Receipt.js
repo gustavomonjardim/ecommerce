@@ -98,7 +98,7 @@ function Product({ product }) {
     <div className="w-full flex flex-row py-2 mb-4">
       <div className="relative w-32">
         {product.image.childImageSharp ? (
-          <Img fluid={product.image.childImageSharp.fluid} />
+          <Img fluid={product.image.childImageSharp.fluid} alt={product.name} />
         ) : (
           <img
             className="absolute h-full w-full object-cover"

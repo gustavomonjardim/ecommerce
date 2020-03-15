@@ -102,7 +102,7 @@ const Checkout = () => {
 
   return (
     <Layout title="Checkout">
-      {bag?.length === 0 && (
+      {bag?.length === 0 && receipt?.bag?.length === 0 && (
         <div className="w-full max-w-lg flex flex-col flex-grow items-center justify-start">
           <span className="text-gray-800 text-lg mb-8">
             Looks like there&apos;s nothing in your bag.
@@ -111,7 +111,7 @@ const Checkout = () => {
         </div>
       )}
 
-      {bag?.length > 0 && (
+      {(bag?.length > 0 || receipt?.bag?.length > 0) && (
         <>
           {status === 'ERROR' && (
             <Error text="Não foi possível realizar a sua compra. Tente novamente." />

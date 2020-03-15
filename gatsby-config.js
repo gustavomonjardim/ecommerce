@@ -78,6 +78,7 @@ module.exports = {
       },
     },
     'gatsby-plugin-netlify',
+    `gatsby-plugin-offline`,
   ],
   mapping: {
     'ProductsJson.seller': 'SellersJson',

@@ -43,7 +43,7 @@ const Bag = ({ open, closeBag }) => {
     <div className={`${open ? 'block' : 'hidden'}`}>
       <div className="absolute top-0 right-0 flex flex-col h-full min-h-screen max-h-screen w-full sm:max-w-sm z-20 bg-white px-4 py-6">
         <div className="w-full flex flex-row justify-between pb-2">
-          <button onClick={closeBag} className="h-6 w-6">
+          <button aria-label="Go Back" onClick={closeBag} className="h-6 w-6">
             <ArrowLeft />
           </button>
           <h4>Your Bag</h4>

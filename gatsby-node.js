@@ -24,8 +24,6 @@ exports.createPages = ({ actions, graphql }) => {
     const products = result.data.allProductsJson.nodes;
 
     products.forEach(product => {
-      console.log(product.fields.slug, '\n\n\n\n');
-
       const id = product.id;
       createPage({
         path: `/products${product.fields.slug}`,

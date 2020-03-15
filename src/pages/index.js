@@ -4,7 +4,7 @@ import SEO from '../components/SEO';
 import Layout from '../layouts/Layout';
 
 const IndexPage = () => (
-  <Layout>
+  <Layout title="Home">
     <SEO title="Home" />
   </Layout>
 );

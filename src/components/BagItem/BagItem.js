@@ -24,7 +24,11 @@ const BagItem = ({ product }) => {
             <span className="font-thin">{product.name}</span>
             <span className="text-xs text-gray-600 mb-2">{currencyMask(product.price)}</span>
           </div>
-          <button onClick={() => removeProduct(product.id)} className="h-6 w-6 focus:outline-none">
+          <button
+            aria-label="Remove from bag"
+            onClick={() => removeProduct(product.id)}
+            className="h-6 w-6 focus:outline-none"
+          >
             <CloseIcon />
           </button>
         </div>

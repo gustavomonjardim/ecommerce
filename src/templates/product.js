@@ -24,9 +24,9 @@ export const ProductPageTemplate = ({
     <Layout title={name} description={description}>
       <div className="w-full flex flex-col items-center md:flex-row md:items-start md:justify-center">
         {image.childImageSharp ? (
-          <Img className="w-full md:w-80 lg:w-100" fluid={image.childImageSharp.fluid} />
+          <Img className="w-full md:w-80 lg:w-100" fluid={image.childImageSharp.fluid} alt={name} />
         ) : (
-          <img src={image} alt="" className="w-full md:w-80 lg:w-100" />
+          <img src={image} alt={name} className="w-full md:w-80 lg:w-100" />
         )}
 
         <div className="flex flex-grow flex-col items-center w-full lg:max-w-lg md:mt-0 md:ml-12 md:items-start">
@@ -111,7 +111,7 @@ export const query = graphql`
         image {
           childImageSharp {
             fluid(maxWidth: 2048, quality: 100) {
-              ...GatsbyImageSharpFluid
+              ...GatsbyImageSharpFluid_withWebp_tracedSVG
             }
           }
         }

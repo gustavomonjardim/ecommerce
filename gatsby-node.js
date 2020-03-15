@@ -1,3 +1,4 @@
+const { createFilePath } = require('gatsby-source-filesystem');
 const path = require('path');
 
 exports.createPages = ({ actions, graphql }) => {
@@ -8,6 +9,9 @@ exports.createPages = ({ actions, graphql }) => {
       allProductsJson {
         nodes {
           id
+          fields {
+            slug
+          }
         }
       }
     }
@@ -20,9 +24,11 @@ exports.createPages = ({ actions, graphql }) => {
     const products = result.data.allProductsJson.nodes;
 
     products.forEach(product => {
+      console.log(product.fields.slug, '\n\n\n\n');
+
       const id = product.id;
       createPage({
-        path: `/product/${product.id}`,
+        path: `/products${product.fields.slug}`,
         component: path.resolve(`src/templates/product.js`),
         context: {
           id,
@@ -30,4 +36,17 @@ exports.createPages = ({ actions, graphql }) => {
       });
     });
   });
+};
+
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions;
+
+  if (node.internal.type === `ProductsJson`) {
+    const value = createFilePath({ node, getNode });
+    createNodeField({
+      name: `slug`,
+      node,
+      value,
+    });
+  }
 };

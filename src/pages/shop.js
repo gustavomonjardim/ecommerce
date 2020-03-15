@@ -30,6 +30,9 @@ export const query = graphql`
         name
         price
         image
+        fields {
+          slug
+        }
         seller {
           id
           name

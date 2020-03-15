@@ -7,7 +7,7 @@ import { useBag } from '../context/BagContext';
 import { currencyMask } from '../services/maskService';
 
 const ProductCard = ({ product }) => {
-  const { id, name, price, image } = product;
+  const { id, name, price, image, fields } = product;
   const { addProduct, removeProduct, checkProduct, bag } = useBag();
   const [isAdded, setAdded] = useState(checkProduct(id));
 
@@ -27,7 +27,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div>
-      <Link to={`/product/${id}`} className="cursor-pointer">
+      <Link to={`/products/${fields.slug}`} className="cursor-pointer">
         <div className="relative pb-4/3">
           <img className="absolute w-full h-full object-cover" src={image} alt={name} />
         </div>
@@ -56,6 +56,9 @@ ProductCard.propTypes = {
     price: propTypes.number.isRequired,
     image: propTypes.string.isRequired,
     seller: propTypes.shape.isRequired,
+    fields: propTypes.shape({
+      slug: propTypes.string,
+    }),
   }).isRequired,
 };
 

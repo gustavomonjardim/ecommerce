@@ -16,7 +16,7 @@ export const ProductPageTemplate = ({
   description,
   increaseQuantity,
   decreaseQuantity,
-  checkout,
+  addToBag,
   seller,
 }) => {
   return (
@@ -45,7 +45,7 @@ export const ProductPageTemplate = ({
                 decreaseQuantity={decreaseQuantity}
               />
             </div>
-            <Button text="Add to bag" onClick={checkout} />
+            <Button text="Add to bag" onClick={addToBag} />
           </div>
         </div>
       </div>
@@ -65,9 +65,10 @@ const ProductPage = ({ data: { productsJson: product } }) => {
       setQuantity(quantity => quantity - 1);
     }
   };
-  const checkout = () => {
+  const addToBag = () => {
     addProduct({ ...product, quantity });
   };
+
   return (
     <ProductPageTemplate
       image={product.image}
@@ -78,7 +79,7 @@ const ProductPage = ({ data: { productsJson: product } }) => {
       quantity={quantity}
       increaseQuantity={increaseQuantity}
       decreaseQuantity={decreaseQuantity}
-      checkout={checkout}
+      addToBag={addToBag}
     />
   );
 };
@@ -91,6 +92,9 @@ export const query = graphql`
       description
       name
       price
+      fields {
+        slug
+      }
       seller {
         id
         name
@@ -107,7 +111,7 @@ ProductPageTemplate.propTypes = {
   description: propTypes.string.isRequired,
   increaseQuantity: propTypes.func.isRequired,
   decreaseQuantity: propTypes.func.isRequired,
-  checkout: propTypes.func.isRequired,
+  addToBag: propTypes.func.isRequired,
   seller: propTypes.string.isRequired,
 };
 

@@ -20,6 +20,7 @@ function Receipt({ receipt }) {
       const [err, res] = await getPayables(JSON.stringify(receipt.transactions));
       if (err) {
         setStatus('ERROR');
+        return;
       }
 
       setPayables(res);
@@ -50,7 +51,7 @@ function Receipt({ receipt }) {
         <h4 className="font-semibold text-lg text-center mb-2">Divisão do pagamento</h4>
 
         {status === 'ERROR' && (
-          <p className="text-center text-sm text-gray-800">
+          <p className="text-center text-sm text-gray-800 my-6">
             Não foi possível retornar os dados da divisão do pagamento.
           </p>
         )}
@@ -137,7 +138,7 @@ Receipt.propTypes = {
   receipt: propTypes.shape({
     bag: propTypes.arrayOf(propTypes.shape).isRequired,
     transactions: propTypes.arrayOf(propTypes.number).isRequired,
-    sellers: propTypes.shape.isRequired,
+    sellers: propTypes.shape().isRequired,
     totalValue: propTypes.number.isRequired,
   }).isRequired,
 };
@@ -147,8 +148,8 @@ Product.propTypes = {
     id: propTypes.string.isRequired,
     name: propTypes.string.isRequired,
     price: propTypes.number.isRequired,
-    image: propTypes.string.isRequired,
-    seller: propTypes.shape.isRequired,
+    image: propTypes.shape().isRequired,
+    seller: propTypes.shape().isRequired,
     quantity: propTypes.number.isRequired,
   }).isRequired,
 };

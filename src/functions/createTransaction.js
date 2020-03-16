@@ -8,15 +8,24 @@ require('dotenv').config({
 });
 
 export async function handler(event) {
-  console.log(JSON.parse(event.body))
+  console.log(JSON.parse(event.body));
   return createTransactions(JSON.parse(event.body))
     .then(transactions => {
+      console.log('response');
+      console.log(transactions);
       return {
         statusCode: 200,
         body: JSON.stringify(transactions),
       };
     })
-    .catch(error => ({ statusCode: 400, body: JSON.stringify(error) }));
+    .catch(error => {
+      console.log('error');
+      console.log(error);
+      return {
+        statusCode: 400,
+        body: JSON.stringify(error),
+      };
+    });
 }
 
 async function createTransactions({ personalData, addressData, paymentData, bag }) {
@@ -31,14 +40,13 @@ async function createTransactions({ personalData, addressData, paymentData, bag 
     const items = products.map(item => ({
       id: item.id,
       title: item.name,
-      unit_price: item.price * 100,
+      unit_price: Math.ceil(item.price * 100),
       quantity: item.quantity,
       tangible: true,
     }));
 
-    const amount = products.reduce(
-      (total, product) => total + product.price * 100 * product.quantity,
-      0
+    const amount = Math.ceil(
+      products.reduce((total, product) => total + product.price * 100 * product.quantity, 0)
     );
 
     const body = {
@@ -73,13 +81,13 @@ async function createTransactions({ personalData, addressData, paymentData, bag 
       ],
     };
 
-    console.log(body)
+    console.log(body);
 
     return pagarme.client
       .connect({ api_key: process.env.PAGARME_API_KEY })
       .then(client => client.transactions.create(body))
       .then(transaction => transaction)
-      .catch(error => error);
+      .catch(error => Promise.reject(error));
   });
 
   return Promise.all(requests);

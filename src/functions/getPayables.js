@@ -5,14 +5,24 @@ require('dotenv').config({
 });
 
 export async function handler(event) {
+  console.log(JSON.parse(event.body));
   return getPayables(JSON.parse(event.body))
     .then(payables => {
+      console.log('response');
+      console.log(payables);
       return {
         statusCode: 200,
         body: JSON.stringify(payables),
       };
     })
-    .catch(error => ({ statusCode: 400, body: JSON.stringify(error) }));
+    .catch(error => {
+      console.log('error');
+      console.log(error);
+      return {
+        statusCode: 400,
+        body: JSON.stringify(error),
+      };
+    });
 }
 
 async function getPayables(transactions) {
@@ -21,11 +31,16 @@ async function getPayables(transactions) {
       .connect({ api_key: process.env.PAGARME_API_KEY })
       .then(client => client.payables.find({ transactionId }))
       .then(payables => payables)
-      .catch(err => err)
+      .catch(err => Promise.reject(err))
   );
+  try {
+    const payables = await Promise.all(requests);
+    console.log(payables);
 
-  const payables = await Promise.all(requests);
-  return getPayablesBySeller(payables);
+    return getPayablesBySeller(payables);
+  } catch (err) {
+    return Promise.reject(err);
+  }
 }
 
 function getPayablesBySeller(payables) {

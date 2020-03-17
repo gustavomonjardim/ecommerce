@@ -10,10 +10,11 @@ import NumberSelect from '../NumberSelect';
 
 const BagItem = ({ product }) => {
   const { removeProduct, increaseProductQuantity, decreaseProductQuantity } = useBag();
+
   return (
     <div className="flex flex-row pb-10">
       <Link to={`/products/${product.slug}`} className="relative w-32 ">
-        {product.image.childImageSharp ? (
+        {product.image?.childImageSharp ? (
           <Img fluid={product.image.childImageSharp.fluid} alt={product.name} />
         ) : (
           <img
@@ -60,7 +61,7 @@ BagItem.propTypes = {
     id: propTypes.string.isRequired,
     name: propTypes.string.isRequired,
     price: propTypes.number.isRequired,
-    image: propTypes.shape().isRequired,
+    image: propTypes.oneOfType([propTypes.shape(), propTypes.string]).isRequired,
     seller: propTypes.shape().isRequired,
     slug: propTypes.string.isRequired,
     quantity: propTypes.number.isRequired,

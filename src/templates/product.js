@@ -1,4 +1,4 @@
-import { graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import Img from 'gatsby-image';
 import propTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -40,7 +40,9 @@ export const ProductPageTemplate = ({
             <p>{description}</p>
             <div className="flex flex-row text-gray-700 mt-8">
               <span>Produto vendido por </span>
-              <span className="text-black ml-1 font-semibold">{seller}</span>
+              <Link to={`/sellers/${seller.fields.slug}`} className="text-black ml-1 font-semibold">
+                {seller.name}
+              </Link>
             </div>
           </div>
           <div className="w-full flex flex-row my-8">
@@ -91,7 +93,7 @@ const ProductPage = ({ data: { markdownRemark } }) => {
       name={product.name}
       price={product.price}
       description={product.description}
-      seller={product.seller.name}
+      seller={product.seller}
       quantity={quantity}
       increaseQuantity={increaseQuantity}
       decreaseQuantity={decreaseQuantity}
@@ -121,6 +123,9 @@ export const query = graphql`
         seller {
           id
           name
+          fields {
+            slug
+          }
         }
       }
     }
@@ -136,7 +141,7 @@ ProductPageTemplate.propTypes = {
   increaseQuantity: propTypes.func.isRequired,
   decreaseQuantity: propTypes.func.isRequired,
   addToBag: propTypes.func.isRequired,
-  seller: propTypes.string.isRequired,
+  seller: propTypes.shape().isRequired,
 };
 
 ProductPage.propTypes = {

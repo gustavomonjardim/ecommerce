@@ -17,6 +17,7 @@ const Shop = ({ data }) => {
       slug: product.fields.slug,
     }));
   }, [data]);
+
   return (
     <Layout title="Shop">
       <div className="w-full">

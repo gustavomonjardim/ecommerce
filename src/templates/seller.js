@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import ProductCard from '../components/ProductCard';
 import Layout from '../layouts/Layout';
 
-const OnSale = ({ data }) => {
+const Seller = ({ data }) => {
   const products = useMemo(() => {
     return data.allMarkdownRemark.nodes.map(product => ({
       id: product.id,
@@ -22,7 +22,7 @@ const OnSale = ({ data }) => {
     <Layout title="Shop">
       <div className="w-full">
         <h1 className="text-black font-light text-5xl md:text-6xl mb-12">
-          Plants.<span className="text-green-600">OnSale</span>
+          Plants.<span className="text-green-600">{data.sellersJson.name}</span>
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {products.map(product => (
@@ -35,8 +35,11 @@ const OnSale = ({ data }) => {
 };
 
 export const query = graphql`
-  query {
-    allMarkdownRemark(filter: { frontmatter: { onSale: { eq: true } } }) {
+  query ProductsBySeller($id: String!) {
+    sellersJson(id: { eq: $id }) {
+      name
+    }
+    allMarkdownRemark(filter: { frontmatter: { seller: { id: { eq: $id } } } }) {
       nodes {
         id
         fields {
@@ -62,12 +65,15 @@ export const query = graphql`
   }
 `;
 
-OnSale.propTypes = {
+Seller.propTypes = {
   data: propTypes.shape({
+    sellersJson: propTypes.shape({
+      name: propTypes.string,
+    }),
     allMarkdownRemark: propTypes.shape({
       nodes: propTypes.array,
     }).isRequired,
   }).isRequired,
 };
 
-export default OnSale;
+export default Seller;

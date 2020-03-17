@@ -18,12 +18,12 @@ afterEach(() => {
 });
 
 const tree = (
-  <BagWithProducts>
+  <BagWithProducts products={[]}>
     <Bag open={open} closeBag={closeBag} />
   </BagWithProducts>
 );
 
-test('should close Bag when close button is pressed', async () => {
+test('should close Bag when close button is pressed', () => {
   const { getByLabelText } = render(tree);
   fireEvent.click(getByLabelText('Close bag'));
 
@@ -31,7 +31,7 @@ test('should close Bag when close button is pressed', async () => {
   expect(open).toBeFalsy();
 });
 
-test('should close Bag when overlay is clicked', async () => {
+test('should close Bag when overlay is clicked', () => {
   const { getByLabelText } = render(tree);
 
   fireEvent.click(getByLabelText('overlay'));
@@ -40,7 +40,7 @@ test('should close Bag when overlay is clicked', async () => {
   expect(open).toBeFalsy();
 });
 
-test('should display message and button directing to the store when bag is empty', async () => {
+test('should display message and button directing to the store when bag is empty', () => {
   const { getByText } = render(tree);
 
   expect(getByText("Looks like there's nothing in your bag.")).toBeInTheDocument();
@@ -51,7 +51,7 @@ test('should display message and button directing to the store when bag is empty
   expect(navigate).toHaveBeenCalledWith('/');
 });
 
-test('should display all products from bag', async () => {
+test('should display all products from bag', () => {
   const { getByTestId } = render(
     <BagWithProducts products={products}>
       <Bag open={open} closeBag={closeBag} />
@@ -63,7 +63,7 @@ test('should display all products from bag', async () => {
   expect(listContainer.children.length).toBe(3);
 });
 
-test('should navigate to checkout when bag has products and checkout button is pressed', async () => {
+test('should navigate to checkout when bag has products and checkout button is pressed', () => {
   const { getByText } = render(
     <BagWithProducts products={products}>
       <Bag open={open} closeBag={closeBag} />

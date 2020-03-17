@@ -24,7 +24,7 @@ const tree = (
   />
 );
 
-test('should call onBlur function when input is blurred', async () => {
+test('should call onBlur function when input is blurred', () => {
   const { getByLabelText } = render(tree);
 
   fireEvent.blur(getByLabelText('E-mail'));
@@ -32,7 +32,7 @@ test('should call onBlur function when input is blurred', async () => {
   expect(onBlur).toHaveBeenCalledTimes(1);
 });
 
-test('should call onChange function with correct text when input is changed', async () => {
+test('should call onChange function with correct text when input is changed', () => {
   const { getByLabelText } = render(tree);
 
   fireEvent.change(getByLabelText('E-mail'), { target: { value: '1234' } });
@@ -40,7 +40,7 @@ test('should call onChange function with correct text when input is changed', as
   expect(onChange).toHaveBeenCalledWith('1234');
 });
 
-test('should display error message when there is an error', async () => {
+test('should display error message when there is an error', () => {
   const error = 'ocorreu um erro';
 
   const { getByText } = render(
@@ -60,7 +60,7 @@ test('should display error message when there is an error', async () => {
   expect(errorMessage).toBeInTheDocument();
 });
 
-test('should format input correctly', async () => {
+test('should format input correctly', () => {
   const cpf = '';
   const { getByLabelText } = render(
     <TextInput

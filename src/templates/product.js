@@ -1,4 +1,4 @@
-import { graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import Img from 'gatsby-image';
 import propTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -24,15 +24,15 @@ export const ProductPageTemplate = ({
     <Layout title={name} description={description}>
       <div className="w-full flex flex-col items-center md:flex-row md:items-start md:justify-center">
         {image.childImageSharp ? (
-          <Img className="w-full md:w-80 lg:w-100" fluid={image.childImageSharp.fluid} alt={name} />
+          <Img className="w-full md:w-100" fluid={image.childImageSharp.fluid} alt={name} />
         ) : (
-          <img src={image} alt={name} className="w-full md:w-80 lg:w-100" />
+          <img src={image} alt={name} className="w-full md:w-100" />
         )}
 
         <div className="flex flex-grow flex-col items-center w-full lg:max-w-lg md:mt-0 md:ml-12 md:items-start">
           <div className="w-full flex flex-row items-baseline justify-between my-6 lg:mt-0 lg:mb-10 ">
-            <h1 className="text-black text-3xl sm:text-4xl lg:text-5xl">{name}</h1>
-            <span className="text-black text-xl sm:text-2xl lg:text-3xl font-thin">
+            <h1 className="text-black text-3xl sm:text-4xl lg:text-5xl leading-none">{name}</h1>
+            <span className="flex-shrink-0 text-black text-xl sm:text-2xl lg:text-3xl font-light ml-4">
               {currencyMask(price)}
             </span>
           </div>
@@ -40,7 +40,9 @@ export const ProductPageTemplate = ({
             <p>{description}</p>
             <div className="flex flex-row text-gray-700 mt-8">
               <span>Produto vendido por </span>
-              <span className="text-black ml-1 font-semibold">{seller}</span>
+              <Link to={`/sellers/${seller.fields.slug}`} className="text-black ml-1 font-semibold">
+                {seller.name}
+              </Link>
             </div>
           </div>
           <div className="w-full flex flex-row my-8">
@@ -91,7 +93,7 @@ const ProductPage = ({ data: { markdownRemark } }) => {
       name={product.name}
       price={product.price}
       description={product.description}
-      seller={product.seller.name}
+      seller={product.seller}
       quantity={quantity}
       increaseQuantity={increaseQuantity}
       decreaseQuantity={decreaseQuantity}
@@ -110,7 +112,7 @@ export const query = graphql`
       frontmatter {
         image {
           childImageSharp {
-            fluid(maxWidth: 2048, quality: 100) {
+            fluid(maxWidth: 400, quality: 100) {
               ...GatsbyImageSharpFluid_withWebp_tracedSVG
             }
           }
@@ -121,6 +123,9 @@ export const query = graphql`
         seller {
           id
           name
+          fields {
+            slug
+          }
         }
       }
     }
@@ -128,7 +133,7 @@ export const query = graphql`
 `;
 
 ProductPageTemplate.propTypes = {
-  image: propTypes.string.isRequired,
+  image: propTypes.shape().isRequired,
   name: propTypes.string.isRequired,
   price: propTypes.number.isRequired,
   quantity: propTypes.number.isRequired,
@@ -136,7 +141,7 @@ ProductPageTemplate.propTypes = {
   increaseQuantity: propTypes.func.isRequired,
   decreaseQuantity: propTypes.func.isRequired,
   addToBag: propTypes.func.isRequired,
-  seller: propTypes.string.isRequired,
+  seller: propTypes.shape().isRequired,
 };
 
 ProductPage.propTypes = {

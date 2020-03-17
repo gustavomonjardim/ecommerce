@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import ProductCard from '../components/ProductCard';
 import Layout from '../layouts/Layout';
 
-const Shop = ({ data }) => {
+const New = ({ data }) => {
   const products = useMemo(() => {
     return data.allMarkdownRemark.nodes.map(product => ({
       id: product.id,
@@ -17,11 +17,12 @@ const Shop = ({ data }) => {
       slug: product.fields.slug,
     }));
   }, [data]);
+
   return (
     <Layout title="Shop">
       <div className="w-full">
-        <h1 className="text-black font-thin text-5xl md:text-6xl mb-12">
-          Plants.<span className="text-green-600">All</span>
+        <h1 className="text-black font-light text-5xl md:text-6xl mb-12">
+          Plants.<span className="text-green-600">New</span>
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {products.map(product => (
@@ -61,7 +62,7 @@ export const query = graphql`
   }
 `;
 
-Shop.propTypes = {
+New.propTypes = {
   data: propTypes.shape({
     allMarkdownRemark: propTypes.shape({
       nodes: propTypes.array,
@@ -69,4 +70,4 @@ Shop.propTypes = {
   }).isRequired,
 };
 
-export default Shop;
+export default New;

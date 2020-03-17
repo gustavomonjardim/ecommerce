@@ -78,10 +78,10 @@ module.exports = {
         description:
           'ECommerce application built with Gatsby, React, Tailwind, Netlify and Netlify CMS',
         start_url: `/`,
-        background_color: `#000`,
+        background_color: `#FFF`,
         theme_color: `#000`,
         display: `fullscreen`,
-        icon: `src/assets/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/assets/images/logo.png`, // This path is relative to the root of the site.
       },
     },
     {

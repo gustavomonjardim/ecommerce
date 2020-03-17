@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 import { validateCPF } from './cpfValidation';
+import { validateCreditCard } from './creditCardValidation';
 import { validateBirthdate, validateExpirationDate } from './dateService';
 
 const personalDataValidation = Yup.object({
@@ -8,7 +9,7 @@ const personalDataValidation = Yup.object({
     .ensure()
     .required('Por favor, informe o CPF.')
     .length(14, 'O CPF deve possuir 11 caracteres.')
-    .test('isValid', 'CPF Inválido.', validateCPF),
+    .test('isValid', 'Por favor, informe um CPF válido.', validateCPF),
   fullName: Yup.string()
     .ensure()
     .required('Por favor, informe o seu nome completo.')
@@ -42,7 +43,8 @@ const paymentValidation = Yup.object({
   cardNumber: Yup.string()
     .ensure()
     .required('Por favor, informe o número do cartão.')
-    .length(19, 'Por favor, informe o número do cartão.'),
+    .length(19, 'Por favor, informe o número do cartão.')
+    .test('isValid', 'Por favor, informe um número de cartão válido.', validateCreditCard),
   expirationDate: Yup.string()
     .ensure()
     .required('Por favor, informe a data de validade do cartão.')

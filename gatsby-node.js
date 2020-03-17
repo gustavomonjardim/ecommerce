@@ -15,6 +15,15 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
+
+      allSellersJson {
+        nodes {
+          id
+          fields {
+            slug
+          }
+        }
+      }
     }
   `).then(result => {
     if (result.errors) {
@@ -24,11 +33,24 @@ exports.createPages = ({ actions, graphql }) => {
 
     const products = result.data.allMarkdownRemark.nodes;
 
+    const sellers = result.data.allSellersJson.nodes;
+
     products.forEach(product => {
       const id = product.id;
       createPage({
         path: `/products${product.fields.slug}`,
         component: path.resolve(`src/templates/product.js`),
+        context: {
+          id,
+        },
+      });
+    });
+
+    sellers.forEach(seller => {
+      const id = seller.id;
+      createPage({
+        path: `/sellers${seller.fields.slug}`,
+        component: path.resolve(`src/templates/seller.js`),
         context: {
           id,
         },
@@ -41,7 +63,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
   fmImagesToRelative(node);
 
-  if (node.internal.type === `MarkdownRemark`) {
+  if (node.internal.type === `MarkdownRemark` || node.internal.type === `SellersJson`) {
     const value = createFilePath({ node, getNode });
     createNodeField({
       name: `slug`,

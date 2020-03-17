@@ -20,9 +20,13 @@ export function usePagarMe() {
         });
         const res = await response.json();
 
+        if (response.status === 400) {
+          return [res, null];
+        }
+
         return [null, res];
       } catch (err) {
-        return [err];
+        return [err, null];
       }
     },
     []
@@ -39,9 +43,13 @@ export function usePagarMe() {
       });
       const res = await response.json();
 
+      if (response.status === 400) {
+        return [res, null];
+      }
+
       return [null, res];
     } catch (err) {
-      return [err];
+      return [err, null];
     }
   }, []);
 

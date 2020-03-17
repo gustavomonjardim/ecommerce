@@ -39,7 +39,7 @@ const Header = ({ showBag }) => {
             <MenuIcon open={open} />
           </button>
           <Link to="/">
-            <h1 className="text-3xl font-thin text-black">Plants.</h1>
+            <h1 className="text-3xl font-light text-black">Plants.</h1>
           </Link>
         </div>
 

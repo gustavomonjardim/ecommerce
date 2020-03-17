@@ -11,7 +11,7 @@ const NumberSelect = ({ quantity, decreaseQuantity, increaseQuantity }) => {
       >
         -
       </button>
-      <span className="mx-5 text-md font-thin text-sm">
+      <span className="mx-5 text-md font-light text-sm">
         {quantity >= 10 ? quantity : `0${quantity}`}
       </span>
       <button

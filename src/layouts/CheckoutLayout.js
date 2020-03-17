@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
         <header className="flex flex-row items-baseline justify-between px-6 py-6 border-solid border-b border-gray-300">
           <div className="w-full flex items-center justify-center">
             <Link to="/">
-              <h1 className="text-3xl font-thin text-black">Plants.</h1>
+              <h1 className="text-3xl font-light text-black">Plants.</h1>
             </Link>
           </div>
         </header>

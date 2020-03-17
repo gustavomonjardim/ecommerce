@@ -26,7 +26,7 @@ const BagItem = ({ product }) => {
       <div className="w-full flex flex-col justify-between ml-4">
         <div className="flex flex-row justify-between items-start">
           <div className="w-full flex flex-col self-auto">
-            <span className="font-thin">{product.name}</span>
+            <span className="font-light">{product.name}</span>
             <span className="text-xs text-gray-600 mb-2">{currencyMask(product.price)}</span>
           </div>
           <button

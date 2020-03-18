@@ -8,6 +8,7 @@ import NumberSelect from '../components/NumberSelect';
 import { useBag } from '../context/BagContext';
 import Layout from '../layouts/Layout';
 import { currencyMask } from '../services/maskService';
+import { productFactory } from '../services/productFactory';
 
 export const ProductPageTemplate = ({
   image,
@@ -65,15 +66,7 @@ const ProductPage = ({ data: { markdownRemark } }) => {
   const [quantity, setQuantity] = useState(1);
   const { addProduct } = useBag();
 
-  const product = {
-    id: markdownRemark.id,
-    image: markdownRemark.frontmatter.image,
-    price: markdownRemark.frontmatter.price,
-    description: markdownRemark.frontmatter.description,
-    name: markdownRemark.frontmatter.name,
-    seller: markdownRemark.frontmatter.seller,
-    slug: markdownRemark.fields.slug,
-  };
+  const product = productFactory(markdownRemark);
 
   const increaseQuantity = () => {
     setQuantity(quantity => quantity + 1);

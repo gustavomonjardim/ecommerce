@@ -48,7 +48,7 @@ const Header = ({ showBag }) => {
             open ? 'flex' : 'hidden'
           } w-full flex-col mt-4 sm:my-0 sm:w-auto sm:flex sm:flex-row sm:items-center`}
         >
-          <HeaderLink path="/shop/">All</HeaderLink>
+          <HeaderLink path="/">All</HeaderLink>
           <HeaderLink path="/new">New</HeaderLink>
           <HeaderLink path="/on-sale">On Sale</HeaderLink>
           <button

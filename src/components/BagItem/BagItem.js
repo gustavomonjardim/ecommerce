@@ -13,7 +13,7 @@ const BagItem = ({ product }) => {
 
   return (
     <div className="flex flex-row pb-10">
-      <Link to={`/products/${product.slug}`} className="relative w-32 ">
+      <Link to={`/products/${product.slug}`} className="relative w-24 flex-shrink-0">
         {product.image?.childImageSharp ? (
           <Img fluid={product.image.childImageSharp.fluid} alt={product.name} />
         ) : (
@@ -25,15 +25,15 @@ const BagItem = ({ product }) => {
         )}
       </Link>
       <div className="w-full flex flex-col justify-between ml-4">
-        <div className="flex flex-row justify-between items-start">
-          <div className="w-full flex flex-col self-auto">
+        <div className="w-full flex flex-row justify-between items-start">
+          <div className="w-full flex flex-col">
             <span className="font-light">{product.name}</span>
             <span className="text-xs text-gray-600 mb-2">{currencyMask(product.price)}</span>
           </div>
           <button
             aria-label="Remove from bag"
             onClick={() => removeProduct(product.id)}
-            className="h-6 w-6 focus:outline-none"
+            className="h-6 w-6 ml-4 focus:outline-none"
           >
             <CloseIcon />
           </button>

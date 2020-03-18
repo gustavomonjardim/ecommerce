@@ -98,7 +98,7 @@ const Checkout = () => {
       setStatus(null);
       cleanBag();
       setStep(step => step + 1);
-    }, 500);
+    }, 1000);
   };
 
   return (

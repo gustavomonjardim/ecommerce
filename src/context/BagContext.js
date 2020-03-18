@@ -1,6 +1,6 @@
 // import { useAsyncStorage } from '@react-native-community/async-storage';
 import propTypes from 'prop-types';
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useContext } from 'react';
 
 import useLocalStorage from '../hooks/useLocalStorage';
 const BagContext = React.createContext();
@@ -112,7 +112,7 @@ BagProvider.propTypes = {
 };
 
 function useBag() {
-  const context = React.useContext(BagContext);
+  const context = useContext(BagContext);
   if (context === undefined) {
     throw new Error(`useBag must be used within a BagProvider`);
   }

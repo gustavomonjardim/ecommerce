@@ -112,7 +112,7 @@ export const query = graphql`
       frontmatter {
         image {
           childImageSharp {
-            fluid(maxWidth: 400, quality: 100) {
+            fluid(maxWidth: 400, quality: 50) {
               ...GatsbyImageSharpFluid_withWebp_tracedSVG
             }
           }

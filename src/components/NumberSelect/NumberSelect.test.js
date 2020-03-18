@@ -15,13 +15,13 @@ const tree = (
   />
 );
 
-test('should display quantity correctly', async () => {
+test('should display quantity correctly', () => {
   const { getByText } = render(tree);
 
   expect(getByText('10')).toBeInTheDocument();
 });
 
-test('should display quantity with a zero when quantity is less then 10', async () => {
+test('should display quantity with a zero when quantity is less then 10', () => {
   const { getByText } = render(
     <NumberSelect
       quantity={1}
@@ -33,7 +33,7 @@ test('should display quantity with a zero when quantity is less then 10', async 
   expect(getByText('01')).toBeInTheDocument();
 });
 
-test('should call increaseQuantity function when plus button is pressed', async () => {
+test('should call increaseQuantity function when plus button is pressed', () => {
   const { getByText } = render(tree);
 
   fireEvent.click(getByText('+'));
@@ -41,7 +41,7 @@ test('should call increaseQuantity function when plus button is pressed', async 
   expect(increaseQuantity).toHaveBeenCalledTimes(1);
 });
 
-test('should call decreaseQuantity function when minus button is pressed', async () => {
+test('should call decreaseQuantity function when minus button is pressed', () => {
   const { getByText } = render(tree);
 
   fireEvent.click(getByText('-'));

@@ -3,9 +3,9 @@ import Img from 'gatsby-image';
 import propTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
-import BagIcon, { BagIconFilled } from '../assets/svg/BagIcon';
-import { useBag } from '../context/BagContext';
-import { currencyMask } from '../services/maskService';
+import BagIcon, { BagIconFilled } from '../../assets/svg/BagIcon';
+import { useBag } from '../../context/BagContext';
+import { currencyMask } from '../../services/maskService';
 
 const ProductCard = ({ product }) => {
   const { id, name, price, image, slug } = product;
@@ -60,7 +60,7 @@ ProductCard.propTypes = {
     id: propTypes.string.isRequired,
     name: propTypes.string.isRequired,
     price: propTypes.number.isRequired,
-    image: propTypes.shape().isRequired,
+    image: propTypes.oneOfType([propTypes.shape(), propTypes.string]).isRequired,
     seller: propTypes.shape.isRequired,
     slug: propTypes.string.isRequired,
   }).isRequired,

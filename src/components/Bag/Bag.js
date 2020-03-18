@@ -2,13 +2,12 @@ import { navigate } from 'gatsby';
 import propTypes from 'prop-types';
 import React from 'react';
 
-import ArrowLeft from '../assets/svg/ArrowLeft';
-import { useBag } from '../context/BagContext';
-import { currencyMask } from '../services/maskService';
-
-import BagItem from './BagItem/BagItem';
-import Button from './Button';
-import Separator from './Separator';
+import ArrowLeft from '../../assets/svg/ArrowLeft';
+import { useBag } from '../../context/BagContext';
+import { currencyMask } from '../../services/maskService';
+import BagItem from '../BagItem/BagItem';
+import Button from '../Button';
+import Separator from '../Separator';
 
 const Overlay = ({ onClick }) => {
   const handleKeyPress = event => {
@@ -20,8 +19,9 @@ const Overlay = ({ onClick }) => {
   return (
     <div
       onKeyDown={handleKeyPress}
-      tabIndex={-1}
+      tabIndex={0}
       role="button"
+      aria-label="overlay"
       className="absolute inset-0 bg-black opacity-25 z-10"
       onClick={onClick}
     ></div>
@@ -43,7 +43,7 @@ const Bag = ({ open, closeBag }) => {
     <div className={`${open ? 'block' : 'hidden'}`}>
       <div className="absolute top-0 right-0 flex flex-col h-full min-h-screen max-h-screen w-full sm:max-w-sm z-20 bg-white px-4 py-6">
         <div className="w-full flex flex-row justify-between pb-2">
-          <button aria-label="Go Back" onClick={closeBag} className="h-6 w-6">
+          <button aria-label="Close bag" onClick={closeBag} className="h-6 w-6">
             <ArrowLeft />
           </button>
           <h4>Your Bag</h4>
@@ -62,7 +62,7 @@ const Bag = ({ open, closeBag }) => {
 
         {bag?.length > 0 && (
           <>
-            <div className="flex flex-col flex-grow overflow-y-scroll py-6">
+            <div data-testid="products" className="flex flex-col flex-grow overflow-y-scroll py-6">
               {bag.map(product => (
                 <BagItem key={product.id} product={product} />
               ))}

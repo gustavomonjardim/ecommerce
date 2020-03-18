@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import React from 'react';
 
-import { InfoCircle } from '../assets/svg/InfoCircle';
+import { InfoCircle } from '../../assets/svg/InfoCircle';
 
 const Error = ({ text }) => {
   return (

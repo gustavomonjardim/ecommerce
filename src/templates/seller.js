@@ -21,7 +21,7 @@ const Seller = ({ data }) => {
   return (
     <Layout title="Shop">
       <div className="w-full">
-        <h1 className="text-black font-light text-5xl md:text-6xl mb-12">
+        <h1 className="text-black font-light text-4xl sm:text-5xl md:text-6xl mb-12">
           Plants.<span className="text-green-600">{data.sellersJson.name}</span>
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -50,7 +50,7 @@ export const query = graphql`
           price
           image {
             childImageSharp {
-              fluid(maxWidth: 272, maxHeight: 363, quality: 100) {
+              fluid(maxWidth: 272, maxHeight: 363, quality: 50) {
                 ...GatsbyImageSharpFluid_withWebp_tracedSVG
               }
             }

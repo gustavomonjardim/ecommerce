@@ -7,7 +7,7 @@ const buttonText = 'Teste';
 const onClick = jest.fn();
 const tree = <Button text={buttonText} onClick={onClick} />;
 
-test('should call onClick function when pressed', async () => {
+test('should call onClick function when pressed', () => {
   const { getByText } = render(tree);
 
   fireEvent.click(getByText(buttonText));
@@ -15,7 +15,7 @@ test('should call onClick function when pressed', async () => {
   expect(onClick).toHaveBeenCalledTimes(1);
 });
 
-test('should display loader when component is loading', async () => {
+test('should display loader when component is loading', () => {
   const { getByRole } = render(<Button text={buttonText} onClick={onClick} loading />);
 
   const loader = getByRole('alert');

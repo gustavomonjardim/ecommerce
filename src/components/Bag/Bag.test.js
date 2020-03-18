@@ -40,6 +40,17 @@ test('should close Bag when overlay is clicked', () => {
   expect(open).toBeFalsy();
 });
 
+test('should close Bag when ESC key is pressed', () => {
+  const { getByLabelText } = render(tree);
+
+  fireEvent.focus(getByLabelText('overlay'));
+
+  fireEvent.keyDown(getByLabelText('overlay'), { keyCode: 27 });
+
+  expect(closeBag).toHaveBeenCalledTimes(1);
+  expect(open).toBeFalsy();
+});
+
 test('should display message and button directing to the store when bag is empty', () => {
   const { getByText } = render(tree);
 
@@ -74,4 +85,43 @@ test('should navigate to checkout when bag has products and checkout button is p
 
   expect(navigate).toHaveBeenCalledTimes(1);
   expect(navigate).toHaveBeenCalledWith('/checkout');
+});
+
+test('should be able to remove product from bag', () => {
+  const { getAllByLabelText, getByTestId } = render(
+    <BagWithProducts products={products}>
+      <Bag open={open} closeBag={closeBag} />
+    </BagWithProducts>
+  );
+
+  const listContainer = getByTestId('products');
+  expect(listContainer.children.length).toBe(3);
+
+  const removeButtons = getAllByLabelText('Remove from bag');
+  fireEvent.click(removeButtons[0]);
+
+  expect(listContainer.children.length).toBe(2);
+});
+
+test('should be able to increase and decrease the quantity of a product', async () => {
+  const { getAllByLabelText, findByText } = render(
+    <BagWithProducts products={products}>
+      <Bag open={open} closeBag={closeBag} />
+    </BagWithProducts>
+  );
+
+  const increaseButtons = getAllByLabelText('Increase quantity');
+  fireEvent.click(increaseButtons[0]);
+  fireEvent.click(increaseButtons[0]);
+
+  const increseadQuantity = await findByText('03');
+
+  expect(increseadQuantity).toBeInTheDocument();
+
+  const decreaseButtons = getAllByLabelText('Decrease quantity');
+  fireEvent.click(decreaseButtons[0]);
+
+  const decreasedQuantity = await findByText('02');
+
+  expect(decreasedQuantity).toBeInTheDocument();
 });

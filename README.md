@@ -12,6 +12,10 @@ This project is an Ecommerce application built with Gatsby, React, Tailwind, Net
 
 It follows the JAMstack architecture by using Git as a single source of truth, and Netlify for continuous deployment and CDN distribution.
 
+![](./docs/home.png)
+![](./docs/product.png)
+![](./docs/score.png)
+
 
 ## Prerequisites
 
@@ -56,14 +60,12 @@ $ yarn build
 
 ## Technologies
 
-- Gatsby
-- React
+- Built with [Gatsby](https://github.com/gatsbyjs/gatsby) and [React](https://github.com/facebook/react).
 - Uses [Tailwind CSS](https://tailwindcss.com/) for styling, but size is reduced by `purge-css-plugin`.
-- Netlify
-- Netlify CMS
-- pagarme-js
-- Formik
-- Yup
+- Uses [Netlify](https://www.netlify.com/) for continuous deployment and CDN distribution.
+- [Netlify CMS](https://github.com/netlify/netlify-cms) for content management.
+- Payments are processed with [pagarme-js](https://github.com/pagarme/pagarme-js).
+- Uses [Formik](https://github.com/jaredpalmer/formik) and [Yup](https://github.com/jquense/yup) for building and validating forms.
 
 
 ## Project structure
@@ -126,6 +128,8 @@ This project uses [Netlify CMS](https://www.netlifycms.org/) for content managem
 Alternatively, if you want to add content to this project without having to setup Netlify CMS, you can add or edit files inside the `content` folder described in the [Project structure](#project-structure) session.
 
 ## Testing
+
+You can run tests with the following command:
 
 ```shell
 $ yarn test

@@ -2,9 +2,9 @@ import { Link } from 'gatsby';
 import propTypes from 'prop-types';
 import React, { useState } from 'react';
 
-import BagIcon from '../assets/svg/BagIcon';
-import MenuIcon from '../assets/svg/MenuIcon';
-import { useBag } from '../context/BagContext';
+import BagIcon from '../../assets/svg/BagIcon';
+import MenuIcon from '../../assets/svg/MenuIcon';
+import { useBag } from '../../context/BagContext';
 
 const HeaderLink = ({ children, path }) => {
   return (

@@ -6,13 +6,12 @@ import React, { useState, useEffect } from 'react';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
 import Separator from '../components/Separator';
-import { usePagarMe } from '../hooks/usePagarMe';
 import { currencyMask } from '../services/maskService';
+import { getPayables } from '../services/pagarmeService';
 
 function Receipt({ receipt }) {
   const [payables, setPayables] = useState(null);
   const [status, setStatus] = useState(null);
-  const { getPayables } = usePagarMe();
 
   useEffect(() => {
     async function handlePayables() {
@@ -30,7 +29,7 @@ function Receipt({ receipt }) {
     if (receipt.transactions?.length > 0) {
       handlePayables();
     }
-  }, [receipt.transactions, getPayables]);
+  }, [receipt.transactions]);
 
   return (
     <div className="w-full flex flex-col">

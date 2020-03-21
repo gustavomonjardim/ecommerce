@@ -10,8 +10,8 @@ import AddressForm from '../forms/AddressForm';
 import PaymentForm from '../forms/PaymentForm';
 import PersonalDataForm from '../forms/PersonalDataForm';
 import Receipt from '../forms/Receipt';
-import { usePagarMe } from '../hooks/usePagarMe';
 import Layout from '../layouts/CheckoutLayout';
+import { createTransactions } from '../services/pagarmeService';
 import {
   paymentValidation,
   personalDataValidation,
@@ -20,7 +20,6 @@ import {
 
 const Checkout = () => {
   const { cleanBag, bag, totalValue } = useBag();
-  const { createTransactions } = usePagarMe();
   const [step, setStep] = useState(0);
   const [status, setStatus] = useState(null);
   const [receipt, setReceipt] = useState({

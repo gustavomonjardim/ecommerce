@@ -1,7 +1,7 @@
 import pagarme from 'pagarme';
 
 import { parseAndFormatDate, getFutureDate } from '../services/dateService';
-import { removeMaskService } from '../services/maskService';
+import { removeMask } from '../services/maskService';
 
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
@@ -53,7 +53,7 @@ async function createTransactions({ personalData, addressData, paymentData, bag 
       amount,
       card_number: paymentData.cardNumber,
       card_cvv: paymentData.cvv,
-      card_expiration_date: removeMaskService(paymentData.expirationDate),
+      card_expiration_date: removeMask(paymentData.expirationDate),
       card_holder_name: paymentData.fullName,
       customer,
       billing,
@@ -112,7 +112,7 @@ function getProductsBySeller(bag) {
 
 function customerPayload(personalData) {
   return {
-    external_id: removeMaskService(personalData.cpf),
+    external_id: removeMask(personalData.cpf),
     name: personalData.fullName,
     type: 'individual',
     country: 'br',
@@ -120,10 +120,10 @@ function customerPayload(personalData) {
     documents: [
       {
         type: 'cpf',
-        number: removeMaskService(personalData.cpf),
+        number: removeMask(personalData.cpf),
       },
     ],
-    phone_numbers: [`+55${removeMaskService(personalData.phone)}`],
+    phone_numbers: [`+55${removeMask(personalData.phone)}`],
     birthday: parseAndFormatDate(personalData.birthdate, 'DD/MM/YYYY', 'YYYY-MM-DD'),
   };
 }
@@ -138,7 +138,7 @@ function billingPayload(personalData, addressData) {
       neighborhood: addressData.neighborhood,
       street: addressData.street,
       street_number: addressData.number,
-      zipcode: removeMaskService(addressData.zipCode),
+      zipcode: removeMask(addressData.zipCode),
     },
   };
 }
@@ -156,7 +156,7 @@ function shippingPayload(personalData, addressData) {
       neighborhood: addressData.neighborhood,
       street: addressData.street,
       street_number: addressData.number,
-      zipcode: removeMaskService(addressData.zipCode),
+      zipcode: removeMask(addressData.zipCode),
     },
   };
 }

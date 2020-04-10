@@ -1,4 +1,3 @@
-// import { useAsyncStorage } from '@react-native-community/async-storage';
 import propTypes from 'prop-types';
 import React, { useMemo, useCallback, useContext } from 'react';
 

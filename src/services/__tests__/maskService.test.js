@@ -1,11 +1,7 @@
-import { masks, currencyMask, removeMaskService } from '../maskService';
+import { masks, currencyMask, removeMask } from '../maskService';
 
 test('should return CPF with mask', () => {
   expect(masks.cpf('52336114062')).toBe('523.361.140-62');
-});
-
-test('should return CNPJ with mask', () => {
-  expect(masks.cnpj('95911952000173')).toBe('95.911.952/0001-73');
 });
 
 test('should return Card Number with mask', () => {
@@ -17,11 +13,11 @@ test('should return CEP with mask', () => {
 });
 
 test('should return cellphone with mask', () => {
-  expect(masks.celular('27999999999')).toBe('(27) 99999-9999');
+  expect(masks.phone('27999999999')).toBe('(27) 99999-9999');
 });
 
 test('should return date with DD/MM/YY format', () => {
-  expect(masks.data('30041995')).toBe('30/04/1995');
+  expect(masks.date('30041995')).toBe('30/04/1995');
 });
 
 test('should return date with MM/YY format', () => {
@@ -29,7 +25,7 @@ test('should return date with MM/YY format', () => {
 });
 
 test('should remove mask correctly', () => {
-  expect(removeMaskService('(27) 99999-9999')).toBe('27999999999');
+  expect(removeMask('(27) 99999-9999')).toBe('27999999999');
 });
 
 test('should return BRL currency', () => {

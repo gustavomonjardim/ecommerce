@@ -1,6 +1,6 @@
 import pagarme from 'pagarme';
 
-import { parseAndFormatDateService, getFutureDate } from '../services/dateService';
+import { parseAndFormatDate, getFutureDate } from '../services/dateService';
 import { removeMaskService } from '../services/maskService';
 
 require('dotenv').config({
@@ -124,7 +124,7 @@ function customerPayload(personalData) {
       },
     ],
     phone_numbers: [`+55${removeMaskService(personalData.phone)}`],
-    birthday: parseAndFormatDateService(personalData.birthdate, 'DD/MM/YYYY', 'YYYY-MM-DD'),
+    birthday: parseAndFormatDate(personalData.birthdate, 'DD/MM/YYYY', 'YYYY-MM-DD'),
   };
 }
 

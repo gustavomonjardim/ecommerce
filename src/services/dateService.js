@@ -1,12 +1,12 @@
 import moment from 'moment';
 
-const parseAndFormatDateService = (date, originalFormat, format) =>
+const parseAndFormatDate = (date, originalFormat, format) =>
   moment(date, originalFormat).format(format);
 
 const timeFromDate = date => moment().diff(moment(date), 'year');
 
 const validateBirthdate = date => {
-  const parsedDate = parseAndFormatDateService(date, 'DD/MM/YYYY', 'YYYY-MM-DD');
+  const parsedDate = parseAndFormatDate(date, 'DD/MM/YYYY', 'YYYY-MM-DD');
   const years = timeFromDate(parsedDate);
 
   if (years < 18) {
@@ -29,4 +29,4 @@ const getFutureDate = (daysToAdd, format) =>
     .locale('pt-br')
     .format(format);
 
-export { validateExpirationDate, validateBirthdate, parseAndFormatDateService, getFutureDate };
+export { validateExpirationDate, validateBirthdate, parseAndFormatDate, getFutureDate };

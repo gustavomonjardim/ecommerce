@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import Error from '../components/Error';
 import Step from '../components/Step';
 import { useBag } from '../context/BagContext';
-import { FormContextProvider } from '../context/FormContext';
+import { FormProvider } from '../context/FormContext';
 import AddressForm from '../forms/AddressForm';
 import PaymentForm from '../forms/PaymentForm';
 import PersonalDataForm from '../forms/PersonalDataForm';
@@ -144,33 +144,33 @@ const Checkout = () => {
             )}
             <div className="w-full max-w-lg flex flex-col items-center justify-center">
               {step === 0 && (
-                <FormContextProvider
+                <FormProvider
                   initialValues={personalData}
                   onSubmit={submitPersonalData}
                   validationSchema={personalDataValidation}
                 >
                   <PersonalDataForm />
-                </FormContextProvider>
+                </FormProvider>
               )}
 
               {step === 1 && (
-                <FormContextProvider
+                <FormProvider
                   initialValues={paymentData}
                   onSubmit={submitPaymentData}
                   validationSchema={paymentValidation}
                 >
                   <PaymentForm goBack={goBack} />
-                </FormContextProvider>
+                </FormProvider>
               )}
 
               {step === 2 && (
-                <FormContextProvider
+                <FormProvider
                   initialValues={addressData}
                   onSubmit={submitAddressData}
                   validationSchema={addressValidation}
                 >
                   <AddressForm />
-                </FormContextProvider>
+                </FormProvider>
               )}
 
               {step === 3 && (

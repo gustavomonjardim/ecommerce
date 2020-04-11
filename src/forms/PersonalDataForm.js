@@ -43,7 +43,7 @@ const PersonalDataForm = () => {
         id="phone"
         placeholder="(00) 0 0000-0000"
         label="Phone Number"
-        formatText={current => masks.celular(current, values.phone)}
+        formatText={current => masks.phone(current, values.phone)}
         maxLength={17}
         value={values.phone}
         onChange={handleChange('phone')}
@@ -55,7 +55,7 @@ const PersonalDataForm = () => {
         placeholder="00/00/0000"
         label="Birthdate"
         maxLength={10}
-        formatText={current => masks.data(current, values.birthdate)}
+        formatText={current => masks.date(current, values.birthdate)}
         value={values.birthdate}
         onChange={handleChange('birthdate')}
         onBlur={handleBlur('birthdate')}

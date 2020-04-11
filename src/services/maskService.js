@@ -19,11 +19,7 @@ const masks = {
     return format(value, prevValue, '000.000.000-00');
   },
 
-  cnpj: (value, prevValue) => {
-    return format(value, prevValue, '00.000.000/0000-00');
-  },
-
-  celular: (value, prevValue) => {
+  phone: (value, prevValue) => {
     return format(value, prevValue, '(00) 00000-0000');
   },
 
@@ -31,7 +27,7 @@ const masks = {
     return format(value, prevValue, '00000-000');
   },
 
-  data: (value, prevValue) => {
+  date: (value, prevValue) => {
     return format(value, prevValue, '90/90/9900');
   },
 
@@ -50,6 +46,6 @@ const currencyMask = str => {
     .replace('.', ',')}`;
 };
 
-const removeMaskService = data => data?.replace(/\D/g, '');
+const removeMask = data => data?.replace(/\D/g, '');
 
-export { currencyMask, masks, removeMaskService };
+export { currencyMask, masks, removeMask };

@@ -86,7 +86,7 @@ function Receipt({ receipt }) {
         </span>
       </div>
 
-      <div className="w-full mt-8">
+      <div className="w-full mt-12">
         <Button text="Shop more" onClick={() => navigate('/')} />
       </div>
     </div>
@@ -96,7 +96,7 @@ function Receipt({ receipt }) {
 function Product({ product }) {
   return (
     <div className="w-full flex flex-row py-2 mb-4">
-      <div className="relative w-32">
+      <div className="relative w-24 flex-shrink-0">
         {product.image.childImageSharp ? (
           <Img fluid={product.image.childImageSharp.fluid} alt={product.name} />
         ) : (
@@ -109,11 +109,11 @@ function Product({ product }) {
       </div>
 
       <div className="w-full flex flex-col ml-4">
-        <span className="font-semibold text-lg text-gray-700">{product.name}</span>
+        <span className="text-lg text-black">{product.name}</span>
         <span className="text-sm text-gray-700">
           {`${product.quantity} ${product.quantity === 1 ? 'unidade' : 'unidades'}`}
         </span>
-        <span className="my-2 font-semibold text-md text-gray-800">
+        <span className="my-2 font-semibold text-sm text-gray-800">
           {currencyMask(product.price)}
         </span>
         <span className="text-gray-600 text-sm">

@@ -39,14 +39,14 @@ const ProductCard = ({ product }) => {
       </Link>
       <div className="flex flex-row justify-between items-start my-4">
         <div>
-          <h4 className="text-sm text-black">{name}</h4>
-          <p className="text-md text-gray-700">{currencyMask(price)}</p>
+          <h4 className="text-md text-black font-semibold">{name}</h4>
+          <p className="text-sm text-gray-700">{currencyMask(price)}</p>
         </div>
         <button
           aria-label={isAdded ? 'Remove from bag' : 'Add to bag'}
           onClick={toggleBag}
           type="button"
-          className="cursor-pointer text-black h-5 w-5 focus:outline-none"
+          className="cursor-pointer text-black h-5 w-5"
         >
           {isAdded ? <BagIconFilled /> : <BagIcon />}
         </button>

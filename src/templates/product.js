@@ -33,7 +33,7 @@ export const ProductPageTemplate = ({
         <div className="flex flex-grow flex-col items-center w-full lg:max-w-lg md:mt-0 md:ml-12 md:items-start">
           <div className="w-full flex flex-row items-baseline justify-between my-6 lg:mt-0 lg:mb-10 ">
             <h1 className="text-black text-3xl sm:text-4xl lg:text-5xl leading-none">{name}</h1>
-            <span className="flex-shrink-0 text-black text-xl sm:text-2xl lg:text-3xl font-light ml-4">
+            <span className="flex-shrink-0 text-gray-700 text-xl sm:text-2xl lg:text-3xl ml-4">
               {currencyMask(price)}
             </span>
           </div>

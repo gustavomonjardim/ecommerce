@@ -22,7 +22,7 @@ const Step = ({ title, number, active, checked, onClick }) => {
       </div>
       <button
         onClick={checked ? onClick : () => {}}
-        className="uppercase text-gray-900 font-semibold text-xs text-center mt-4 focus:outline-none"
+        className="uppercase text-gray-900 font-semibold text-xs text-center mt-4 focus:shadow-outline"
       >
         {title}
       </button>

@@ -1,19 +1,26 @@
-import { Link } from 'gatsby';
+import { navigate } from 'gatsby';
 import Img from 'gatsby-image';
 import propTypes from 'prop-types';
 import React from 'react';
 
 import CloseIcon from '../../assets/svg/CloseIcon';
 import { useBag } from '../../context/BagContext';
+import { useBagController } from '../../context/BagDisplayContext';
 import { currencyMask } from '../../services/maskService';
 import NumberSelect from '../NumberSelect';
 
 const BagItem = ({ product }) => {
+  const { closeBag } = useBagController();
   const { removeProduct, increaseProductQuantity, decreaseProductQuantity } = useBag();
+
+  const goToProductPage = () => {
+    closeBag();
+    navigate(`/products/${product.slug}`);
+  };
 
   return (
     <div className="flex flex-row pb-10">
-      <Link to={`/products/${product.slug}`} className="relative w-24 flex-shrink-0">
+      <button onClick={goToProductPage} className="relative w-24 flex-shrink-0">
         {product.image?.childImageSharp ? (
           <Img fluid={product.image.childImageSharp.fluid} alt={product.name} />
         ) : (
@@ -23,7 +30,7 @@ const BagItem = ({ product }) => {
             alt={product.name}
           />
         )}
-      </Link>
+      </button>
       <div className="w-full flex flex-col justify-between ml-4">
         <div className="w-full flex flex-row justify-between items-start">
           <div className="w-full flex flex-col">

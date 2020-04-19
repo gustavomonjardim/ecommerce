@@ -58,6 +58,11 @@ const Bag = () => {
     navigate('/checkout');
   };
 
+  const goToHomePage = () => {
+    closeBag();
+    navigate('/');
+  };
+
   return (
     <>
       <div
@@ -80,7 +85,7 @@ const Bag = () => {
             <span className="text-gray-800 text-md mb-6">
               Looks like there&apos;s nothing in your bag.
             </span>
-            <Button text="Start shopping" onClick={() => navigate('/')}></Button>
+            <Button text="Start shopping" onClick={goToHomePage}></Button>
           </div>
         )}
 

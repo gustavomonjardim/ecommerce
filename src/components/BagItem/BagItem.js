@@ -27,13 +27,13 @@ const BagItem = ({ product }) => {
       <div className="w-full flex flex-col justify-between ml-4">
         <div className="w-full flex flex-row justify-between items-start">
           <div className="w-full flex flex-col">
-            <span className="font-light">{product.name}</span>
+            <span>{product.name}</span>
             <span className="text-xs text-gray-600 mb-2">{currencyMask(product.price)}</span>
           </div>
           <button
             aria-label="Remove from bag"
             onClick={() => removeProduct(product.id)}
-            className="h-6 w-6 ml-4 focus:outline-none"
+            className="h-6 w-6 ml-4"
           >
             <CloseIcon />
           </button>

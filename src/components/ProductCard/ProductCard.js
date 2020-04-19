@@ -5,11 +5,13 @@ import React, { useState, useEffect } from 'react';
 
 import BagIcon, { BagIconFilled } from '../../assets/svg/BagIcon';
 import { useBag } from '../../context/BagContext';
+import { useBagController } from '../../context/BagDisplayContext';
 import { currencyMask } from '../../services/maskService';
 
 const ProductCard = ({ product }) => {
   const { id, name, price, image, slug } = product;
   const { addProduct, removeProduct, checkProduct, bag } = useBag();
+  const { showBag } = useBagController();
   const [isAdded, setAdded] = useState(checkProduct(id));
 
   const toggleBag = () => {
@@ -19,6 +21,7 @@ const ProductCard = ({ product }) => {
     } else {
       addProduct({ ...product, quantity: 1 });
       setAdded(true);
+      showBag();
     }
   };
 
@@ -39,14 +42,14 @@ const ProductCard = ({ product }) => {
       </Link>
       <div className="flex flex-row justify-between items-start my-4">
         <div>
-          <h4 className="text-sm text-black">{name}</h4>
-          <p className="text-md text-gray-700">{currencyMask(price)}</p>
+          <h4 className="text-md text-black">{name}</h4>
+          <p className="text-sm text-gray-700">{currencyMask(price)}</p>
         </div>
         <button
           aria-label={isAdded ? 'Remove from bag' : 'Add to bag'}
           onClick={toggleBag}
           type="button"
-          className="cursor-pointer text-black h-5 w-5 focus:outline-none"
+          className="cursor-pointer text-black h-5 w-5"
         >
           {isAdded ? <BagIconFilled /> : <BagIcon />}
         </button>

@@ -1,15 +1,19 @@
+import classNames from 'classnames';
 import { navigate } from 'gatsby';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import ArrowLeft from '../../assets/svg/ArrowLeft';
 import { useBag } from '../../context/BagContext';
+import { useBagController, useBagDisplay } from '../../context/BagDisplayContext';
 import { currencyMask } from '../../services/maskService';
 import BagItem from '../BagItem/BagItem';
 import Button from '../Button';
 import Separator from '../Separator';
 
-const Overlay = ({ onClick }) => {
+import './styles.css';
+
+const Overlay = ({ onClick, visible }) => {
   const handleKeyPress = event => {
     if (event.keyCode === 27) {
       onClick();
@@ -22,26 +26,46 @@ const Overlay = ({ onClick }) => {
       tabIndex={0}
       role="button"
       aria-label="overlay"
-      className="absolute inset-0 bg-black opacity-25 z-10"
+      className={classNames('fixed inset-0 bg-black z-10 transition-delay', {
+        'block opacity-25': visible,
+        'hidden opacity-0': !visible,
+      })}
       onClick={onClick}
     ></div>
   );
 };
 
 Overlay.propTypes = {
+  visible: propTypes.bool.isRequired,
   onClick: propTypes.func.isRequired,
 };
 
-const Bag = ({ open, closeBag }) => {
+const Bag = () => {
+  const open = useBagDisplay();
+  const { closeBag } = useBagController();
   const { bag, bagSize, totalValue } = useBag();
 
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [open]);
+
   const goToCheckout = () => {
+    closeBag();
     navigate('/checkout');
   };
 
   return (
-    <div className={`${open ? 'block' : 'hidden'}`}>
-      <div className="absolute top-0 right-0 flex flex-col h-full min-h-screen max-h-screen w-full sm:max-w-sm z-20 bg-white px-4 py-6">
+    <>
+      <div
+        className={classNames(
+          'transform fixed top-0 right-0 flex flex-col h-full min-h-screen max-h-screen w-full sm:max-w-sm z-20 bg-white px-4 py-6 transition-delay',
+          { 'translate-x-0': open, 'translate-x-full': !open }
+        )}
+      >
         <div className="w-full flex flex-row justify-between pb-2">
           <button aria-label="Close bag" onClick={closeBag} className="h-6 w-6">
             <ArrowLeft />
@@ -89,14 +113,9 @@ const Bag = ({ open, closeBag }) => {
           </>
         )}
       </div>
-      <Overlay onClick={() => closeBag(false)} />
-    </div>
+      <Overlay visible={open} onClick={() => closeBag(false)} />
+    </>
   );
-};
-
-Bag.propTypes = {
-  open: propTypes.bool.isRequired,
-  closeBag: propTypes.func.isRequired,
 };
 
 export default Bag;

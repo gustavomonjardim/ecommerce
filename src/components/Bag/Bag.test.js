@@ -4,6 +4,7 @@ import React from 'react';
 
 import { products } from '../../../__mocks__/products';
 import BagWithProducts from '../../context/__mocks__/BagContextWithProducts';
+import { BagControllerContext, BagDisplayContext } from '../../context/BagDisplayContext';
 
 import Bag from '.';
 
@@ -18,9 +19,23 @@ afterEach(() => {
 });
 
 const tree = (
-  <BagWithProducts products={[]}>
-    <Bag open={open} closeBag={closeBag} />
-  </BagWithProducts>
+  <BagControllerContext.Provider value={{ closeBag }}>
+    <BagDisplayContext.Provider value={open}>
+      <BagWithProducts products={[]}>
+        <Bag open={open} closeBag={closeBag} />
+      </BagWithProducts>
+    </BagDisplayContext.Provider>
+  </BagControllerContext.Provider>
+);
+
+const filledBagTree = (
+  <BagControllerContext.Provider value={{ closeBag }}>
+    <BagDisplayContext.Provider value={open}>
+      <BagWithProducts products={products}>
+        <Bag open={open} closeBag={closeBag} />
+      </BagWithProducts>
+    </BagDisplayContext.Provider>
+  </BagControllerContext.Provider>
 );
 
 test('should close Bag when close button is pressed', () => {
@@ -63,11 +78,7 @@ test('should display message and button directing to the store when bag is empty
 });
 
 test('should display all products from bag', () => {
-  const { getByTestId } = render(
-    <BagWithProducts products={products}>
-      <Bag open={open} closeBag={closeBag} />
-    </BagWithProducts>
-  );
+  const { getByTestId } = render(filledBagTree);
 
   const listContainer = getByTestId('products');
 
@@ -75,11 +86,7 @@ test('should display all products from bag', () => {
 });
 
 test('should navigate to checkout when bag has products and checkout button is pressed', () => {
-  const { getByText } = render(
-    <BagWithProducts products={products}>
-      <Bag open={open} closeBag={closeBag} />
-    </BagWithProducts>
-  );
+  const { getByText } = render(filledBagTree);
 
   fireEvent.click(getByText('Checkout'));
 
@@ -88,11 +95,7 @@ test('should navigate to checkout when bag has products and checkout button is p
 });
 
 test('should be able to remove product from bag', () => {
-  const { getAllByLabelText, getByTestId } = render(
-    <BagWithProducts products={products}>
-      <Bag open={open} closeBag={closeBag} />
-    </BagWithProducts>
-  );
+  const { getAllByLabelText, getByTestId } = render(filledBagTree);
 
   const listContainer = getByTestId('products');
   expect(listContainer.children.length).toBe(3);
@@ -104,11 +107,7 @@ test('should be able to remove product from bag', () => {
 });
 
 test('should be able to increase and decrease the quantity of a product', async () => {
-  const { getAllByLabelText, findByText } = render(
-    <BagWithProducts products={products}>
-      <Bag open={open} closeBag={closeBag} />
-    </BagWithProducts>
-  );
+  const { getAllByLabelText, findByText } = render(filledBagTree);
 
   const increaseButtons = getAllByLabelText('Increase quantity');
   fireEvent.click(increaseButtons[0]);

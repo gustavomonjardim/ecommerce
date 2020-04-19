@@ -1,22 +1,14 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 
 import Bag from '../../components/Bag';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import SEO from '../../components/SEO';
+import { useBagDisplay } from '../../context/BagDisplayContext';
 
 const Layout = ({ children, title }) => {
-  const [isBagOpen, setBagOpen] = useState(false);
-
-  const showBag = () => {
-    setBagOpen(true);
-  };
-
-  const closeBag = () => {
-    setBagOpen(false);
-  };
-
+  const isBagOpen = useBagDisplay();
   return (
     <>
       <SEO title={title} />
@@ -26,11 +18,11 @@ const Layout = ({ children, title }) => {
         } flex flex-row bg-white relative overflow-hidden`}
       >
         <div className="min-w-screen min-h-screen flex flex-col container mx-auto antialiased">
-          <Header showBag={showBag} />
+          <Header />
           <main className="w-full flex flex-grow flex-col items-center mb-12 px-6">{children}</main>
           <Footer />
         </div>
-        <Bag open={isBagOpen} closeBag={closeBag} />
+        <Bag />
       </div>
     </>
   );

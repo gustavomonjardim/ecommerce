@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import Button from '../components/Button';
 import NumberSelect from '../components/NumberSelect';
 import { useBag } from '../context/BagContext';
+import { useBagController } from '../context/BagDisplayContext';
 import Layout from '../layouts/Layout';
 import { currencyMask } from '../services/maskService';
 import { productFactory } from '../services/productFactory';
@@ -63,6 +64,7 @@ export const ProductPageTemplate = ({
 };
 
 const ProductPage = ({ data: { markdownRemark } }) => {
+  const { showBag } = useBagController();
   const [quantity, setQuantity] = useState(1);
   const { addProduct } = useBag();
 
@@ -78,6 +80,7 @@ const ProductPage = ({ data: { markdownRemark } }) => {
   };
   const addToBag = () => {
     addProduct({ ...product, quantity });
+    showBag();
   };
 
   return (

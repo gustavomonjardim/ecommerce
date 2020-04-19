@@ -4,6 +4,7 @@ import React from 'react';
 
 import ArrowLeft from '../../assets/svg/ArrowLeft';
 import { useBag } from '../../context/BagContext';
+import { useBagController, useBagDisplay } from '../../context/BagDisplayContext';
 import { currencyMask } from '../../services/maskService';
 import BagItem from '../BagItem/BagItem';
 import Button from '../Button';
@@ -22,7 +23,7 @@ const Overlay = ({ onClick }) => {
       tabIndex={0}
       role="button"
       aria-label="overlay"
-      className="absolute inset-0 bg-black opacity-25 z-10"
+      className="fixed inset-0 bg-black opacity-25 z-10"
       onClick={onClick}
     ></div>
   );
@@ -32,7 +33,9 @@ Overlay.propTypes = {
   onClick: propTypes.func.isRequired,
 };
 
-const Bag = ({ open, closeBag }) => {
+const Bag = () => {
+  const open = useBagDisplay();
+  const { closeBag } = useBagController();
   const { bag, bagSize, totalValue } = useBag();
 
   const goToCheckout = () => {
@@ -92,11 +95,6 @@ const Bag = ({ open, closeBag }) => {
       <Overlay onClick={() => closeBag(false)} />
     </div>
   );
-};
-
-Bag.propTypes = {
-  open: propTypes.bool.isRequired,
-  closeBag: propTypes.func.isRequired,
 };
 
 export default Bag;

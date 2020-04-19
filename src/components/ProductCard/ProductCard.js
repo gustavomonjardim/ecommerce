@@ -5,11 +5,13 @@ import React, { useState, useEffect } from 'react';
 
 import BagIcon, { BagIconFilled } from '../../assets/svg/BagIcon';
 import { useBag } from '../../context/BagContext';
+import { useBagController } from '../../context/BagDisplayContext';
 import { currencyMask } from '../../services/maskService';
 
 const ProductCard = ({ product }) => {
   const { id, name, price, image, slug } = product;
   const { addProduct, removeProduct, checkProduct, bag } = useBag();
+  const { showBag } = useBagController();
   const [isAdded, setAdded] = useState(checkProduct(id));
 
   const toggleBag = () => {
@@ -19,6 +21,7 @@ const ProductCard = ({ product }) => {
     } else {
       addProduct({ ...product, quantity: 1 });
       setAdded(true);
+      showBag();
     }
   };
 

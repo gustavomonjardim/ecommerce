@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import BagIcon from '../../assets/svg/BagIcon';
 import MenuIcon from '../../assets/svg/MenuIcon';
 import { useBag } from '../../context/BagContext';
+import { useBagController } from '../../context/BagDisplayContext';
 
 const HeaderLink = ({ children, path }) => {
   return (
@@ -22,7 +23,8 @@ HeaderLink.propTypes = {
   path: propTypes.string.isRequired,
 };
 
-const Header = ({ showBag }) => {
+const Header = () => {
+  const { showBag } = useBagController();
   const [open, setOpen] = useState(false);
   const { bagSize } = useBag();
 
@@ -78,10 +80,6 @@ const Header = ({ showBag }) => {
       </button>
     </header>
   );
-};
-
-Header.propTypes = {
-  showBag: propTypes.func.isRequired,
 };
 
 export default Header;

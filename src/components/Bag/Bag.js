@@ -54,6 +54,7 @@ const Bag = () => {
   }, [open]);
 
   const goToCheckout = () => {
+    closeBag();
     navigate('/checkout');
   };
 

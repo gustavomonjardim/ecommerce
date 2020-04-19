@@ -39,7 +39,7 @@ const ProductCard = ({ product }) => {
       </Link>
       <div className="flex flex-row justify-between items-start my-4">
         <div>
-          <h4 className="text-md text-black font-semibold">{name}</h4>
+          <h4 className="text-md text-black">{name}</h4>
           <p className="text-sm text-gray-700">{currencyMask(price)}</p>
         </div>
         <button

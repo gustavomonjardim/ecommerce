@@ -34,7 +34,7 @@ const Header = ({ showBag }) => {
             aria-label="Menu"
             type="button"
             onClick={() => setOpen(!open)}
-            className="cursor-pointer text-black h-6 w-6 mr-4 sm:hidden focus:shadow-outline"
+            className="cursor-pointer text-black h-6 w-6 mr-4 sm:hidden focus:outline-none focus:shadow-outline"
           >
             <MenuIcon open={open} />
           </button>
@@ -55,7 +55,7 @@ const Header = ({ showBag }) => {
             aria-label="Show Bag"
             onClick={showBag}
             type="button"
-            className="relative cursor-pointer hidden text-black h-6 w-6 mr-4 mb-1 focus:shadow-outline sm:block sm:ml-8"
+            className="relative cursor-pointer hidden text-black h-6 w-6 mr-4 mb-1 focus:outline-none focus:shadow-outline sm:block sm:ml-8"
           >
             <BagIcon />
             <div className="absolute right-0 top-0 -mr-3 -mt-2 bg-black rounded-full h-5 w-5 flex items-center justify-center">
@@ -69,7 +69,7 @@ const Header = ({ showBag }) => {
         aria-label="Show Bag"
         onClick={showBag}
         type="button"
-        className="relative cursor-pointer text-black h-6 w-6 mr-4 mb-1 focus:shadow-outline sm:hidden sm:ml-8"
+        className="relative cursor-pointer text-black h-6 w-6 mr-4 mb-1 focus:outline-none focus:shadow-outline sm:hidden sm:ml-8"
       >
         <BagIcon />
         <div className="absolute right-0 top-0 -mr-3 -mt-2 bg-black rounded-full h-5 w-5 flex items-center justify-center">
